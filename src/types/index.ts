@@ -47,7 +47,7 @@ export const SignalSchema = z.object({
   strength: z.number().min(0).max(1),
   payload: z.unknown(),
   timestamp: z.date(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type Signal = z.infer<typeof SignalSchema>;
