@@ -67,7 +67,7 @@ export type UIEventType =
 export interface UIEventSignal<T = unknown> {
   type: UIEventType;
   data: {
-    domEvent?: Event;
+    domEvent?: unknown;
     payload: T;
     target: string; // Component ID
     bubbles?: boolean;

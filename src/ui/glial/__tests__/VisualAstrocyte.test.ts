@@ -180,7 +180,7 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should recompute selector when dependencies change', () => {
-      const selectorFn = jest.fn((state: any) => state.items?.length || 0);
+      const selectorFn = jest.fn((state: any) => state.items?.length ?? 0);
       astrocyte.registerSelector('itemCount', selectorFn);
 
       astrocyte.setState('items', [1, 2, 3]);
@@ -193,7 +193,7 @@ describe('VisualAstrocyte - UI State Management', () => {
 
     it('should support selector dependencies', () => {
       astrocyte.registerSelector('total', (state: any) =>
-        (state.prices || []).reduce((sum: number, p: number) => sum + p, 0),
+        (state.prices ?? []).reduce((sum: number, p: number) => sum + p, 0),
       );
 
       astrocyte.registerSelector('totalWithTax', (state: any) => astrocyte.select('total') * 1.1);

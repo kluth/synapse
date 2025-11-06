@@ -1,13 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/no-useless-constructor, @typescript-eslint/no-floating-promises, @typescript-eslint/require-await, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unused-vars */
 /**
  * InterneuronUI - Container components that coordinate child components
  * Handles layout, composition, and event coordination
  */
 
-import type { VisualNeuronConfig } from './VisualNeuron';
 import { VisualNeuron } from './VisualNeuron';
 import type { RenderSignal, ComponentProps, ComponentState } from './types';
 import type { Signal } from '../types';
+
+interface BubblingSignal {
+  data?: {
+    bubbles?: boolean;
+  };
+  type?: string;
+  strength?: number;
+  timestamp?: number;
+  id?: string;
+  sourceId?: string;
+  payload?: unknown;
+}
 
 /**
  * InterneuronUI - Container/Layout component
@@ -18,17 +28,13 @@ export abstract class InterneuronUI<
   TState extends ComponentState = ComponentState,
 > extends VisualNeuron<TProps, TState> {
   // Child visual neurons
-  protected children: VisualNeuron<any, any>[] = [];
-
-  constructor(config: VisualNeuronConfig<TProps>) {
-    super(config);
-  }
+  protected children: VisualNeuron[] = [];
 
   /**
    * Add a child neuron to this container
    */
-  public addChild(child: VisualNeuron<any, any>): void {
-    if (!this.children.find((c) => c.id === child.id)) {
+  public addChild(child: VisualNeuron): void {
+    if (this.children.find((c) => c.id === child.id) === undefined) {
       this.children.push(child);
 
       // Listen to child events for bubbling
@@ -43,7 +49,7 @@ export abstract class InterneuronUI<
     const index = this.children.findIndex((c) => c.id === childId);
     if (index !== -1) {
       const child = this.children[index];
-      if (!child) return;
+      if (child === undefined) return;
       this.teardownChildEventListeners(child);
       this.children.splice(index, 1);
     }
@@ -52,14 +58,14 @@ export abstract class InterneuronUI<
   /**
    * Get all children
    */
-  public getChildren(): VisualNeuron<any, any>[] {
+  public getChildren(): VisualNeuron[] {
     return [...this.children];
   }
 
   /**
    * Get a specific child by id
    */
-  public getChild(childId: string): VisualNeuron<any, any> | undefined {
+  public getChild(childId: string): VisualNeuron | undefined {
     return this.children.find((c) => c.id === childId);
   }
 
@@ -76,16 +82,17 @@ export abstract class InterneuronUI<
   /**
    * Setup event listeners for child
    */
-  protected setupChildEventListeners(child: VisualNeuron<any, any>): void {
-    child.on('signal', (signal) => {
+  protected setupChildEventListeners(child: VisualNeuron): void {
+    child.on('signal', (...args: unknown[]) => {
+      const signal = args[0] as BubblingSignal;
       // Handle event bubbling
-      if (signal.data?.bubbles) {
+      if (signal.data?.bubbles === true) {
         this.bubbleFromChild(signal);
       }
 
       // Handle state changes
       if (signal.type === 'state:update') {
-        this.onChildStateChange(child.id, signal);
+        this.onChildStateChange(child.id, signal as unknown as Signal);
       }
     });
   }
@@ -93,7 +100,7 @@ export abstract class InterneuronUI<
   /**
    * Teardown event listeners for child
    */
-  protected teardownChildEventListeners(_child: VisualNeuron<any, any>): void {
+  protected teardownChildEventListeners(_child: VisualNeuron): void {
     // In a real implementation, we'd store listener references to remove them
     // For now, this is a placeholder
   }
@@ -116,24 +123,33 @@ export abstract class InterneuronUI<
   /**
    * Bubble event from child to this container
    */
-  public async bubbleFromChild(signal: any): Promise<void> {
-    if (!signal.data?.bubbles) {
+  public bubbleFromChild(signal: BubblingSignal): void {
+    if (signal.data?.bubbles !== true) {
       return;
     }
 
     // Convert to base Signal type if needed
-    if (!signal.id || !signal.sourceId) {
+    if (signal.id === undefined || signal.sourceId === undefined) {
       const baseSignal: Signal = {
         id: crypto.randomUUID(),
         sourceId: this.id,
         type: 'excitatory',
-        strength: signal.strength || 1.0,
-        payload: signal,
-        timestamp: new Date(signal.timestamp || Date.now()),
+        strength: signal.strength ?? 1.0,
+        payload: signal.payload ?? signal,
+        timestamp: new Date(signal.timestamp ?? Date.now()),
       };
       this.emit(baseSignal);
     } else {
-      this.emit(signal);
+      // Signal has all required fields, cast it
+      const fullSignal: Signal = {
+        id: signal.id,
+        sourceId: signal.sourceId,
+        type: 'excitatory',
+        strength: signal.strength ?? 1.0,
+        payload: signal.payload ?? signal,
+        timestamp: new Date(signal.timestamp ?? Date.now()),
+      };
+      this.emit(fullSignal);
     }
 
     // Re-emit locally for component event listeners
@@ -180,9 +196,7 @@ export abstract class InterneuronUI<
   /**
    * Find child neurons by predicate
    */
-  protected findChildren(
-    predicate: (child: VisualNeuron<any, any>) => boolean,
-  ): VisualNeuron<any, any>[] {
+  protected findChildren(predicate: (child: VisualNeuron) => boolean): VisualNeuron[] {
     return this.children.filter(predicate);
   }
 
@@ -204,11 +218,11 @@ export abstract class InterneuronUI<
    * Reorder children
    */
   public reorderChildren(childIds: string[]): void {
-    const newOrder: VisualNeuron<any, any>[] = [];
+    const newOrder: VisualNeuron[] = [];
 
     for (const id of childIds) {
       const child = this.children.find((c) => c.id === id);
-      if (child) {
+      if (child !== undefined) {
         newOrder.push(child);
       }
     }

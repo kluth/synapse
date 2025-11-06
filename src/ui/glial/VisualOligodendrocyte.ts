@@ -38,7 +38,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
       connectionTTL: 3600000,
     });
 
-    this.maxCacheSize = config.maxCacheSize || 100;
+    this.maxCacheSize = config.maxCacheSize ?? 100;
   }
 
   /**
@@ -78,7 +78,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
     if (this.renderCache.size >= this.maxCacheSize) {
       // Remove oldest entry
       const firstKey = this.renderCache.keys().next().value;
-      if (firstKey) this.renderCache.delete(firstKey);
+      if (firstKey !== undefined) this.renderCache.delete(firstKey);
     }
 
     this.renderCache.set(componentId, { vdom, propsHash });
@@ -159,12 +159,12 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
       patches.push({
         type: 'UPDATE',
         nodeId,
-        props: newElement.props || {},
+        props: newElement.props ?? {},
       });
     }
 
     // Diff children
-    this.diffChildren(oldElement.children || [], newElement.children || [], nodeId, patches);
+    this.diffChildren(oldElement.children ?? [], newElement.children ?? [], nodeId, patches);
   }
 
   /**
@@ -183,20 +183,20 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
       const newChild = newChildren[i];
       const childId = `${parentId}.${i}`;
 
-      if (!oldChild && newChild) {
+      if (oldChild === undefined && newChild !== undefined) {
         // New child
         patches.push({
           type: 'CREATE',
           node: newChild as VirtualDOMNode,
           parentId,
         });
-      } else if (oldChild && !newChild) {
+      } else if (oldChild !== undefined && newChild === undefined) {
         // Removed child
         patches.push({
           type: 'DELETE',
           nodeId: childId,
         });
-      } else if (oldChild && newChild) {
+      } else if (oldChild !== undefined && newChild !== undefined) {
         // Potentially changed child
         this.diffNodes(oldChild, newChild, childId, patches);
       }
@@ -207,11 +207,14 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
    * Check if props changed
    */
   private propsChanged(oldProps: any, newProps: any): boolean {
-    if (!oldProps && !newProps) return false;
-    if (!oldProps || !newProps) return true;
+    const hasOldProps = oldProps !== undefined && oldProps !== null;
+    const hasNewProps = newProps !== undefined && newProps !== null;
 
-    const oldKeys = Object.keys(oldProps);
-    const newKeys = Object.keys(newProps);
+    if (!hasOldProps && !hasNewProps) return false;
+    if (!hasOldProps || !hasNewProps) return true;
+
+    const oldKeys = Object.keys(oldProps as object);
+    const newKeys = Object.keys(newProps as object);
 
     if (oldKeys.length !== newKeys.length) return true;
 
@@ -295,14 +298,14 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
    * Check if lazy component is loaded
    */
   public isComponentLoaded(componentId: string): boolean {
-    return this.lazyComponents.get(componentId)?.loaded || false;
+    return this.lazyComponents.get(componentId)?.loaded ?? false;
   }
 
   /**
    * Track component usage (for myelination)
    */
   public trackComponentUsage(componentId: string): void {
-    const count = this.componentUsage.get(componentId) || 0;
+    const count = this.componentUsage.get(componentId) ?? 0;
     this.componentUsage.set(componentId, count + 1);
   }
 

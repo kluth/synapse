@@ -7,7 +7,7 @@ import type { RenderSignal } from '../types';
 import type { Input as NodeInput } from '../../types';
 
 interface UISignalPayload {
-  type: string;
+  type?: string;
   payload?: {
     type?: string;
     [key: string]: unknown;

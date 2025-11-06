@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/no-useless-constructor, @typescript-eslint/no-floating-promises, @typescript-eslint/require-await */
 /**
  * Base class for all UI components in Synapse Visual Cortex
  * Represents a "visual neuron" that processes UI signals and renders output
@@ -44,6 +43,9 @@ export abstract class VisualNeuron<
   protected renderCount: number = 0;
   protected lastRenderTime: number = 0;
 
+  // Last fired timestamp for refractory period
+  private lastFired: number = 0;
+
   // Event emitter for component events
   protected emitter: EventEmitter;
 
@@ -55,7 +57,7 @@ export abstract class VisualNeuron<
     });
 
     this.receptiveField = config.props;
-    this.visualState = (config.initialState || {}) as TState;
+    this.visualState = (config.initialState ?? {}) as TState;
     this.emitter = new EventEmitter();
   }
 
@@ -117,7 +119,7 @@ export abstract class VisualNeuron<
   /**
    * Emit UI event to connected neurons
    */
-  protected emitUIEvent<T = any>(event: UIEventSignal<T>): void {
+  protected emitUIEvent<T = unknown>(event: UIEventSignal<T>): void {
     // Convert to base Signal type for neural network transmission
     const baseSignal: Signal = {
       id: crypto.randomUUID(),
@@ -166,14 +168,14 @@ export abstract class VisualNeuron<
   /**
    * Listen to component events
    */
-  public on(event: string, listener: (...args: any[]) => void): void {
+  public on(event: string, listener: (...args: unknown[]) => void): void {
     this.emitter.on(event, listener);
   }
 
   /**
    * Remove event listener
    */
-  public off(event: string, listener: (...args: any[]) => void): void {
+  public off(event: string, listener: (...args: unknown[]) => void): void {
     this.emitter.off(event, listener);
   }
 
@@ -296,7 +298,7 @@ export abstract class VisualNeuron<
     // Check refractory period
     const refractoryPeriod = this.getRefractoryPeriod();
     const now = Date.now();
-    const timeSinceLastFire = now - (this as any).lastFired;
+    const timeSinceLastFire = now - this.lastFired;
     if (refractoryPeriod > 0 && timeSinceLastFire < refractoryPeriod) {
       return; // Ignore signal during refractory period
     }
@@ -308,10 +310,10 @@ export abstract class VisualNeuron<
 
     // For UI components, process signals immediately
     // Extract the actual UI signal from the payload if it's wrapped
-    const uiSignal = signal.payload || signal;
+    const uiSignal = signal.payload ?? signal;
 
     try {
-      (this as any).lastFired = now;
+      this.lastFired = now;
       await this.executeProcessing({ data: uiSignal });
     } catch (error) {
       console.error(`Error processing signal in ${this.id}:`, error);

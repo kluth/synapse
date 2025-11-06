@@ -282,7 +282,7 @@ describe('InterneuronUI', () => {
       });
 
       // Manually trigger bubbling
-      await container.bubbleFromChild({
+      container.bubbleFromChild({
         type: 'ui:click',
         data: { payload: {}, target: child1.id, bubbles: true },
         strength: 1.0,
@@ -299,7 +299,7 @@ describe('InterneuronUI', () => {
       const signals: any[] = [];
       container.on('signal', (signal) => signals.push(signal));
 
-      await container.bubbleFromChild({
+      container.bubbleFromChild({
         type: 'ui:click',
         data: { payload: {}, target: child1.id, bubbles: false },
         strength: 1.0,

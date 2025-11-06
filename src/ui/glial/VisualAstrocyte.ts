@@ -53,7 +53,7 @@ export class VisualAstrocyte extends Astrocyte {
       ttl: 3600000, // 1 hour
     });
 
-    this.maxHistorySize = config.maxHistorySize || 50;
+    this.maxHistorySize = config.maxHistorySize ?? 50;
     this.enableTimeTravel = config.enableTimeTravel ?? true;
   }
 
@@ -87,7 +87,7 @@ export class VisualAstrocyte extends Astrocyte {
    * Get the entire state or a specific path
    */
   public getState(path?: string): any {
-    if (!path) {
+    if (path === undefined || path === '') {
       return { ...this.uiState };
     }
 
@@ -163,12 +163,15 @@ export class VisualAstrocyte extends Astrocyte {
       this.subscribers.set(path, new Set());
     }
 
-    this.subscribers.get(path)!.add(callback);
+    const callbacks = this.subscribers.get(path);
+    if (callbacks !== undefined) {
+      callbacks.add(callback);
+    }
 
     // Return unsubscribe function
     return () => {
       const callbacks = this.subscribers.get(path);
-      if (callbacks) {
+      if (callbacks !== undefined) {
         callbacks.delete(callback);
         if (callbacks.size === 0) {
           this.subscribers.delete(path);
@@ -303,7 +306,7 @@ export class VisualAstrocyte extends Astrocyte {
     let current = obj;
 
     for (const key of keys) {
-      if (current == null) return undefined;
+      if (current === null || current === undefined) return undefined;
       current = current[key];
     }
 
@@ -315,7 +318,9 @@ export class VisualAstrocyte extends Astrocyte {
    */
   private setNestedValue(obj: any, path: string, value: any): void {
     const keys = path.split('.');
-    const lastKey = keys.pop()!;
+    const lastKey = keys.pop();
+    if (lastKey === undefined) return;
+
     let current = obj;
 
     for (const key of keys) {
@@ -333,7 +338,9 @@ export class VisualAstrocyte extends Astrocyte {
    */
   private deleteNestedValue(obj: any, path: string): void {
     const keys = path.split('.');
-    const lastKey = keys.pop()!;
+    const lastKey = keys.pop();
+    if (lastKey === undefined) return;
+
     let current = obj;
 
     for (const key of keys) {
@@ -341,7 +348,8 @@ export class VisualAstrocyte extends Astrocyte {
       current = current[key];
     }
 
-    delete current[lastKey];
+    // Use Reflect.deleteProperty instead of dynamic delete
+    Reflect.deleteProperty(current, lastKey);
   }
 
   /**

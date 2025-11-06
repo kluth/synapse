@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/no-useless-constructor, @typescript-eslint/no-floating-promises, @typescript-eslint/require-await */
 /**
  * SensoryNeuron - Input components that capture user interactions
  * Converts DOM events to neural signals
  */
 
-import type { VisualNeuronConfig } from './VisualNeuron';
 import { VisualNeuron } from './VisualNeuron';
 import type { UIEventSignal, UIEventType, ComponentProps, ComponentState } from './types';
 
@@ -16,17 +14,13 @@ export abstract class SensoryNeuron<
   TProps extends ComponentProps = ComponentProps,
   TState extends ComponentState = ComponentState,
 > extends VisualNeuron<TProps, TState> {
-  constructor(config: VisualNeuronConfig<TProps>) {
-    super(config);
-  }
-
   /**
    * Capture a DOM interaction and convert it to a neural signal
    */
   public async captureInteraction(
-    domEvent: any,
+    domEvent: unknown,
     eventType: UIEventType,
-    payload: any,
+    payload: unknown,
     bubbles: boolean = true,
   ): Promise<void> {
     const uiSignal = this.toNeuralSignal(domEvent, eventType, payload, bubbles);
@@ -58,9 +52,9 @@ export abstract class SensoryNeuron<
    * Convert DOM event to neural signal
    */
   protected toNeuralSignal(
-    domEvent: any,
+    domEvent: unknown,
     eventType: UIEventType,
-    payload: any,
+    payload: unknown,
     bubbles: boolean = true,
   ): UIEventSignal {
     // Determine signal strength based on event type
@@ -99,7 +93,7 @@ export abstract class SensoryNeuron<
       'ui:resize': 0.5,
     };
 
-    return strengthMap[eventType] || 0.5;
+    return strengthMap[eventType];
   }
 
   /**
