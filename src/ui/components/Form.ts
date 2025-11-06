@@ -37,7 +37,7 @@ export class Form extends InterneuronUI<FormProps, FormState> {
             onSubmit: (e: Event) => e.preventDefault(),
           },
           children: [
-            props.title ? { tag: 'h2', children: [props.title] } : '',
+            (props.title != null && props.title !== '') ? { tag: 'h2', children: [props.title] } : '',
             ...childNodes,
             {
               tag: 'button',
@@ -67,13 +67,18 @@ export class Form extends InterneuronUI<FormProps, FormState> {
     };
   }
 
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
+    data: TInput;
+  }): Promise<TOutput> {
     const signal: any = input.data;
-    if (signal.type === 'ui:submit' || signal?.payload?.type === 'ui:submit') {
-      await this.handleSubmit();
+    if (
+      (signal != null && signal.type === 'ui:submit') ||
+      (signal?.payload != null && signal.payload.type === 'ui:submit')
+    ) {
+      void this.handleSubmit();
     }
 
-    return undefined as TOutput;
+    return Promise.resolve(undefined as TOutput);
   }
 
   private async handleSubmit(): Promise<void> {
@@ -83,12 +88,12 @@ export class Form extends InterneuronUI<FormProps, FormState> {
     this.setState({ submitting: true, errors: {} });
 
     // Validate
-    if (props.validation) {
+    if (props.validation != null) {
       const errors: Record<string, string> = {};
 
       for (const [field, validator] of Object.entries(props.validation)) {
         const error = validator(state.values[field]);
-        if (error) {
+        if (error != null && error !== '') {
           errors[field] = error;
         }
       }
@@ -101,9 +106,9 @@ export class Form extends InterneuronUI<FormProps, FormState> {
 
     // Submit
     try {
-      await props.onSubmit(state.values);
+      void props.onSubmit(state.values);
       this.setState({ submitting: false, submitted: true });
-    } catch (error) {
+    } catch (_err) {
       this.setState({
         submitting: false,
         errors: { _form: 'Submission failed' },
@@ -112,8 +117,9 @@ export class Form extends InterneuronUI<FormProps, FormState> {
   }
 
   public setValue(field: string, value: any): void {
+    const currentValues = this.getState().values;
     this.setState({
-      values: { ...this.getState().values, [field]: value },
+      values: { ...currentValues, [field]: value as Record<string, any>[string] },
     });
   }
 }

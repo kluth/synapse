@@ -34,24 +34,24 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
           tag: 'div',
           props: { className: 'input-wrapper' },
           children: [
-            props.label ? { tag: 'label', children: [props.label] } : '',
+            (props.label != null && props.label !== '') ? { tag: 'label', children: [props.label] } : '',
             {
               tag: 'input',
               props: {
-                type: props.type || 'text',
+                type: props.type ?? 'text',
                 placeholder: props.placeholder,
                 value: state.value,
                 disabled: props.disabled,
-                className: `input ${state.focused ? 'focused' : ''} ${props.error ? 'error' : ''}`,
-                'aria-label': props.label || props.placeholder,
-                'aria-invalid': !!props.error,
+                className: `input ${state.focused ? 'focused' : ''} ${(props.error != null && props.error !== '') ? 'error' : ''}`,
+                'aria-label': props.label ?? props.placeholder ?? '',
+                'aria-invalid': String(props.error != null && props.error !== ''),
               },
             },
-            props.error ? { tag: 'span', props: { className: 'error-message' }, children: [props.error] } : '',
+            (props.error != null && props.error !== '') ? { tag: 'span', props: { className: 'error-message' }, children: [props.error] } : '',
           ],
         },
         styles: {
-          borderColor: props.error ? '#dc3545' : state.focused ? '#007bff' : '#ced4da',
+          borderColor: (props.error != null && props.error !== '') ? '#dc3545' : state.focused ? '#007bff' : '#ced4da',
           outline: state.focused ? '2px solid #007bff' : 'none',
         },
         metadata: {
@@ -65,7 +65,9 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
     };
   }
 
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
+    data: TInput;
+  }): Promise<TOutput> {
     const signal: any = input.data;
     const props = this.getProps();
 
@@ -74,11 +76,11 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
     } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
       this.setState({ focused: false });
     } else if (signal.type === 'ui:input' || signal?.payload?.type === 'ui:input') {
-      const value = signal?.payload?.payload?.value || signal?.data?.payload?.value || '';
+      const value = (signal?.payload?.payload?.value ?? signal?.data?.payload?.value ?? '') as string;
       this.setState({ value });
       props.onChange(value);
     }
 
-    return undefined as TOutput;
+    return Promise.resolve(undefined as TOutput);
   }
 }

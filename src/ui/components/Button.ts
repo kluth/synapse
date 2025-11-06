@@ -26,9 +26,9 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     const props = this.getProps();
     const state = this.getState();
 
-    const variant = props.variant || 'primary';
-    const size = props.size || 'medium';
-    const disabled = props.disabled || state.disabled;
+    const variant = props.variant ?? 'primary';
+    const size = props.size ?? 'medium';
+    const disabled = (props.disabled ?? false) || state.disabled;
 
     return {
       type: 'render',
@@ -37,11 +37,11 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
           tag: 'button',
           props: {
             disabled,
-            className: `btn btn-${variant} btn-${size} ${state.pressed ? 'pressed' : ''} ${props.loading ? 'loading' : ''}`,
+            className: `btn btn-${variant} btn-${size} ${state.pressed ? 'pressed' : ''} ${(props.loading ?? false) ? 'loading' : ''}`,
             'aria-label': props.label,
-            'aria-disabled': disabled,
+            'aria-disabled': String(disabled),
           },
-          children: [props.loading ? 'Loading...' : props.label],
+          children: [(props.loading ?? false) ? 'Loading...' : props.label],
         },
         styles: {
           backgroundColor: this.getBackgroundColor(variant, disabled),
@@ -67,17 +67,19 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     };
   }
 
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
+    data: TInput;
+  }): Promise<TOutput> {
     const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
-    if (props.disabled || state.disabled || props.loading) {
-      return undefined as TOutput;
+    if ((props.disabled ?? false) || state.disabled || (props.loading ?? false)) {
+      return Promise.resolve(undefined as TOutput);
     }
 
     if (signal.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
-      if (props.onClick) {
+      if (props.onClick != null) {
         props.onClick(signal);
       }
     } else if (signal.type === 'ui:mousedown' || signal?.payload?.type === 'ui:mousedown') {
@@ -89,7 +91,7 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       this.setState({ hovered: false });
     }
 
-    return undefined as TOutput;
+    return Promise.resolve(undefined as TOutput);
   }
 
   private getBackgroundColor(variant: string, disabled: boolean): string {

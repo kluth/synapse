@@ -38,17 +38,17 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
           tag: 'div',
           props: { className: 'select-wrapper' },
           children: [
-            props.label ? { tag: 'label', children: [props.label] } : '',
+            (props.label != null && props.label !== '') ? { tag: 'label', children: [props.label] } : '',
             {
               tag: 'select',
               props: {
                 value: state.selectedValue,
                 disabled: props.disabled,
                 className: `select ${state.focused ? 'focused' : ''}`,
-                'aria-label': props.label || 'Select an option',
+                'aria-label': props.label ?? 'Select an option',
               },
               children: [
-                props.placeholder ? { tag: 'option', props: { value: '' }, children: [props.placeholder] } : '',
+                (props.placeholder != null && props.placeholder !== '') ? { tag: 'option', props: { value: '' }, children: [props.placeholder] } : '',
                 ...props.options.map((opt) => ({
                   tag: 'option',
                   props: { value: opt.value },
@@ -72,12 +72,14 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
     };
   }
 
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
+    data: TInput;
+  }): Promise<TOutput> {
     const signal: any = input.data;
     const props = this.getProps();
 
     if (signal.type === 'ui:change' || signal?.payload?.type === 'ui:change') {
-      const value = signal?.payload?.payload?.value || signal?.data?.payload?.value || '';
+      const value = (signal?.payload?.payload?.value ?? signal?.data?.payload?.value ?? '') as string;
       this.setState({ selectedValue: value });
       props.onChange(value);
     } else if (signal.type === 'ui:focus' || signal?.payload?.type === 'ui:focus') {
@@ -86,6 +88,6 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
       this.setState({ focused: false });
     }
 
-    return undefined as TOutput;
+    return Promise.resolve(undefined as TOutput);
   }
 }
