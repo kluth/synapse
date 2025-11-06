@@ -76,17 +76,21 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
     input: NodeInput<TInput>,
   ): Promise<TOutput> {
-    const signal: any = input.data;
     const props = this.getProps();
 
-    if (signal.type === 'ui:change' || signal?.payload?.type === 'ui:change') {
-      const value = (signal?.payload?.payload?.value ?? signal?.data?.payload?.value ?? '') as string;
-      this.setState({ selectedValue: value });
-      props.onChange(value);
-    } else if (signal.type === 'ui:focus' || signal?.payload?.type === 'ui:focus') {
-      this.setState({ focused: true });
-    } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
-      this.setState({ focused: false });
+    // input.data can be single signal or array from processSignalQueue
+    const signals: any = Array.isArray(input.data) ? input.data : [input.data];
+
+    for (const signal of signals) {
+      if (signal.type === 'ui:change' || signal?.payload?.type === 'ui:change') {
+        const value = (signal?.payload?.payload?.value ?? signal?.data?.payload?.value ?? '') as string;
+        this.setState({ selectedValue: value });
+        props.onChange(value);
+      } else if (signal.type === 'ui:focus' || signal?.payload?.type === 'ui:focus') {
+        this.setState({ focused: true });
+      } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
+        this.setState({ focused: false });
+      }
     }
 
     return undefined as TOutput;

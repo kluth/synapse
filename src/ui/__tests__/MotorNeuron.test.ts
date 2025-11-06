@@ -41,10 +41,14 @@ class TestSubmitButton extends MotorNeuron<
     };
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
-    if (signal.type === 'ui:click' && !this.getState().submitting) {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: any,
+  ): Promise<TOutput> {
+    const signal = input.data;
+    if (signal?.type === 'ui:click' && !this.getState().submitting) {
       await this.executeAction(signal);
     }
+    return undefined as TOutput;
   }
 
   public async performAction(data: any): Promise<any> {

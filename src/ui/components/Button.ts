@@ -29,7 +29,7 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
 
     const variant = props.variant ?? 'primary';
     const size = props.size ?? 'medium';
-    const disabled = (props.disabled ?? false) || state.disabled;
+    const disabled = (props.disabled ?? false) || state.disabled || (props.loading ?? false);
 
     return {
       type: 'render',
@@ -71,7 +71,6 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
     input: NodeInput<TInput>,
   ): Promise<TOutput> {
-    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
@@ -79,17 +78,22 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       return undefined as TOutput;
     }
 
-    if (signal.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
-      if (props.onClick != null) {
-        props.onClick(signal);
+    // input.data can be single signal or array from processSignalQueue
+    const signals: any = Array.isArray(input.data) ? input.data : [input.data];
+
+    for (const signal of signals) {
+      if (signal.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
+        if (props.onClick != null) {
+          props.onClick(signal);
+        }
+      } else if (signal.type === 'ui:mousedown' || signal?.payload?.type === 'ui:mousedown') {
+        this.setState({ pressed: true });
+        setTimeout(() => this.setState({ pressed: false }), 150);
+      } else if (signal.type === 'ui:hover' || signal?.payload?.type === 'ui:hover') {
+        this.setState({ hovered: true });
+      } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
+        this.setState({ hovered: false });
       }
-    } else if (signal.type === 'ui:mousedown' || signal?.payload?.type === 'ui:mousedown') {
-      this.setState({ pressed: true });
-      setTimeout(() => this.setState({ pressed: false }), 150);
-    } else if (signal.type === 'ui:hover' || signal?.payload?.type === 'ui:hover') {
-      this.setState({ hovered: true });
-    } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
-      this.setState({ hovered: false });
     }
 
     return undefined as TOutput;

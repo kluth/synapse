@@ -31,6 +31,9 @@ export abstract class SensoryNeuron<
   ): Promise<void> {
     const uiSignal = this.toNeuralSignal(domEvent, eventType, payload, bubbles);
 
+    // Emit to local event listeners
+    this.emitter.emit('signal', uiSignal);
+
     // Convert to base Signal type for neural network transmission
     const baseSignal: {
       id: string;

@@ -262,17 +262,30 @@ export class VisualAstrocyte extends Astrocyte {
    * Export state snapshot
    */
   public exportSnapshot(): StateSnapshot {
-    return {
-      timestamp: Date.now(),
-      state: JSON.parse(JSON.stringify(this.uiState)),
-    };
+    try {
+      return {
+        timestamp: Date.now(),
+        state: JSON.parse(JSON.stringify(this.uiState)),
+      };
+    } catch {
+      // Circular reference - return shallow copy
+      return {
+        timestamp: Date.now(),
+        state: { ...this.uiState },
+      };
+    }
   }
 
   /**
    * Import state snapshot
    */
   public importSnapshot(snapshot: StateSnapshot): void {
-    this.uiState = JSON.parse(JSON.stringify(snapshot.state));
+    try {
+      this.uiState = JSON.parse(JSON.stringify(snapshot.state));
+    } catch {
+      // Circular reference - use shallow copy
+      this.uiState = { ...snapshot.state };
+    }
 
     if (this.enableTimeTravel) {
       this.recordHistory('importSnapshot');
@@ -372,12 +385,21 @@ export class VisualAstrocyte extends Astrocyte {
       this.history = this.history.slice(0, this.historyIndex + 1);
     }
 
-    // Add new entry
-    this.history.push({
-      timestamp: Date.now(),
-      state: JSON.parse(JSON.stringify(this.uiState)),
-      action,
-    });
+    // Add new entry - handle circular references gracefully
+    try {
+      this.history.push({
+        timestamp: Date.now(),
+        state: JSON.parse(JSON.stringify(this.uiState)),
+        action,
+      });
+    } catch {
+      // If state has circular references, store a shallow copy instead
+      this.history.push({
+        timestamp: Date.now(),
+        state: { ...this.uiState },
+        action,
+      });
+    }
 
     // Limit history size
     if (this.history.length > this.maxHistorySize) {
@@ -394,7 +416,12 @@ export class VisualAstrocyte extends Astrocyte {
     const entry = this.history[index];
     if (!entry) return;
 
-    this.uiState = JSON.parse(JSON.stringify(entry.state));
+    try {
+      this.uiState = JSON.parse(JSON.stringify(entry.state));
+    } catch {
+      // Circular reference - use shallow copy
+      this.uiState = { ...entry.state };
+    }
     this.selectorCache.clear();
     this.notifyAllSubscribers();
   }
@@ -406,7 +433,8 @@ export class VisualAstrocyte extends Astrocyte {
     try {
       return JSON.stringify(obj);
     } catch {
-      return String(Date.now());
+      // Circular reference - use timestamp as unique hash
+      return String(Date.now()) + Math.random();
     }
   }
 }

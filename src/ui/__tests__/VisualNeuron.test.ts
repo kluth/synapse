@@ -8,10 +8,14 @@ import { ComponentProps, ComponentState } from '../types';
 
 // Test implementation of VisualNeuron
 class TestVisualNeuron extends VisualNeuron<{ label: string; value: number }, { count: number }> {
-  protected async executeProcessing(signal: any): Promise<void> {
-    if (signal.type === 'ui:click') {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: any,
+  ): Promise<TOutput> {
+    const signal = input.data;
+    if (signal?.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
       this.setState({ count: this.getState().count + 1 });
     }
+    return undefined as TOutput;
   }
 
   protected performRender(): RenderSignal {

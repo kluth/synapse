@@ -8,10 +8,14 @@ import type { RenderSignal, VirtualDOMNode } from '../types';
 
 // Simple child component for testing
 class TestChild extends VisualNeuron<{ label: string; value: number }, { count: number }> {
-  protected async executeProcessing(signal: any): Promise<void> {
-    if (signal.type === 'ui:click') {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: any,
+  ): Promise<TOutput> {
+    const signal = input.data;
+    if (signal?.type === 'ui:click') {
       this.setState({ count: this.getState().count + 1 });
     }
+    return undefined as TOutput;
   }
 
   protected performRender(): RenderSignal {
@@ -82,10 +86,14 @@ class TestContainer extends InterneuronUI<
     };
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
-    if (signal.type === 'ui:click' && signal.data.payload.action === 'toggle') {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: any,
+  ): Promise<TOutput> {
+    const signal = input.data;
+    if (signal?.type === 'ui:click' && signal.data?.payload?.action === 'toggle') {
       this.setState({ expanded: !this.getState().expanded });
     }
+    return undefined as TOutput;
   }
 }
 
@@ -211,9 +219,7 @@ describe('InterneuronUI', () => {
     beforeEach(async () => {
       container.addChild(child1);
       container.addChild(child2);
-      await container.activate();
-      await child1.activate();
-      await child2.activate();
+      await container.activate(); // Activates children automatically
     });
 
     it('should orchestrate child rendering', () => {
@@ -245,9 +251,7 @@ describe('InterneuronUI', () => {
     beforeEach(async () => {
       container.addChild(child1);
       container.addChild(child2);
-      await container.activate();
-      await child1.activate();
-      await child2.activate();
+      await container.activate(); // Activates children automatically
     });
 
     it('should propagate events from parent to children', async () => {
@@ -313,9 +317,7 @@ describe('InterneuronUI', () => {
     beforeEach(async () => {
       container.addChild(child1);
       container.addChild(child2);
-      await container.activate();
-      await child1.activate();
-      await child2.activate();
+      await container.activate(); // Activates children automatically
     });
 
     it('should render with specified layout', () => {
@@ -353,9 +355,7 @@ describe('InterneuronUI', () => {
     beforeEach(async () => {
       container.addChild(child1);
       container.addChild(child2);
-      await container.activate();
-      await child1.activate();
-      await child2.activate();
+      await container.activate(); // Activates children automatically
     });
 
     it('should track child state changes', async () => {
@@ -411,10 +411,7 @@ describe('InterneuronUI', () => {
       container.addChild(nestedContainer);
       container.addChild(child2);
 
-      await container.activate();
-      await nestedContainer.activate();
-      await child1.activate();
-      await child2.activate();
+      await container.activate(); // Activates all children recursively
 
       const children = container.getChildren();
       expect(children).toHaveLength(2);
@@ -425,9 +422,7 @@ describe('InterneuronUI', () => {
       nestedContainer.addChild(child1);
       container.addChild(nestedContainer);
 
-      await container.activate();
-      await nestedContainer.activate();
-      await child1.activate();
+      await container.activate(); // Activates all children recursively
 
       const renderSignal = container.render();
       const children = renderSignal.data.vdom.children as VirtualDOMNode[];
@@ -454,10 +449,7 @@ describe('InterneuronUI', () => {
         container.addChild(child);
       }
 
-      await container.activate();
-      for (const child of children) {
-        await child.activate();
-      }
+      await container.activate(); // Activates all children
 
       const start = Date.now();
       const renderSignal = container.render();

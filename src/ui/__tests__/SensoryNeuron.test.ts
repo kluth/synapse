@@ -55,16 +55,20 @@ class TestInputNeuron extends SensoryNeuron<
     };
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
-    if (signal.type === 'ui:focus') {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: any,
+  ): Promise<TOutput> {
+    const signal = input.data;
+    if (signal?.type === 'ui:focus') {
       this.setState({ focused: true });
-    } else if (signal.type === 'ui:blur') {
+    } else if (signal?.type === 'ui:blur') {
       this.setState({ focused: false });
-    } else if (signal.type === 'ui:input') {
-      const value = signal.data.payload.value;
+    } else if (signal?.type === 'ui:input') {
+      const value = signal.data?.payload?.value ?? signal.data?.data?.payload?.value;
       this.setState({ value });
       this.getProps().onChange(value);
     }
+    return undefined as TOutput;
   }
 }
 

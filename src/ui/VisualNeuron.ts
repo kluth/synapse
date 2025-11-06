@@ -182,8 +182,39 @@ export abstract class VisualNeuron<
    * Override this for custom update logic (similar to React's shouldComponentUpdate)
    */
   protected shouldUpdate(nextProps: TProps): boolean {
-    // Deep equality check by default
-    return JSON.stringify(nextProps) !== JSON.stringify(this.receptiveField);
+    // Check if any prop has changed (including functions)
+    const currentKeys = Object.keys(this.receptiveField) as Array<keyof TProps>;
+    const nextKeys = Object.keys(nextProps) as Array<keyof TProps>;
+
+    // If key count differs, props changed
+    if (currentKeys.length !== nextKeys.length) {
+      return true;
+    }
+
+    // Check each prop for changes
+    for (const key of nextKeys) {
+      const currentValue = this.receptiveField[key];
+      const nextValue = nextProps[key];
+
+      // For functions, compare by reference
+      if (typeof nextValue === 'function' || typeof currentValue === 'function') {
+        if (currentValue !== nextValue) {
+          return true;
+        }
+      }
+      // For objects/arrays, use JSON comparison
+      else if (typeof nextValue === 'object' && nextValue !== null) {
+        if (JSON.stringify(currentValue) !== JSON.stringify(nextValue)) {
+          return true;
+        }
+      }
+      // For primitives, use strict equality
+      else if (currentValue !== nextValue) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -255,11 +286,24 @@ export abstract class VisualNeuron<
 
   /**
    * Override receive to process UI signals immediately
-   * UI components need immediate feedback, not batched processing
+   * UI components need immediate feedback, but still respect threshold and refractory period
    */
   public override async receive(signal: Signal): Promise<void> {
     if (this.state !== 'active' && this.state !== 'firing') {
       throw new Error('Node is not active');
+    }
+
+    // Check refractory period
+    const refractoryPeriod = this.getRefractoryPeriod();
+    const now = Date.now();
+    const timeSinceLastFire = now - (this as any).lastFired;
+    if (refractoryPeriod > 0 && timeSinceLastFire < refractoryPeriod) {
+      return; // Ignore signal during refractory period
+    }
+
+    // Check threshold
+    if (signal.strength < this.threshold) {
+      return; // Signal too weak to trigger processing
     }
 
     // For UI components, process signals immediately
@@ -267,6 +311,7 @@ export abstract class VisualNeuron<
     const uiSignal = signal.payload || signal;
 
     try {
+      (this as any).lastFired = now;
       await this.executeProcessing({ data: uiSignal });
     } catch (error) {
       console.error(`Error processing signal in ${this.id}:`, error);
