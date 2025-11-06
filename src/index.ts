@@ -14,7 +14,7 @@ export { NeuralNode, Connection } from './core';
 export { CorticalNeuron, ReflexNeuron } from './neurons';
 
 // Glial cells (support systems)
-export { Astrocyte } from './glial';
+export { Astrocyte, Oligodendrocyte, Microglia, Ependymal } from './glial';
 
 // Communication
 export { EventBus } from './communication';
