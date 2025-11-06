@@ -92,8 +92,8 @@ describe('CorticalNeuron', () => {
       const health1 = neuron.healthCheck();
       expect(health1.healthy).toBe(true);
 
-      // Wait a bit
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      // Wait enough time for uptime to reliably increase across all platforms
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       const health2 = neuron.healthCheck();
       expect(health2.uptime).toBeGreaterThan(health1.uptime);
