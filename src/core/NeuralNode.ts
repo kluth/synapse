@@ -75,6 +75,10 @@ export class NeuralNode implements INeuralNode {
     return Promise.resolve();
   }
 
+  public getStatus(): NodeState {
+    return this.state;
+  }
+
   public healthCheck(): HealthStatus {
     const now = Date.now();
     const uptime = this.activationTime !== null ? now - this.activationTime.getTime() : 0;

@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synapse UI Framework - Component Showcase</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 3rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 3px solid #667eea;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 300;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #667eea;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 1rem 0.5rem 0;
+    }
+
+    .component-section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border-left: 4px solid #667eea;
+    }
+
+    .component-section h2 {
+      color: #667eea;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .component-section h3 {
+      color: #764ba2;
+      font-size: 1.3rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    .component-section p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .demo-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      border: 1px solid #e0e0e0;
+    }
+
+    .code-block {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      margin: 0.5rem;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #545b62;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+      transform: translateY(-2px);
+    }
+
+    .btn-small {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .btn-large {
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+
+    .input-wrapper {
+      margin: 1rem 0;
+    }
+
+    .input-wrapper label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ced4da;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .input-wrapper input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .input-wrapper input.error {
+      border-color: #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .select-wrapper {
+      margin: 1rem 0;
+    }
+
+    .select-wrapper label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .select-wrapper select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ced4da;
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .select-wrapper select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .form {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .form h2 {
+      color: #667eea;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-submit {
+      background: #667eea;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+
+    .form-submit:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .form-submit:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 2px solid #667eea;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    .feature-card h3 {
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 2rem 0;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      color: white;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e0e0e0;
+      color: #666;
+    }
+
+    .links {
+      margin-top: 1rem;
+    }
+
+    .links a {
+      color: #667eea;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .links a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .stats {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧠 Synapse UI Framework</h1>
+      <p class="tagline">Neural-Inspired UI Components for Modern Web Applications</p>
+      <div>
+        <span class="badge">Framework Agnostic</span>
+        <span class="badge">TypeScript Native</span>
+        <span class="badge">Biologically Inspired</span>
+        <span class="badge">Test-Driven</span>
+      </div>
+    </header>
+
+    <section class="component-section">
+      <h2>🎯 Overview</h2>
+      <p>
+        Synapse UI is a revolutionary framework-agnostic UI library built on biological principles.
+        Components are modeled as neurons that communicate through signals, creating a self-sufficient,
+        neural-inspired architecture.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>🔥 Framework Agnostic</h3>
+          <p>No React, Vue, or Angular required. Pure TypeScript implementation.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🧬 Biologically Inspired</h3>
+          <p>Components map to neurons with dendrites, soma, and axons.</p>
+        </div>
+        <div class="feature-card">
+          <h3>⚡ Self-Sufficient</h3>
+          <p>Components manage lifecycle, state, events, and rendering.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 Type-Safe</h3>
+          <p>Full TypeScript support with strict type checking.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-number">334</span>
+        <span class="stat-label">Total Tests</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">71%</span>
+        <span class="stat-label">Pass Rate</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">4K+</span>
+        <span class="stat-label">Lines of Code</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">8+</span>
+        <span class="stat-label">Components</span>
+      </div>
+    </div>
+
+    <section class="component-section">
+      <h2>🎨 Button Component</h2>
+      <p>Neural-inspired button with press states and signal emission. Extends <code>SensoryNeuron</code> to capture user interactions.</p>
+
+      <h3>Variants</h3>
+      <div class="demo-container">
+        <button class="btn btn-primary">Primary Button</button>
+        <button class="btn btn-secondary">Secondary Button</button>
+        <button class="btn btn-danger">Danger Button</button>
+        <button class="btn btn-success">Success Button</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="demo-container">
+        <button class="btn btn-primary btn-small">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-primary btn-large">Large</button>
+      </div>
+
+      <h3>Code Example</h3>
+      <div class="code-block">
+import { Button } from '@synapse-framework/core/ui';
+
+const submitButton = new Button({
+  id: 'submit-btn',
+  type: 'reflex',
+  threshold: 0.5,
+  props: {
+    label: 'Submit',
+    variant: 'primary',
+    size: 'medium',
+    onClick: () => console.log('Neural signal received!'),
+  },
+  initialState: {
+    pressed: false,
+    hovered: false,
+    disabled: false,
+  },
+});
+
+await submitButton.activate();
+const renderSignal = submitButton.render();
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>📝 Input Component</h2>
+      <p>Text input with focus tracking and validation. Captures user input and emits neural signals.</p>
+
+      <div class="demo-container">
+        <div class="input-wrapper">
+          <label>Email Address</label>
+          <input type="email" placeholder="Enter your email" />
+        </div>
+        <div class="input-wrapper">
+          <label>Password</label>
+          <input type="password" placeholder="Enter your password" />
+        </div>
+        <div class="input-wrapper">
+          <label>With Error</label>
+          <input type="text" class="error" value="invalid@" />
+          <span class="error-message">Invalid email format</span>
+        </div>
+      </div>
+
+      <h3>Code Example</h3>
+      <div class="code-block">
+import { Input } from '@synapse-framework/core/ui';
+
+const emailInput = new Input({
+  id: 'email-input',
+  type: 'reflex',
+  threshold: 0.3,
+  props: {
+    type: 'email',
+    placeholder: 'Enter your email',
+    value: '',
+    onChange: (value) => console.log('Input:', value),
+    label: 'Email Address',
+    error: null,
+  },
+  initialState: {
+    focused: false,
+    value: '',
+    hasError: false,
+  },
+});
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>🔽 Select Component</h2>
+      <p>Dropdown selection with keyboard navigation. Handles option selection through neural pathways.</p>
+
+      <div class="demo-container">
+        <div class="select-wrapper">
+          <label>Country</label>
+          <select>
+            <option value="">Select a country...</option>
+            <option value="us">United States</option>
+            <option value="uk">United Kingdom</option>
+            <option value="ca">Canada</option>
+            <option value="de">Germany</option>
+            <option value="fr">France</option>
+          </select>
+        </div>
+      </div>
+
+      <h3>Code Example</h3>
+      <div class="code-block">
+import { Select } from '@synapse-framework/core/ui';
+
+const countrySelect = new Select({
+  id: 'country-select',
+  type: 'reflex',
+  threshold: 0.5,
+  props: {
+    options: [
+      { value: 'us', label: 'United States' },
+      { value: 'uk', label: 'United Kingdom' },
+      { value: 'ca', label: 'Canada' },
+    ],
+    value: 'us',
+    onChange: (value) => console.log('Selected:', value),
+    label: 'Country',
+  },
+  initialState: {
+    open: false,
+    focused: false,
+    selectedValue: 'us',
+  },
+});
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>📋 Form Component</h2>
+      <p>Container component with validation and submission. Extends <code>InterneuronUI</code> to orchestrate child components.</p>
+
+      <div class="demo-container">
+        <form class="form">
+          <h2>Login</h2>
+          <div class="input-wrapper">
+            <label>Email</label>
+            <input type="email" placeholder="your@email.com" />
+          </div>
+          <div class="input-wrapper">
+            <label>Password</label>
+            <input type="password" placeholder="Enter password" />
+          </div>
+          <button type="submit" class="form-submit">Submit</button>
+        </form>
+      </div>
+
+      <h3>Code Example</h3>
+      <div class="code-block">
+import { Form, Input } from '@synapse-framework/core/ui';
+
+const loginForm = new Form({
+  id: 'login-form',
+  type: 'cortical',
+  threshold: 0.5,
+  props: {
+    title: 'Login',
+    onSubmit: async (data) => {
+      console.log('Form data:', data);
+      // Submit to API
+    },
+    validation: {
+      email: (value) => {
+        if (!value) return 'Email is required';
+        if (!value.includes('@')) return 'Invalid email';
+        return null;
+      },
+      password: (value) => {
+        if (!value) return 'Password is required';
+        if (value.length < 8) return 'Password too short';
+        return null;
+      },
+    },
+  },
+  initialState: {
+    values: {},
+    errors: {},
+    submitting: false,
+  },
+});
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>🧬 State Management: VisualAstrocyte</h2>
+      <p>Redux-like state management with time-travel debugging, memoized selectors, and wildcard subscriptions.</p>
+
+      <div class="code-block">
+import { VisualAstrocyte } from '@synapse-framework/core/ui';
+
+const stateManager = new VisualAstrocyte({
+  id: 'app-state',
+  maxHistorySize: 50,
+  enableTimeTravel: true,
+});
+
+await stateManager.activate();
+
+// Set nested state
+stateManager.setState('user.profile.name', 'Alice');
+stateManager.setState('user.profile.age', 30);
+
+// Get state
+const name = stateManager.getState('user.profile.name');
+
+// Subscribe to changes
+stateManager.subscribe('user.profile.name', (newValue, oldValue) => {
+  console.log(`Name changed from ${oldValue} to ${newValue}`);
+});
+
+// Wildcard subscriptions
+stateManager.subscribe('user.*', (newValue) => {
+  console.log('User data changed:', newValue);
+});
+
+// Time-travel debugging
+stateManager.undo();
+stateManager.redo();
+stateManager.jumpToState(5);
+      </div>
+
+      <h3>Features</h3>
+      <ul style="margin-left: 2rem; color: #666;">
+        <li>Nested state paths with dot notation</li>
+        <li>Wildcard subscriptions for reactive updates</li>
+        <li>Memoized selectors for derived state</li>
+        <li>Time-travel debugging (undo/redo/jump)</li>
+        <li>State snapshots for persistence</li>
+        <li>Middleware support for transformations</li>
+        <li>59 comprehensive tests</li>
+      </ul>
+    </section>
+
+    <section class="component-section">
+      <h2>⚡ Rendering Optimization: VisualOligodendrocyte</h2>
+      <p>Component memoization, Virtual DOM diffing, and performance tracking. Inspired by oligodendrocytes that myelinate neurons for faster signal transmission.</p>
+
+      <div class="code-block">
+import { VisualOligodendrocyte } from '@synapse-framework/core/ui';
+
+const optimizer = new VisualOligodendrocyte({
+  id: 'render-optimizer',
+  maxCacheSize: 100,
+});
+
+await optimizer.activate();
+
+// Memoize component renders
+const vdom = button.render().data.vdom;
+optimizer.memoizeRender('button-1', vdom, { label: 'Click' });
+
+// Get cached render (if props match)
+const cached = optimizer.getCachedRender('button-1', { label: 'Click' });
+if (cached) {
+  // Use cached version (skips re-render)
+}
+
+// Virtual DOM diffing
+const oldTree = { tag: 'div', children: ['Old'] };
+const newTree = { tag: 'div', children: ['New'] };
+const patches = optimizer.diff(oldTree, newTree);
+
+// Track render performance
+optimizer.recordRenderTime('my-component', 16);
+const metrics = optimizer.getRenderMetrics('my-component');
+
+// Myelination (optimize hot paths)
+optimizer.trackComponentUsage('frequently-used-button');
+optimizer.myelinateHotPaths(10);
+      </div>
+
+      <h3>Features</h3>
+      <ul style="margin-left: 2rem; color: #666;">
+        <li>Component render memoization with prop comparison</li>
+        <li>Virtual DOM diffing algorithm for minimal updates</li>
+        <li>Performance tracking for all components</li>
+        <li>Lazy loading support</li>
+        <li>Hot path optimization ("myelination")</li>
+        <li>15 comprehensive tests</li>
+      </ul>
+    </section>
+
+    <section class="component-section">
+      <h2>🧠 Neural Terminology</h2>
+      <p>Understanding how biological concepts map to UI components:</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Dendrite</h3>
+          <p>Input receiver - <code>receive()</code> method, props</p>
+        </div>
+        <div class="feature-card">
+          <h3>Soma</h3>
+          <p>Processing center - <code>executeProcessing()</code>, state</p>
+        </div>
+        <div class="feature-card">
+          <h3>Axon</h3>
+          <p>Output transmitter - <code>render()</code>, <code>emit()</code></p>
+        </div>
+        <div class="feature-card">
+          <h3>Synapse</h3>
+          <p>Connection between components</p>
+        </div>
+        <div class="feature-card">
+          <h3>Signal</h3>
+          <p>Information unit - Events, state changes</p>
+        </div>
+        <div class="feature-card">
+          <h3>Threshold</h3>
+          <p>Activation level - Re-render trigger</p>
+        </div>
+        <div class="feature-card">
+          <h3>Refractory Period</h3>
+          <p>Recovery time - Built-in debouncing</p>
+        </div>
+        <div class="feature-card">
+          <h3>Astrocyte</h3>
+          <p>State manager - VisualAstrocyte class</p>
+        </div>
+        <div class="feature-card">
+          <h3>Oligodendrocyte</h3>
+          <p>Optimizer - VisualOligodendrocyte class</p>
+        </div>
+        <div class="feature-card">
+          <h3>Myelination</h3>
+          <p>Speed optimization - Hot path caching</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <h2>🚀 Getting Started</h2>
+      <div class="code-block">
+npm install @synapse-framework/core
+      </div>
+
+      <div class="code-block">
+import { Button, VisualAstrocyte } from '@synapse-framework/core/ui';
+
+// Create state manager
+const state = new VisualAstrocyte({ id: 'app-state' });
+await state.activate();
+state.setState('clicks', 0);
+
+// Create button
+const button = new Button({
+  id: 'my-button',
+  type: 'reflex',
+  threshold: 0.5,
+  props: {
+    label: 'Click Me',
+    variant: 'primary',
+    onClick: () => {
+      const clicks = state.getState('clicks') || 0;
+      state.setState('clicks', clicks + 1);
+    },
+  },
+});
+
+await button.activate();
+const renderSignal = button.render();
+
+// Render to DOM (you provide the renderer)
+renderToDOM(document.body, renderSignal.data.vdom);
+      </div>
+    </section>
+
+    <footer>
+      <h2 style="color: #667eea; margin-bottom: 1rem;">🌟 Philosophy</h2>
+      <p style="font-style: italic; font-size: 1.1rem; max-width: 800px; margin: 0 auto;">
+        "The nervous system has evolved over 3 billion years to solve distributed computing problems. Why not learn from it?"
+      </p>
+      <div class="links">
+        <a href="https://github.com/yourusername/synapse" target="_blank">GitHub</a>
+        <a href="./UI_FRAMEWORK.md" target="_blank">Documentation</a>
+        <a href="#" onclick="alert('npm install @synapse-framework/core'); return false;">Install</a>
+      </div>
+      <p style="margin-top: 2rem; opacity: 0.8;">Built with ❤️ by the Synapse team</p>
+    </footer>
+  </div>
+
+  <script>
+    // Add interactive behavior to demo buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const originalText = this.textContent;
+        this.textContent = '✓ Clicked!';
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.style.transform = '';
+        }, 500);
+      });
+    });
+
+    // Add focus effects to inputs
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'translateX(5px)';
+      });
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = '';
+      });
+    });
+
+    // Add change effect to select
+    document.querySelectorAll('select').forEach(select => {
+      select.addEventListener('change', function() {
+        const wrapper = this.parentElement;
+        wrapper.style.transform = 'scale(1.02)';
+        setTimeout(() => {
+          wrapper.style.transform = '';
+        }, 200);
+      });
+    });
+
+    // Form submission demo
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = this.querySelector('.form-submit');
+        btn.textContent = 'Submitting...';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.textContent = '✓ Submitted!';
+          setTimeout(() => {
+            btn.textContent = 'Submit';
+            btn.disabled = false;
+          }, 1500);
+        }, 1000);
+      });
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
