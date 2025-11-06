@@ -13,6 +13,15 @@ export { NeuralNode, Connection } from './core';
 // Neuron types
 export { CorticalNeuron, ReflexNeuron } from './neurons';
 
+// Glial cells (support systems)
+export { Astrocyte } from './glial';
+
+// Communication
+export { EventBus } from './communication';
+
+// Network management
+export { NeuralCircuit } from './network';
+
 // Interfaces
 export type { INeuralNode, IConnection } from './interfaces';
 
