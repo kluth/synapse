@@ -23,7 +23,6 @@ export interface ButtonState {
 
 export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
   protected performRender(): RenderSignal {
-    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
@@ -66,7 +65,6 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       strength: 1.0,
       timestamp: Date.now(),
     };
-    return undefined as TOutput;
   }
 
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
@@ -75,7 +73,7 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     const state = this.getState();
 
     if (props.disabled || state.disabled || props.loading) {
-      return;
+      return undefined as TOutput;
     }
 
     if (signal.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
@@ -90,9 +88,11 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
       this.setState({ hovered: false });
     }
+
+    return undefined as TOutput;
   }
 
-  private getBackgroundColor(variant: string, disabled: boolean): string | undefined {
+  private getBackgroundColor(variant: string, disabled: boolean): string {
     if (disabled) return '#cccccc';
 
     const colors: Record<string, string> = {
@@ -102,30 +102,30 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       success: '#28a745',
     };
 
-    return colors[variant] || colors["primary"];
+    return colors[variant] ?? colors['primary'] ?? '#007bff';
   }
 
-  private getTextColor(_variant: string): string | undefined {
+  private getTextColor(_variant: string): string {
     return '#ffffff';
   }
 
-  private getPadding(size: string): string | undefined {
+  private getPadding(size: string): string {
     const paddings: Record<string, string> = {
       small: '4px 8px',
       medium: '8px 16px',
       large: '12px 24px',
     };
 
-    return paddings[size] || paddings["medium"];
+    return paddings[size] ?? paddings['medium'] ?? '8px 16px';
   }
 
-  private getFontSize(size: string): string | undefined {
+  private getFontSize(size: string): string {
     const sizes: Record<string, string> = {
       small: '12px',
       medium: '14px',
       large: '16px',
     };
 
-    return sizes[size] || sizes["medium"];
+    return sizes[size] ?? sizes['medium'] ?? '14px';
   }
 }

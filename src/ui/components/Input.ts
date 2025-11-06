@@ -24,7 +24,6 @@ export interface InputState {
 
 export class Input extends SensoryNeuron<InputProps, InputState> {
   protected performRender(): RenderSignal {
-    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
@@ -64,7 +63,6 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
       strength: 1.0,
       timestamp: Date.now(),
     };
-    return undefined as TOutput;
   }
 
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
@@ -80,5 +78,7 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
       this.setState({ value });
       props.onChange(value);
     }
+
+    return undefined as TOutput;
   }
 }
