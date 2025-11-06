@@ -4,8 +4,11 @@
   "description": "A TypeScript full-stack framework inspired by the nervous system",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "synapse": "./dist/cli/index.js"
+  },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/cli/index.js",
     "build:bun": "bun build ./src/index.ts --outdir ./dist --target bun",
     "build:types": "tsc --emitDeclarationOnly",
     "test": "jest",
@@ -45,6 +48,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "commander": "^14.0.2",
     "zod": "^4.1.12"
   },
   "engines": {

@@ -7,7 +7,7 @@
 
     /* Modules */
     "module": "commonjs",
-    "rootDir": "./src",
+    "rootDir": "./",
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
@@ -53,7 +53,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "cli/**/*"
   ],
   "exclude": [
     "node_modules",
