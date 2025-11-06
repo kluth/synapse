@@ -13,6 +13,8 @@ module.exports = {
     '!src/**/*.spec.ts',
     '!src/**/__tests__/**',
   ],
+  coverageReporters: ['text', 'lcov', 'json-summary'],
+  coverageDirectory: 'coverage',
   coverageThreshold: {
     global: {
       branches: 50,
