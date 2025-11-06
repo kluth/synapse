@@ -201,6 +201,10 @@ export class NeuralCircuit {
     return Array.from(this.connections.values());
   }
 
+  public getConnection(connectionId: string): Connection | undefined {
+    return this.connections.get(connectionId);
+  }
+
   public getOutgoingConnections(neuronId: string): Connection[] {
     const outgoing = this.outgoingEdges.get(neuronId);
 

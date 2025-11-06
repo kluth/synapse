@@ -22,6 +22,9 @@ export { EventBus } from './communication';
 // Network management
 export { NeuralCircuit } from './network';
 
+// Neuroplasticity (self-healing and optimization)
+export { Neuroplasticity } from './plasticity';
+
 // Interfaces
 export type { INeuralNode, IConnection } from './interfaces';
 
