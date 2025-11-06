@@ -12,3 +12,9 @@ export type { VisualNeuronConfig } from './VisualNeuron';
 export { SensoryNeuron } from './SensoryNeuron';
 export { MotorNeuron } from './MotorNeuron';
 export { InterneuronUI } from './InterneuronUI';
+
+// Visual glial cells (UI support systems)
+export * from './glial';
+
+// Component library
+export * from './components';
