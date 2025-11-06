@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse UI Framework - Neural-Inspired Components</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .demo-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .demo-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .neural-info {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .neural-info strong {
+            color: #007bff;
+        }
+
+        .output {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 4px;
+            border: 1px solid #ffc107;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Ensure web components are visible */
+        synapse-button, synapse-input {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Synapse UI Framework</h1>
+            <p class="tagline">Neural-Inspired Web Components for Modern Applications</p>
+        </header>
+
+        <div class="card">
+            <h2>Introduction</h2>
+            <p>Synapse is a revolutionary UI framework that applies biological neural network principles to component architecture. Each component is a "neuron" that processes signals, maintains state, and optimizes itself based on usage patterns.</p>
+
+            <div class="neural-info">
+                <strong>Neural Architecture:</strong> Components extend from VisualNeuron → SensoryNeuron (inputs) or MotorNeuron (actions), processing signals through dendrites → soma → axon pathways.
+            </div>
+
+            <div class="code-block">
+// Import Web Components
+import '@synapse-framework/core/ui/web-components';
+
+// Use in HTML
+&lt;synapse-button label="Click Me" variant="primary"&gt;&lt;/synapse-button&gt;
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Button Component</h2>
+            <p>A SensoryNeuron-based button that captures and processes user interactions through neural signal pathways.</p>
+
+            <div class="demo-section">
+                <div class="demo-title">Variants</div>
+                <div class="demo-grid">
+                    <synapse-button label="Primary" variant="primary"></synapse-button>
+                    <synapse-button label="Secondary" variant="secondary"></synapse-button>
+                    <synapse-button label="Danger" variant="danger"></synapse-button>
+                    <synapse-button label="Success" variant="success"></synapse-button>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">Sizes</div>
+                <div class="demo-row">
+                    <synapse-button label="Small" size="small"></synapse-button>
+                    <synapse-button label="Medium" size="medium"></synapse-button>
+                    <synapse-button label="Large" size="large"></synapse-button>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">States</div>
+                <div class="demo-row">
+                    <synapse-button label="Disabled" disabled></synapse-button>
+                    <synapse-button label="Loading" loading></synapse-button>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">Interactive Demo</div>
+                <synapse-button id="counter-btn" label="Click Me!" variant="primary"></synapse-button>
+                <div class="output" id="button-output">Click the button to see neural signals!</div>
+            </div>
+
+            <div class="code-block">
+&lt;synapse-button
+  label="Click Me"
+  variant="primary"
+  size="medium"
+&gt;&lt;/synapse-button&gt;
+
+&lt;script&gt;
+  const btn = document.querySelector('synapse-button');
+  btn.addEventListener('synapse-click', (e) => {
+    console.log('Neural signal received:', e.detail);
+  });
+&lt;/script&gt;
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Input Component</h2>
+            <p>A form input component with real-time validation and focus state management through neural pathways.</p>
+
+            <div class="demo-section">
+                <div class="demo-title">Text Input</div>
+                <synapse-input
+                    label="Username"
+                    placeholder="Enter your username"
+                    type="text"
+                ></synapse-input>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">Email Input</div>
+                <synapse-input
+                    label="Email Address"
+                    placeholder="user@example.com"
+                    type="email"
+                ></synapse-input>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">With Error</div>
+                <synapse-input
+                    label="Password"
+                    type="password"
+                    error="Password must be at least 8 characters"
+                ></synapse-input>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">Interactive Demo</div>
+                <synapse-input
+                    id="live-input"
+                    label="Type something"
+                    placeholder="Watch neural signals flow..."
+                ></synapse-input>
+                <div class="output" id="input-output">Value: <span id="input-value">""</span></div>
+            </div>
+
+            <div class="code-block">
+&lt;synapse-input
+  label="Username"
+  placeholder="Enter username"
+  type="text"
+&gt;&lt;/synapse-input&gt;
+
+&lt;script&gt;
+  const input = document.querySelector('synapse-input');
+  input.addEventListener('synapse-change', (e) => {
+    console.log('Value changed:', e.detail.value);
+  });
+&lt;/script&gt;
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Neural Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div class="neural-info">
+                    <strong>🧠 Threshold Activation</strong><br>
+                    Components only re-render when signal strength exceeds threshold, preventing unnecessary updates.
+                </div>
+                <div class="neural-info">
+                    <strong>⚡ Refractory Period</strong><br>
+                    Built-in debouncing prevents rapid-fire events, like neurons after firing.
+                </div>
+                <div class="neural-info">
+                    <strong>🔄 Synaptic Plasticity</strong><br>
+                    Connections strengthen with use, optimizing frequently-used pathways.
+                </div>
+                <div class="neural-info">
+                    <strong>📊 State Management</strong><br>
+                    VisualAstrocyte provides Redux-like state with time-travel debugging.
+                </div>
+                <div class="neural-info">
+                    <strong>🎯 Myelination</strong><br>
+                    VisualOligodendrocyte optimizes hot paths through usage tracking.
+                </div>
+                <div class="neural-info">
+                    <strong>♿ Accessibility</strong><br>
+                    All components include full ARIA support out of the box.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>Synapse Framework</h3>
+            <p>Neural-inspired components for the modern web</p>
+            <div class="links">
+                <a href="https://github.com/kluth/synapse" target="_blank">GitHub</a>
+                <a href="https://github.com/kluth/synapse#readme" target="_blank">Documentation</a>
+                <a href="https://www.npmjs.com/package/@synapse-framework/core" target="_blank">NPM</a>
+            </div>
+            <p style="margin-top: 20px; opacity: 0.8;">
+                Built with 🧠 by the Synapse team
+            </p>
+        </footer>
+    </div>
+
+    <!-- Load Synapse Web Components -->
+    <script type="module" src="./synapse-ui.js"></script>
+
+    <script type="module">
+        // This would load the compiled web components bundle
+        // For now, we'll simulate the behavior
+
+        const counterBtn = document.getElementById('counter-btn');
+        const buttonOutput = document.getElementById('button-output');
+        let clickCount = 0;
+
+        if (counterBtn) {
+            counterBtn.addEventListener('synapse-click', (e) => {
+                clickCount++;
+                buttonOutput.innerHTML = `
+                    <strong>Neural Signal Received!</strong><br>
+                    Click count: ${clickCount}<br>
+                    Signal strength: 1.0 (excitatory)<br>
+                    Timestamp: ${new Date().toLocaleTimeString()}
+                `;
+            });
+        }
+
+        const liveInput = document.getElementById('live-input');
+        const inputValue = document.getElementById('input-value');
+
+        if (liveInput) {
+            liveInput.addEventListener('synapse-change', (e) => {
+                inputValue.textContent = `"${e.detail.value}"`;
+            });
+        }
+    </script>
+</body>
+</html>
