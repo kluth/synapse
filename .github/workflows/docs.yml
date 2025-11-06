@@ -35,11 +35,6 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
-      - name: Build Web Components Bundle
-        run: |
-          npm install -g esbuild
-          esbuild src/ui/web-components/index.ts --bundle --format=esm --outfile=docs/synapse-ui.js --external:../../glial/* --external:../../core/* --external:../components/* --external:../types
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
