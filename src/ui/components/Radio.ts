@@ -3,7 +3,7 @@
  */
 
 import { SensoryNeuron } from '../SensoryNeuron';
-import type { RenderSignal } from '../types';
+import type { RenderSignal, VirtualDOMNode } from '../types';
 import type { Input as NodeInput } from '../../types';
 
 interface UISignalPayload {
@@ -38,7 +38,7 @@ export class Radio extends SensoryNeuron<RadioProps, RadioState> {
     const props = this.getProps();
     const state = this.getState();
 
-    const radioOptions = props.options.map((option) => ({
+    const radioOptions: VirtualDOMNode[] = props.options.map((option) => ({
       tag: 'label',
       props: {
         className: 'radio-option',
@@ -66,9 +66,7 @@ export class Radio extends SensoryNeuron<RadioProps, RadioState> {
       ],
     }));
 
-    const children:
-      | Array<string | { tag: string; props?: Record<string, unknown>; children: unknown[] }>
-      | undefined =
+    const children: (string | VirtualDOMNode)[] | undefined =
       props.label !== undefined && props.label !== ''
         ? [
             {
