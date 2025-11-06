@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+echo "🧠 Running pre-commit checks..."
+
+# Run linting
+echo "📝 Linting code..."
+npm run lint || exit 1
+
+# Run formatting check
+echo "💅 Checking code formatting..."
+npm run format:check || exit 1
+
+# Run type checking
+echo "🔍 Type checking..."
+npm run type-check || exit 1
+
+# Run tests
+echo "🧪 Running tests..."
+npm test || exit 1
+
+echo "✅ All pre-commit checks passed!"
