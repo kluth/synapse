@@ -5,7 +5,7 @@
 
 import { SensoryNeuron } from '../SensoryNeuron';
 import type { RenderSignal } from '../types';
-import type { Input } from '../../types';
+import type { Input as NodeInput } from '../../types';
 
 export interface ButtonProps {
   label: string;
@@ -69,7 +69,7 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
   }
 
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: Input<TInput>,
+    input: NodeInput<TInput>,
   ): Promise<TOutput> {
     const signal: any = input.data;
     const props = this.getProps();

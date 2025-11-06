@@ -60,18 +60,20 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Activate the state manager
    */
-  public async activate(): Promise<void> {
+  public override async activate(): Promise<void> {
+    await super.activate();
     this.status = 'active';
   }
 
   /**
-   * Deactivate the state manager
+   * Deactivate the state manager (calls parent's shutdown)
    */
   public async deactivate(): Promise<void> {
     this.status = 'inactive';
     this.subscribers.clear();
     this.selectors.clear();
     this.selectorCache.clear();
+    await super.shutdown();
   }
 
   /**

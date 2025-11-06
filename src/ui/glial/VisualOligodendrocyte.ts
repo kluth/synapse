@@ -44,12 +44,13 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
   /**
    * Activate the rendering optimizer
    */
-  public async activate(): Promise<void> {
+  public override async activate(): Promise<void> {
+    await super.activate();
     this.status = 'active';
   }
 
   /**
-   * Deactivate the rendering optimizer
+   * Deactivate the rendering optimizer (calls parent's shutdown)
    */
   public async deactivate(): Promise<void> {
     this.status = 'inactive';
@@ -58,6 +59,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
     this.componentUsage.clear();
     this.myelinatedComponents.clear();
     this.lazyComponents.clear();
+    await super.shutdown();
   }
 
   /**

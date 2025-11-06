@@ -5,7 +5,7 @@
 
 import { InterneuronUI } from '../InterneuronUI';
 import type { RenderSignal } from '../types';
-import type { Input } from '../../types';
+import type { Input as NodeInput } from '../../types';
 
 export interface FormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -69,7 +69,7 @@ export class Form extends InterneuronUI<FormProps, FormState> {
   }
 
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: Input<TInput>,
+    input: NodeInput<TInput>,
   ): Promise<TOutput> {
     const signal: any = input.data;
     if (
