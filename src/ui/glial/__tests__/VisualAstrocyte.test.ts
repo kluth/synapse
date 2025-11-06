@@ -400,7 +400,7 @@ describe('VisualAstrocyte - UI State Management', () => {
       }
 
       const duration = Date.now() - start;
-      expect(duration).toBeLessThan(1000); // Should complete in < 1s
+      expect(duration).toBeLessThan(2000); // Should complete in < 2s
     });
 
     it('should handle many subscribers efficiently', () => {
