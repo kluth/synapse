@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 /**
  * Button Component - Primary interaction element
  */
@@ -7,13 +6,22 @@ import { SensoryNeuron } from '../SensoryNeuron';
 import type { RenderSignal } from '../types';
 import type { Input as NodeInput } from '../../types';
 
+interface UISignalPayload {
+  type: string;
+  payload?: {
+    type?: string;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
 export interface ButtonProps {
   label: string;
   variant?: 'primary' | 'secondary' | 'danger' | 'success';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   loading?: boolean;
-  onClick?: (event: any) => void;
+  onClick?: (event: UISignalPayload) => void;
 }
 
 export interface ButtonState {
@@ -71,6 +79,9 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
     input: NodeInput<TInput>,
   ): Promise<TOutput> {
+    // Method is async to support future async operations
+    await Promise.resolve();
+
     const props = this.getProps();
     const state = this.getState();
 
@@ -79,19 +90,22 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     }
 
     // input.data can be single signal or array from processSignalQueue
-    const signals: any = Array.isArray(input.data) ? input.data : [input.data];
+    const signals = Array.isArray(input.data) ? input.data : [input.data];
 
-    for (const signal of signals) {
-      if (signal.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
-        if (props.onClick != null) {
+    for (const signalData of signals) {
+      const signal = signalData as UISignalPayload;
+      const signalType = signal.type ?? signal.payload?.type;
+
+      if (signalType === 'ui:click') {
+        if (props.onClick !== undefined) {
           props.onClick(signal);
         }
-      } else if (signal.type === 'ui:mousedown' || signal?.payload?.type === 'ui:mousedown') {
+      } else if (signalType === 'ui:mousedown') {
         this.setState({ pressed: true });
         setTimeout(() => this.setState({ pressed: false }), 150);
-      } else if (signal.type === 'ui:hover' || signal?.payload?.type === 'ui:hover') {
+      } else if (signalType === 'ui:hover') {
         this.setState({ hovered: true });
-      } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
+      } else if (signalType === 'ui:blur') {
         this.setState({ hovered: false });
       }
     }

@@ -124,9 +124,7 @@ describe('VisualOligodendrocyte - Rendering Optimization', () => {
     it('should detect child additions', () => {
       const oldTree: VirtualDOMNode = {
         tag: 'ul',
-        children: [
-          { tag: 'li', children: ['Item 1'] },
-        ],
+        children: [{ tag: 'li', children: ['Item 1'] }],
       };
 
       const newTree: VirtualDOMNode = {
@@ -152,9 +150,7 @@ describe('VisualOligodendrocyte - Rendering Optimization', () => {
 
       const newTree: VirtualDOMNode = {
         tag: 'ul',
-        children: [
-          { tag: 'li', key: '1', children: ['Item 1'] },
-        ],
+        children: [{ tag: 'li', key: '1', children: ['Item 1'] }],
       };
 
       const patches = oligodendrocyte.diff(oldTree, newTree);

@@ -77,7 +77,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
 
     if (this.renderCache.size >= this.maxCacheSize) {
       // Remove oldest entry
-      const firstKey = this.renderCache.keys().next().value as string | undefined;
+      const firstKey = this.renderCache.keys().next().value;
       if (firstKey) this.renderCache.delete(firstKey);
     }
 
@@ -164,12 +164,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
     }
 
     // Diff children
-    this.diffChildren(
-      oldElement.children || [],
-      newElement.children || [],
-      nodeId,
-      patches,
-    );
+    this.diffChildren(oldElement.children || [], newElement.children || [], nodeId, patches);
   }
 
   /**

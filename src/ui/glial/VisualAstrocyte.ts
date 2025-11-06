@@ -197,7 +197,7 @@ export class VisualAstrocyte extends Astrocyte {
     const stateHash = this.hashState(this.uiState);
     const cached = this.selectorCache.get(name);
 
-    if (cached && cached.stateHash === stateHash) {
+    if (cached?.stateHash === stateHash) {
       return cached.value;
     }
 

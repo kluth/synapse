@@ -2,16 +2,14 @@
  * UI-specific type definitions for Synapse Visual Cortex
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Virtual DOM node representation
  */
 export interface VirtualDOMNode {
   tag: string;
-  props?: Record<string, any>;
+  props?: Record<string, unknown>;
   children?: (VirtualDOMNode | string)[];
-  events?: Record<string, (event: any) => void>;
+  events?: Record<string, (event: Event) => void>;
   key?: string | number;
 }
 
@@ -66,7 +64,7 @@ export type UIEventType =
 /**
  * UI event signal
  */
-export interface UIEventSignal<T = any> {
+export interface UIEventSignal<T = unknown> {
   type: UIEventType;
   data: {
     domEvent?: Event;
@@ -81,7 +79,7 @@ export interface UIEventSignal<T = any> {
 /**
  * State update signal
  */
-export interface StateSignal<T = any> {
+export interface StateSignal<T = unknown> {
   type: 'state:update' | 'state:delete' | 'state:reset';
   data: {
     path: string;
@@ -93,21 +91,21 @@ export interface StateSignal<T = any> {
 }
 
 /**
- * Component props type
+ * Component props type - using object to allow any props structure
  */
-export type ComponentProps = Record<string, any>;
+export type ComponentProps = object;
 
 /**
- * Component state type
+ * Component state type - using object to allow any state structure
  */
-export type ComponentState = Record<string, any>;
+export type ComponentState = object;
 
 /**
  * Render patch operations for Virtual DOM reconciliation
  */
 export type PatchOperation =
   | { type: 'CREATE'; node: VirtualDOMNode; parentId?: string }
-  | { type: 'UPDATE'; nodeId: string; props: Record<string, any> }
+  | { type: 'UPDATE'; nodeId: string; props: Record<string, unknown> }
   | { type: 'DELETE'; nodeId: string }
   | { type: 'REPLACE'; nodeId: string; newNode: VirtualDOMNode }
   | { type: 'REORDER'; parentId: string; order: string[] };
@@ -162,7 +160,7 @@ export interface UserPreferences {
   frequentActions: Map<string, number>;
   preferredTheme?: 'light' | 'dark';
   accessibilityNeeds?: AccessibilityNeeds;
-  layoutPreferences?: Record<string, any>;
+  layoutPreferences?: Record<string, unknown>;
 }
 
 /**
@@ -201,6 +199,6 @@ export type NavigationGuard = (
 export interface RouteDefinition {
   path: string;
   componentId: string;
-  meta?: Record<string, any>;
+  meta?: Record<string, unknown>;
   guards?: NavigationGuard[];
 }

@@ -196,10 +196,7 @@ describe('VisualAstrocyte - UI State Management', () => {
         (state.prices || []).reduce((sum: number, p: number) => sum + p, 0),
       );
 
-      astrocyte.registerSelector(
-        'totalWithTax',
-        (state: any) => astrocyte.select('total') * 1.1,
-      );
+      astrocyte.registerSelector('totalWithTax', (state: any) => astrocyte.select('total') * 1.1);
 
       astrocyte.setState('prices', [10, 20, 30]);
       expect(astrocyte.select('totalWithTax')).toBe(66); // 60 * 1.1

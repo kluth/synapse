@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Select Component - Dropdown selection
  */
@@ -6,6 +5,21 @@
 import { SensoryNeuron } from '../SensoryNeuron';
 import type { RenderSignal } from '../types';
 import type { Input as NodeInput } from '../../types';
+
+interface UISignalPayload {
+  type?: string;
+  payload?: {
+    type?: string;
+    payload?: {
+      value?: unknown;
+    };
+  };
+  data?: {
+    payload?: {
+      value?: unknown;
+    };
+  };
+}
 
 export interface SelectOption {
   value: string;
@@ -39,7 +53,9 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
           tag: 'div',
           props: { className: 'select-wrapper' },
           children: [
-            (props.label != null && props.label !== '') ? { tag: 'label', children: [props.label] } : '',
+            props.label !== undefined && props.label !== ''
+              ? { tag: 'label', children: [props.label] }
+              : '',
             {
               tag: 'select',
               props: {
@@ -49,7 +65,9 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
                 'aria-label': props.label ?? 'Select an option',
               },
               children: [
-                (props.placeholder != null && props.placeholder !== '') ? { tag: 'option', props: { value: '' }, children: [props.placeholder] } : '',
+                props.placeholder !== undefined && props.placeholder !== ''
+                  ? { tag: 'option', props: { value: '' }, children: [props.placeholder] }
+                  : '',
                 ...props.options.map((opt) => ({
                   tag: 'option',
                   props: { value: opt.value },
@@ -76,19 +94,27 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
   protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
     input: NodeInput<TInput>,
   ): Promise<TOutput> {
+    // Method is async to support future async operations
+    await Promise.resolve();
+
     const props = this.getProps();
 
     // input.data can be single signal or array from processSignalQueue
-    const signals: any = Array.isArray(input.data) ? input.data : [input.data];
+    const signals = Array.isArray(input.data) ? input.data : [input.data];
 
-    for (const signal of signals) {
-      if (signal.type === 'ui:change' || signal?.payload?.type === 'ui:change') {
-        const value = (signal?.payload?.payload?.value ?? signal?.data?.payload?.value ?? '') as string;
+    for (const signalData of signals) {
+      const signal = signalData as UISignalPayload;
+      const signalType = signal.type ?? signal.payload?.type;
+
+      if (signalType === 'ui:change') {
+        const rawValue = signal.payload?.payload?.value ?? signal.data?.payload?.value;
+        const value =
+          typeof rawValue === 'string' || typeof rawValue === 'number' ? String(rawValue) : '';
         this.setState({ selectedValue: value });
         props.onChange(value);
-      } else if (signal.type === 'ui:focus' || signal?.payload?.type === 'ui:focus') {
+      } else if (signalType === 'ui:focus') {
         this.setState({ focused: true });
-      } else if (signal.type === 'ui:blur' || signal?.payload?.type === 'ui:blur') {
+      } else if (signalType === 'ui:blur') {
         this.setState({ focused: false });
       }
     }

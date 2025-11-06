@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Form Component - Form container with validation
  */
@@ -7,14 +6,21 @@ import { InterneuronUI } from '../InterneuronUI';
 import type { RenderSignal } from '../types';
 import type { Input as NodeInput } from '../../types';
 
+interface UISignalPayload {
+  type?: string;
+  payload?: {
+    type?: string;
+  };
+}
+
 export interface FormProps {
-  onSubmit: (data: Record<string, any>) => void;
-  validation?: Record<string, (value: any) => string | null>;
+  onSubmit: (data: Record<string, unknown>) => void | Promise<void>;
+  validation?: Record<string, (value: unknown) => string | null>;
   title?: string;
 }
 
 export interface FormState {
-  values: Record<string, any>;
+  values: Record<string, unknown>;
   errors: Record<string, string>;
   submitting: boolean;
   submitted: boolean;
@@ -38,7 +44,9 @@ export class Form extends InterneuronUI<FormProps, FormState> {
             onSubmit: (e: Event) => e.preventDefault(),
           },
           children: [
-            (props.title != null && props.title !== '') ? { tag: 'h2', children: [props.title] } : '',
+            props.title !== undefined && props.title !== ''
+              ? { tag: 'h2', children: [props.title] }
+              : '',
             ...childNodes,
             {
               tag: 'button',
@@ -72,13 +80,13 @@ export class Form extends InterneuronUI<FormProps, FormState> {
     input: NodeInput<TInput>,
   ): Promise<TOutput> {
     // input.data can be single signal or array from processSignalQueue
-    const signals: any = Array.isArray(input.data) ? input.data : [input.data];
+    const signals = Array.isArray(input.data) ? input.data : [input.data];
 
-    for (const signal of signals) {
-      if (
-        (signal != null && signal.type === 'ui:submit') ||
-        (signal?.payload != null && signal.payload.type === 'ui:submit')
-      ) {
+    for (const signalData of signals) {
+      const signal = signalData as UISignalPayload;
+      const signalType = signal.type ?? signal.payload?.type;
+
+      if (signalType === 'ui:submit') {
         await this.handleSubmit();
       }
     }
@@ -93,12 +101,12 @@ export class Form extends InterneuronUI<FormProps, FormState> {
     this.setState({ submitting: true, errors: {} });
 
     // Validate
-    if (props.validation != null) {
+    if (props.validation !== undefined) {
       const errors: Record<string, string> = {};
 
       for (const [field, validator] of Object.entries(props.validation)) {
         const error = validator(state.values[field]);
-        if (error != null && error !== '') {
+        if (error !== null && error !== '') {
           errors[field] = error;
         }
       }
@@ -109,11 +117,11 @@ export class Form extends InterneuronUI<FormProps, FormState> {
       }
     }
 
-    // Submit
+    // Submit - await in case callback is async
     try {
-      void props.onSubmit(state.values);
+      await Promise.resolve(props.onSubmit(state.values));
       this.setState({ submitting: false, submitted: true });
-    } catch (_err) {
+    } catch {
       this.setState({
         submitting: false,
         errors: { _form: 'Submission failed' },
@@ -121,10 +129,10 @@ export class Form extends InterneuronUI<FormProps, FormState> {
     }
   }
 
-  public setValue(field: string, value: any): void {
+  public setValue(field: string, value: unknown): void {
     const currentValues = this.getState().values;
     this.setState({
-      values: { ...currentValues, [field]: value as Record<string, any>[string] },
+      values: { ...currentValues, [field]: value },
     });
   }
 }
