@@ -28,10 +28,10 @@ export interface SelectState {
 
 export class Select extends SensoryNeuron<SelectProps, SelectState> {
   protected performRender(): RenderSignal {
+    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
-    const selectedOption = props.options.find((opt) => opt.value === state.selectedValue);
 
     return {
       type: 'render',
@@ -72,9 +72,11 @@ export class Select extends SensoryNeuron<SelectProps, SelectState> {
       strength: 1.0,
       timestamp: Date.now(),
     };
+    return undefined as TOutput;
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+    const signal: any = input.data;
     const props = this.getProps();
 
     if (signal.type === 'ui:change' || signal?.payload?.type === 'ui:change') {

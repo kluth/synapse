@@ -64,8 +64,7 @@ export abstract class MotorNeuron<
       this.emitActionSignal('action:start', { originalSignal: signal });
 
       // Update state to show action in progress
-      // @ts-expect-error - setState needs generic constraint
-      this.setState({ submitting: true, error: null } as Partial<TState>);
+      this.setState({ submitting: true, error: null } as unknown as Partial<TState>);
 
       // Execute with timeout
       const result = await this.executeWithTimeout(
@@ -80,8 +79,7 @@ export abstract class MotorNeuron<
       this.emitActionSignal('action:complete', { result });
 
       // Update state
-      // @ts-expect-error - setState needs generic constraint
-      this.setState({ submitting: false } as Partial<TState>);
+      this.setState({ submitting: false } as unknown as Partial<TState>);
 
       // Call success handlers
       await this.onActionSuccess(result);
@@ -124,8 +122,7 @@ export abstract class MotorNeuron<
           (signal as any).payload?.data || (signal as any).data,
         );
         await this.onActionSuccess(result);
-        // @ts-expect-error - setState needs generic constraint
-        this.setState({ submitting: false } as Partial<TState>);
+        this.setState({ submitting: false } as unknown as Partial<TState>);
         return;
       } catch (retryError) {
         return this.handleActionError(retryError, signal, retryCount + 1);
@@ -139,7 +136,7 @@ export abstract class MotorNeuron<
     this.setState({
       submitting: false,
       error: error.message || 'Action failed',
-    } as Partial<TState>);
+    } as unknown as Partial<TState>);
 
     // Call error handler
     await this.onActionError(error);

@@ -46,8 +46,8 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
 
     if (this.renderCache.size >= this.maxCacheSize) {
       // Remove oldest entry
-      const firstKey = this.renderCache.keys().next().value;
-      this.renderCache.delete(firstKey);
+      const firstKey = this.renderCache.keys().next().value as string | undefined;
+      if (firstKey) this.renderCache.delete(firstKey);
     }
 
     this.renderCache.set(componentId, { vdom, propsHash });

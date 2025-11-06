@@ -65,9 +65,11 @@ export class Form extends InterneuronUI<FormProps, FormState> {
       strength: 1.0,
       timestamp: Date.now(),
     };
+    return undefined as TOutput;
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+    const signal: any = input.data;
     if (signal.type === 'ui:submit' || signal?.payload?.type === 'ui:submit') {
       await this.handleSubmit();
     }

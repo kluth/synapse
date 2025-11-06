@@ -13,7 +13,7 @@ import type {
   ComponentProps,
   ComponentState,
 } from './types';
-import { EventEmitter } from './utils/EventEmitter';
+import { EventEmitter } from 'events';
 
 export interface VisualNeuronConfig<TProps extends ComponentProps> {
   id: string;

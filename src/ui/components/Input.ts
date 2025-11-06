@@ -24,6 +24,7 @@ export interface InputState {
 
 export class Input extends SensoryNeuron<InputProps, InputState> {
   protected performRender(): RenderSignal {
+    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
@@ -63,9 +64,11 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
       strength: 1.0,
       timestamp: Date.now(),
     };
+    return undefined as TOutput;
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+    const signal: any = input.data;
     const props = this.getProps();
 
     if (signal.type === 'ui:focus' || signal?.payload?.type === 'ui:focus') {

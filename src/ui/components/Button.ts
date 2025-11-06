@@ -23,6 +23,7 @@ export interface ButtonState {
 
 export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
   protected performRender(): RenderSignal {
+    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
@@ -65,9 +66,11 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       strength: 1.0,
       timestamp: Date.now(),
     };
+    return undefined as TOutput;
   }
 
-  protected async executeProcessing(signal: any): Promise<void> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(input: { data: TInput }): Promise<TOutput> {
+    const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
@@ -89,7 +92,7 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     }
   }
 
-  private getBackgroundColor(variant: string, disabled: boolean): string {
+  private getBackgroundColor(variant: string, disabled: boolean): string | undefined {
     if (disabled) return '#cccccc';
 
     const colors: Record<string, string> = {
@@ -99,30 +102,30 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       success: '#28a745',
     };
 
-    return colors[variant] || colors.primary;
+    return colors[variant] || colors["primary"];
   }
 
-  private getTextColor(variant: string): string {
+  private getTextColor(_variant: string): string | undefined {
     return '#ffffff';
   }
 
-  private getPadding(size: string): string {
+  private getPadding(size: string): string | undefined {
     const paddings: Record<string, string> = {
       small: '4px 8px',
       medium: '8px 16px',
       large: '12px 24px',
     };
 
-    return paddings[size] || paddings.medium;
+    return paddings[size] || paddings["medium"];
   }
 
-  private getFontSize(size: string): string {
+  private getFontSize(size: string): string | undefined {
     const sizes: Record<string, string> = {
       small: '12px',
       medium: '14px',
       large: '16px',
     };
 
-    return sizes[size] || sizes.medium;
+    return sizes[size] || sizes["medium"];
   }
 }
