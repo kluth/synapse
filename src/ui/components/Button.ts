@@ -5,6 +5,7 @@
 
 import { SensoryNeuron } from '../SensoryNeuron';
 import type { RenderSignal } from '../types';
+import type { Input } from '../../types';
 
 export interface ButtonProps {
   label: string;
@@ -67,15 +68,15 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
     };
   }
 
-  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
-    data: TInput;
-  }): Promise<TOutput> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: Input<TInput>,
+  ): Promise<TOutput> {
     const signal: any = input.data;
     const props = this.getProps();
     const state = this.getState();
 
     if ((props.disabled ?? false) || state.disabled || (props.loading ?? false)) {
-      return Promise.resolve(undefined as TOutput);
+      return undefined as TOutput;
     }
 
     if (signal.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
@@ -91,7 +92,7 @@ export class Button extends SensoryNeuron<ButtonProps, ButtonState> {
       this.setState({ hovered: false });
     }
 
-    return Promise.resolve(undefined as TOutput);
+    return undefined as TOutput;
   }
 
   private getBackgroundColor(variant: string, disabled: boolean): string {

@@ -28,6 +28,9 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
   private myelinatedComponents: Set<string> = new Set();
   private maxCacheSize: number;
 
+  // Lifecycle state
+  private status: 'inactive' | 'active' | 'failed' = 'inactive';
+
   constructor(config: VisualOligodendrocyteConfig) {
     super({
       id: config.id,
@@ -36,6 +39,32 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
     });
 
     this.maxCacheSize = config.maxCacheSize || 100;
+  }
+
+  /**
+   * Activate the rendering optimizer
+   */
+  public async activate(): Promise<void> {
+    this.status = 'active';
+  }
+
+  /**
+   * Deactivate the rendering optimizer
+   */
+  public async deactivate(): Promise<void> {
+    this.status = 'inactive';
+    this.renderCache.clear();
+    this.renderMetrics.clear();
+    this.componentUsage.clear();
+    this.myelinatedComponents.clear();
+    this.lazyComponents.clear();
+  }
+
+  /**
+   * Get current status
+   */
+  public getStatus(): string {
+    return this.status;
   }
 
   /**

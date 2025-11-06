@@ -5,6 +5,7 @@
 
 import { InterneuronUI } from '../InterneuronUI';
 import type { RenderSignal } from '../types';
+import type { Input } from '../../types';
 
 export interface FormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -67,18 +68,18 @@ export class Form extends InterneuronUI<FormProps, FormState> {
     };
   }
 
-  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
-    data: TInput;
-  }): Promise<TOutput> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: Input<TInput>,
+  ): Promise<TOutput> {
     const signal: any = input.data;
     if (
       (signal != null && signal.type === 'ui:submit') ||
       (signal?.payload != null && signal.payload.type === 'ui:submit')
     ) {
-      void this.handleSubmit();
+      await this.handleSubmit();
     }
 
-    return Promise.resolve(undefined as TOutput);
+    return undefined as TOutput;
   }
 
   private async handleSubmit(): Promise<void> {

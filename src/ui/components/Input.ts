@@ -5,6 +5,7 @@
 
 import { SensoryNeuron } from '../SensoryNeuron';
 import type { RenderSignal } from '../types';
+import type { Input } from '../../types';
 
 export interface InputProps {
   type?: 'text' | 'email' | 'password' | 'number';
@@ -65,9 +66,9 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
     };
   }
 
-  protected override executeProcessing<TInput = unknown, TOutput = unknown>(input: {
-    data: TInput;
-  }): Promise<TOutput> {
+  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
+    input: Input<TInput>,
+  ): Promise<TOutput> {
     const signal: any = input.data;
     const props = this.getProps();
 
@@ -81,6 +82,6 @@ export class Input extends SensoryNeuron<InputProps, InputState> {
       props.onChange(value);
     }
 
-    return Promise.resolve(undefined as TOutput);
+    return undefined as TOutput;
   }
 }

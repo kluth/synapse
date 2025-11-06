@@ -43,6 +43,9 @@ export class VisualAstrocyte extends Astrocyte {
   private maxHistorySize: number;
   private enableTimeTravel: boolean;
 
+  // Lifecycle state
+  private status: 'inactive' | 'active' | 'failed' = 'inactive';
+
   constructor(config: VisualAstrocyteConfig) {
     super({
       id: config.id,
@@ -52,6 +55,30 @@ export class VisualAstrocyte extends Astrocyte {
 
     this.maxHistorySize = config.maxHistorySize || 50;
     this.enableTimeTravel = config.enableTimeTravel ?? true;
+  }
+
+  /**
+   * Activate the state manager
+   */
+  public async activate(): Promise<void> {
+    this.status = 'active';
+  }
+
+  /**
+   * Deactivate the state manager
+   */
+  public async deactivate(): Promise<void> {
+    this.status = 'inactive';
+    this.subscribers.clear();
+    this.selectors.clear();
+    this.selectorCache.clear();
+  }
+
+  /**
+   * Get current status
+   */
+  public getStatus(): string {
+    return this.status;
   }
 
   /**
