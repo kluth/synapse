@@ -322,7 +322,7 @@ export class Heart extends EventEmitter {
   private topicToPattern(topic: string): RegExp {
     // First escape regex meta-characters except * and #
     // (*) and (#) wildcards are NOT escaped so we can replace them as needed
-    let escaped = this.escapeRegExp(topic);
+    const escaped = this.escapeRegExp(topic);
     // Convert wildcard patterns: * => [^.]+, # => .+
     const pattern = escaped.replace(/\*/g, '[^.]+').replace(/#/g, '.+');
     return new RegExp(`^${pattern}$`);

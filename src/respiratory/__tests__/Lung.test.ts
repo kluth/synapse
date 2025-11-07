@@ -278,8 +278,6 @@ describe.skip('Lung - HTTP Client', () => {
 
   describe('Resilience Integration', () => {
     it('should retry failed requests', async () => {
-
-
       const mockSuccess = {
         ok: true,
         status: 200,

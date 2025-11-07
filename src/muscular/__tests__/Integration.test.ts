@@ -1,12 +1,7 @@
 import { Muscle } from '../core/Muscle';
 import { MuscleGroup } from '../core/MuscleGroup';
 import { MuscleMemory } from '../core/MuscleMemory';
-import {
-  TransformMuscle,
-  AggregateMuscle,
-  FilterMuscle,
-  MapMuscle,
-} from '../built-in';
+import { TransformMuscle, AggregateMuscle, FilterMuscle, MapMuscle } from '../built-in';
 import { Bone } from '../../skeletal/core/Bone';
 import { Schema } from '../../skeletal/core/Schema';
 import { FieldSchema } from '../../skeletal/core/FieldSchema';

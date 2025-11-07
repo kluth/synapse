@@ -166,16 +166,18 @@ export class Route {
   // Escape RegExp meta-characters in path, then replace param segments
   private pathToRegex(path: string): RegExp {
     // Escape RegExp meta-characters (including backslashes)
-    const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escapeRegExp = (str: string): string => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     // Split path by '/' to individually process each segment
     const segments = path.split('/');
-    const pattern = segments.map(segment => {
-      if (segment.startsWith(':')) {
-        return '([^/]+)';
-      } else {
-        return escapeRegExp(segment);
-      }
-    }).join('\\/');
+    const pattern = segments
+      .map((segment) => {
+        if (segment.startsWith(':')) {
+          return '([^/]+)';
+        } else {
+          return escapeRegExp(segment);
+        }
+      })
+      .join('\\/');
     return new RegExp(`^${pattern}$`);
   }
 
