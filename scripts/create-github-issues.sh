@@ -8,12 +8,45 @@ set -e
 # Colors for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
+
+# Function to ensure labels exist before using them
+ensure_labels_exist() {
+  local labels=$1
+  IFS=',' read -ra LABEL_ARRAY <<< "$labels"
+
+  for label in "${LABEL_ARRAY[@]}"; do
+    # Trim whitespace
+    label=$(echo "$label" | xargs)
+
+    # Check if label exists
+    if ! gh label list | grep -q "^${label}"; then
+      echo -e "${YELLOW}Creating label: ${label}${NC}"
+      # Create label with default color (you can customize colors as needed)
+      gh label create "$label" --color "0366d6" --description "Auto-generated label" 2>/dev/null || true
+    fi
+  done
+}
+
+# Function to ensure milestone exists before using it
+ensure_milestone_exists() {
+  local milestone=$1
+
+  # Check if milestone exists
+  if ! gh api repos/:owner/:repo/milestones --jq '.[].title' | grep -q "^${milestone}$"; then
+    echo -e "${YELLOW}Creating milestone: ${milestone}${NC}"
+    # Create milestone
+    gh api repos/:owner/:repo/milestones -f title="$milestone" -f state="open" 2>/dev/null || true
+  fi
+}
 
 echo -e "${BLUE}Creating GitHub issues for Synapse Framework Roadmap...${NC}"
 
 # Phase 3: Muscular System
 echo -e "${GREEN}Creating Phase 3: Muscular System${NC}"
+ensure_labels_exist "phase-3,muscular-system,enhancement"
+ensure_milestone_exists "Phase 3"
 gh issue create \
   --title "Phase 3: Muscular System - Business Logic Layer" \
   --label "phase-3,muscular-system,enhancement" \
@@ -100,6 +133,8 @@ Implement the Muscular System - business logic layer with pure functions and ope
 
 # Phase 4: Circulatory System
 echo -e "${GREEN}Creating Phase 4: Circulatory System${NC}"
+ensure_labels_exist "phase-4,circulatory-system,enhancement"
+ensure_milestone_exists "Phase 4"
 gh issue create \
   --title "Phase 4: Circulatory System - Data Flow & Messaging" \
   --label "phase-4,circulatory-system,enhancement" \
@@ -191,6 +226,8 @@ Implement the Circulatory System - data flow and message queue infrastructure.
 
 # Phase 5: Respiratory System
 echo -e "${GREEN}Creating Phase 5: Respiratory System${NC}"
+ensure_labels_exist "phase-5,respiratory-system,enhancement"
+ensure_milestone_exists "Phase 5"
 gh issue create \
   --title "Phase 5: Respiratory System - External I/O & APIs" \
   --label "phase-5,respiratory-system,enhancement" \
@@ -273,6 +310,8 @@ Implement the Respiratory System - external I/O, API integrations, and resource 
 
 # Phase 6: Immune System
 echo -e "${GREEN}Creating Phase 6: Immune System${NC}"
+ensure_labels_exist "phase-6,immune-system,security,enhancement"
+ensure_milestone_exists "Phase 6"
 gh issue create \
   --title "Phase 6: Immune System - Security & Authentication" \
   --label "phase-6,immune-system,security,enhancement" \
@@ -352,6 +391,8 @@ Implement the Immune System - security, authentication, authorization, and threa
 
 # Phase 7: Endocrine System
 echo -e "${GREEN}Creating Phase 7: Endocrine System${NC}"
+ensure_labels_exist "phase-7,endocrine-system,enhancement"
+ensure_milestone_exists "Phase 7"
 gh issue create \
   --title "Phase 7: Endocrine System - Configuration & Feature Flags" \
   --label "phase-7,endocrine-system,enhancement" \
@@ -404,6 +445,8 @@ Implement the Endocrine System - configuration management, feature flags, and en
 
 # Phase 8: Digestive System
 echo -e "${GREEN}Creating Phase 8: Digestive System${NC}"
+ensure_labels_exist "phase-8,digestive-system,enhancement"
+ensure_milestone_exists "Phase 8"
 gh issue create \
   --title "Phase 8: Digestive System - ETL & Data Processing" \
   --label "phase-8,digestive-system,enhancement" \
@@ -454,6 +497,8 @@ Implement the Digestive System - ETL pipelines, data processing, and transformat
 
 # Phase 9: Advanced UI Components
 echo -e "${GREEN}Creating Phase 9: Advanced UI Components${NC}"
+ensure_labels_exist "phase-9,skin-layer,ui,enhancement"
+ensure_milestone_exists "Phase 9"
 gh issue create \
   --title "Phase 9: Skin Layer - Advanced Components (50+ components)" \
   --label "phase-9,skin-layer,ui,enhancement" \
@@ -532,6 +577,8 @@ Complete component library with accessibility, theming, and 50+ production-ready
 
 # Phase 10: Observability
 echo -e "${GREEN}Creating Phase 10: Observability & Monitoring${NC}"
+ensure_labels_exist "phase-10,observability,monitoring,enhancement"
+ensure_milestone_exists "Phase 10"
 gh issue create \
   --title "Phase 10: Observability & Monitoring - Logs, Metrics, Traces" \
   --label "phase-10,observability,monitoring,enhancement" \
@@ -587,6 +634,8 @@ Complete observability with logs, metrics, traces, and dashboards.
 
 # Phase 11: Developer Experience
 echo -e "${GREEN}Creating Phase 11: Developer Experience & Tooling${NC}"
+ensure_labels_exist "phase-11,dx,tooling,enhancement"
+ensure_milestone_exists "Phase 11"
 gh issue create \
   --title "Phase 11: Developer Experience - CLI, Tooling, IDE Integration" \
   --label "phase-11,dx,tooling,enhancement" \
@@ -643,6 +692,8 @@ World-class developer experience with CLI, scaffolding, and debugging tools.
 
 # Phase 12: Performance Optimization
 echo -e "${GREEN}Creating Phase 12: Performance Optimization${NC}"
+ensure_labels_exist "phase-12,performance,optimization,enhancement"
+ensure_milestone_exists "Phase 12"
 gh issue create \
   --title "Phase 12: Performance Optimization - Extreme Performance" \
   --label "phase-12,performance,optimization,enhancement" \
@@ -693,6 +744,8 @@ Extreme performance with advanced optimization techniques.
 
 # Phase 13: Advanced Data Patterns
 echo -e "${GREEN}Creating Phase 13: Advanced Data Patterns${NC}"
+ensure_labels_exist "phase-13,data-patterns,cqrs,event-sourcing,enhancement"
+ensure_milestone_exists "Phase 13"
 gh issue create \
   --title "Phase 13: Advanced Data Patterns - CQRS, Event Sourcing, DDD" \
   --label "phase-13,data-patterns,cqrs,event-sourcing,enhancement" \
@@ -750,6 +803,8 @@ Implement CQRS, Event Sourcing, and advanced architectural patterns.
 
 # Phase 14: Real-time Collaboration
 echo -e "${GREEN}Creating Phase 14: Real-time Collaboration${NC}"
+ensure_labels_exist "phase-14,collaboration,crdt,real-time,enhancement"
+ensure_milestone_exists "Phase 14"
 gh issue create \
   --title "Phase 14: Real-time Collaboration - CRDTs & Operational Transform" \
   --label "phase-14,collaboration,crdt,real-time,enhancement" \
@@ -799,6 +854,8 @@ Multi-user collaboration with CRDTs and operational transforms.
 
 # Phase 15: AI & ML Integration
 echo -e "${GREEN}Creating Phase 15: AI & ML Integration${NC}"
+ensure_labels_exist "phase-15,ai,ml,webnn,enhancement"
+ensure_milestone_exists "Phase 15"
 gh issue create \
   --title "Phase 15: AI & ML Integration - Intelligent Features" \
   --label "phase-15,ai,ml,webnn,enhancement" \
@@ -847,6 +904,8 @@ Intelligent features with ML models and neural network integration.
 
 # Phase 16: Edge Computing
 echo -e "${GREEN}Creating Phase 16: Edge Computing & Distributed Systems${NC}"
+ensure_labels_exist "phase-16,edge,distributed,enhancement"
+ensure_milestone_exists "Phase 16"
 gh issue create \
   --title "Phase 16: Edge Computing - Distributed Systems & Global Scale" \
   --label "phase-16,edge,distributed,enhancement" \
@@ -893,6 +952,8 @@ Edge deployment, distributed caching, and global scalability.
 
 # Phase 17: Testing Framework
 echo -e "${GREEN}Creating Phase 17: Testing & QA Framework${NC}"
+ensure_labels_exist "phase-17,testing,qa,enhancement"
+ensure_milestone_exists "Phase 17"
 gh issue create \
   --title "Phase 17: Testing Framework - Comprehensive QA Tools" \
   --label "phase-17,testing,qa,enhancement" \
@@ -945,6 +1006,8 @@ Comprehensive testing tools and quality assurance framework.
 
 # Phase 18: Enterprise Features
 echo -e "${GREEN}Creating Phase 18: Enterprise Features${NC}"
+ensure_labels_exist "phase-18,enterprise,compliance,enhancement"
+ensure_milestone_exists "Phase 18"
 gh issue create \
   --title "Phase 18: Enterprise Features - Multi-tenancy, Compliance, SLA" \
   --label "phase-18,enterprise,compliance,enhancement" \
@@ -997,6 +1060,8 @@ Enterprise-grade features for large organizations.
 
 # Phase 19: Plugin Ecosystem
 echo -e "${GREEN}Creating Phase 19: Plugin Ecosystem${NC}"
+ensure_labels_exist "phase-19,plugins,ecosystem,enhancement"
+ensure_milestone_exists "Phase 19"
 gh issue create \
   --title "Phase 19: Plugin Ecosystem - Extensibility & Marketplace" \
   --label "phase-19,plugins,ecosystem,enhancement" \
@@ -1044,6 +1109,8 @@ Extensible plugin system with marketplace.
 
 # Phase 20: Advanced Visualization
 echo -e "${GREEN}Creating Phase 20: Advanced Visualization${NC}"
+ensure_labels_exist "phase-20,visualization,webgl,enhancement"
+ensure_milestone_exists "Phase 20"
 gh issue create \
   --title "Phase 20: Advanced Visualization - Charts, 3D, WebGL" \
   --label "phase-20,visualization,webgl,enhancement" \
