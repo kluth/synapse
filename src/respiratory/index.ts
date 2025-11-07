@@ -14,3 +14,13 @@ export type {
   BulkheadOptions,
   DiaphragmStats,
 } from './core/Diaphragm';
+
+export { Lung } from './core/Lung';
+export type {
+  HttpMethod,
+  RequestOptions,
+  HttpResponse,
+  LungConfig,
+  RequestInterceptor,
+  ResponseInterceptor,
+} from './core/Lung';
