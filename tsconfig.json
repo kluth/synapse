@@ -64,6 +64,7 @@
     "**/*.stories.ts",
     "**/*.stories.tsx",
     "**/__tests__/**",
-    ".storybook"
+    ".storybook",
+    "src/skin/**"
   ]
 }
