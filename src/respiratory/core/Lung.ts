@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Lung - HTTP Client with Resilience Patterns
  *

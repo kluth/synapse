@@ -226,9 +226,8 @@ export class Router {
 
       if (context.body !== undefined) {
         const result: ValidationResult<unknown> = route.requestBody.schema.validate(context.body);
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-member-access
+
         if (!result.valid) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           throw new RouterError('Invalid request body', 400, result.errors);
         }
       }

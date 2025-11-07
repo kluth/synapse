@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-console */
 import { Command } from 'commander';
 import { generateNeuron, generateGlial, generateCircuit, generateEvent } from './commands/generate';
 import { GLIAL_TYPES } from './utils/validation';

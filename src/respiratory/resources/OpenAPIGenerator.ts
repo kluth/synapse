@@ -287,7 +287,7 @@ export class OpenAPIGenerator {
    * Note: This is a simplified conversion - real implementation would need
    * to extract field information from the Schema
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   private schemaToOpenAPI(_schema: unknown): unknown {
     // For now, return a basic object schema
     // In a real implementation, this would introspect the Schema
