@@ -1,0 +1,248 @@
+{
+  "project": {
+    "name": "The Anatomy Theater",
+    "description": "Phase 6: Component development and documentation system for Synapse Framework"
+  },
+  "milestones": [
+    {
+      "title": "Phase 6.1: Theater Core",
+      "description": "Core presentation engine, stage, and observation gallery",
+      "due_on": "2025-12-15"
+    },
+    {
+      "title": "Phase 6.2: Specimen System",
+      "description": "Component showcase and observation management",
+      "due_on": "2025-12-22"
+    },
+    {
+      "title": "Phase 6.3: Microscope Tools",
+      "description": "Deep inspection, debugging, and monitoring tools",
+      "due_on": "2026-01-05"
+    },
+    {
+      "title": "Phase 6.4: Laboratory",
+      "description": "Testing environment and experimentation framework",
+      "due_on": "2026-01-12"
+    },
+    {
+      "title": "Phase 6.5: Atlas",
+      "description": "Auto-documentation and architecture visualization",
+      "due_on": "2026-01-19"
+    },
+    {
+      "title": "Phase 6.6: Server & Hot Reload",
+      "description": "Development server with real-time updates",
+      "due_on": "2026-01-26"
+    },
+    {
+      "title": "Phase 6.7: CLI & Configuration",
+      "description": "Command-line interface and project configuration",
+      "due_on": "2026-02-02"
+    },
+    {
+      "title": "Phase 6.8: Integration & Polish",
+      "description": "Framework integration, testing, and documentation",
+      "due_on": "2026-02-09"
+    }
+  ],
+  "issues": [
+    {
+      "title": "Implement Theater base class",
+      "body": "## Description\nCreate the main Theater class that orchestrates the entire Anatomy Theater system.\n\n## Acceptance Criteria\n- [ ] Theater class with stage, amphitheater, and instruments\n- [ ] Configuration loading and validation\n- [ ] Lifecycle management (start, stop, reload)\n- [ ] Event emitter for theater events\n- [ ] TypeScript strict mode compliant\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n```typescript\nclass Theater {\n  stage: Stage;\n  amphitheater: Amphitheater;\n  instruments: Map<string, Instrument>;\n  config: TheaterConfig;\n}\n```\n\n## Files\n- `src/theater/core/Theater.ts`\n- `src/theater/core/Theater.test.ts`",
+      "labels": ["Phase 6.1", "core", "enhancement"],
+      "milestone": "Phase 6.1: Theater Core"
+    },
+    {
+      "title": "Implement Stage component",
+      "body": "## Description\nCreate the Stage where components are rendered and observed.\n\n## Acceptance Criteria\n- [ ] Stage class with viewport management\n- [ ] Component mounting and unmounting\n- [ ] Isolated rendering environment (shadow DOM/iframe)\n- [ ] Resize and responsive testing\n- [ ] Device emulation (mobile, tablet, desktop)\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Integration with VisualNeuron rendering\n- Support for different viewport sizes\n- Screenshot capture capability\n\n## Files\n- `src/theater/core/Stage.ts`\n- `src/theater/core/Stage.test.ts`",
+      "labels": ["Phase 6.1", "core", "enhancement"],
+      "milestone": "Phase 6.1: Theater Core"
+    },
+    {
+      "title": "Implement Amphitheater (observation gallery)",
+      "body": "## Description\nCreate the Amphitheater UI where developers observe and interact with components.\n\n## Acceptance Criteria\n- [ ] Gallery layout with component grid\n- [ ] Search and filter functionality\n- [ ] Category organization\n- [ ] Dark/light theme support\n- [ ] Responsive layout\n- [ ] Keyboard navigation\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Built using our own UI system (VisualNeurons)\n- Accessibility compliant (WCAG 2.1 AA)\n\n## Files\n- `src/theater/core/Amphitheater.ts`\n- `src/theater/core/Amphitheater.test.ts`",
+      "labels": ["Phase 6.1", "core", "ui", "enhancement"],
+      "milestone": "Phase 6.1: Theater Core"
+    },
+    {
+      "title": "Implement Instrument base interface",
+      "body": "## Description\nCreate the base interface for all development tools (instruments).\n\n## Acceptance Criteria\n- [ ] Instrument interface definition\n- [ ] Panel management (open, close, toggle)\n- [ ] Tool registration system\n- [ ] Inter-tool communication\n- [ ] State persistence\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n```typescript\ninterface Instrument {\n  id: string;\n  title: string;\n  icon: string;\n  panel: InstrumentPanel;\n  activate(): void;\n  deactivate(): void;\n}\n```\n\n## Files\n- `src/theater/core/Instrument.ts`\n- `src/theater/core/Instrument.test.ts`",
+      "labels": ["Phase 6.1", "core", "enhancement"],
+      "milestone": "Phase 6.1: Theater Core"
+    },
+    {
+      "title": "Implement Specimen wrapper",
+      "body": "## Description\nCreate the Specimen class that wraps components for observation.\n\n## Acceptance Criteria\n- [ ] Specimen class with component wrapping\n- [ ] Props management and validation\n- [ ] State inspection\n- [ ] Lifecycle hooks\n- [ ] Metadata extraction (from TypeScript/JSDoc)\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Wraps any VisualNeuron, SensoryNeuron, or MotorNeuron\n- Provides observation interface without modifying original\n\n## Files\n- `src/theater/specimen/Specimen.ts`\n- `src/theater/specimen/Specimen.test.ts`",
+      "labels": ["Phase 6.2", "specimen", "enhancement"],
+      "milestone": "Phase 6.2: Specimen System"
+    },
+    {
+      "title": "Implement Observation (variations)",
+      "body": "## Description\nCreate the Observation system for component state/props variations.\n\n## Acceptance Criteria\n- [ ] Observation class with state snapshots\n- [ ] Props variation management\n- [ ] Named observations (\"Default\", \"Loading\", \"Error\")\n- [ ] Observation groups and categories\n- [ ] Hot reload support\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n```typescript\ninterface Observation {\n  name: string;\n  props: Record<string, unknown>;\n  state?: Record<string, unknown>;\n  signals?: Record<string, Function>;\n}\n```\n\n## Files\n- `src/theater/specimen/Observation.ts`\n- `src/theater/specimen/Observation.test.ts`",
+      "labels": ["Phase 6.2", "specimen", "enhancement"],
+      "milestone": "Phase 6.2: Specimen System"
+    },
+    {
+      "title": "Implement Dissection (component breakdown)",
+      "body": "## Description\nCreate the Dissection tool that breaks down component structure.\n\n## Acceptance Criteria\n- [ ] Props table with types and descriptions\n- [ ] Signal interface documentation\n- [ ] Children/composition analysis\n- [ ] State structure visualization\n- [ ] TypeScript type extraction\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Uses TypeScript Compiler API for type extraction\n- Parses JSDoc comments for descriptions\n\n## Files\n- `src/theater/specimen/Dissection.ts`\n- `src/theater/specimen/Dissection.test.ts`",
+      "labels": ["Phase 6.2", "specimen", "enhancement"],
+      "milestone": "Phase 6.2: Specimen System"
+    },
+    {
+      "title": "Implement Microscope hub",
+      "body": "## Description\nCreate the Microscope tool hub for component inspection.\n\n## Acceptance Criteria\n- [ ] Microscope class with tool management\n- [ ] Mode switching (signal-trace, state-explorer, performance, health)\n- [ ] Tool panel integration\n- [ ] Real-time data streaming\n- [ ] Export/import inspection data\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/microscope/Microscope.ts`\n- `src/theater/microscope/Microscope.test.ts`",
+      "labels": ["Phase 6.3", "microscope", "enhancement"],
+      "milestone": "Phase 6.3: Microscope Tools"
+    },
+    {
+      "title": "Implement SignalTracer (neural signal visualization)",
+      "body": "## Description\nCreate the SignalTracer tool for visualizing neural signals in real-time.\n\n## Acceptance Criteria\n- [ ] Real-time signal flow visualization\n- [ ] Signal strength indicators\n- [ ] Connection topology graph\n- [ ] Signal history timeline\n- [ ] Filter by signal type\n- [ ] Record and replay signals\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Integrates with NeuralNode event emitter\n- Uses canvas/SVG for visualization\n- WebSocket for real-time updates\n\n## Files\n- `src/theater/microscope/SignalTracer.ts`\n- `src/theater/microscope/SignalTracer.test.ts`",
+      "labels": ["Phase 6.3", "microscope", "visualization", "enhancement"],
+      "milestone": "Phase 6.3: Microscope Tools"
+    },
+    {
+      "title": "Implement StateExplorer (time-travel debugging)",
+      "body": "## Description\nCreate the StateExplorer tool with time-travel debugging capabilities.\n\n## Acceptance Criteria\n- [ ] State history timeline\n- [ ] Undo/redo state changes\n- [ ] Jump to any state snapshot\n- [ ] State diff visualization\n- [ ] Export/import state snapshots\n- [ ] Integration with VisualAstrocyte\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Leverages existing VisualAstrocyte time-travel features\n- Visual diff algorithm for state changes\n\n## Files\n- `src/theater/microscope/StateExplorer.ts`\n- `src/theater/microscope/StateExplorer.test.ts`",
+      "labels": ["Phase 6.3", "microscope", "debugging", "enhancement"],
+      "milestone": "Phase 6.3: Microscope Tools"
+    },
+    {
+      "title": "Implement PerformanceProfiler",
+      "body": "## Description\nCreate the PerformanceProfiler tool integrating with VisualOligodendrocyte.\n\n## Acceptance Criteria\n- [ ] Render time measurement\n- [ ] Memory usage tracking\n- [ ] Myelination effectiveness metrics\n- [ ] Resource caching statistics\n- [ ] Performance timeline\n- [ ] Flame graph visualization\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Uses Performance API\n- Integrates with VisualOligodendrocyte metrics\n\n## Files\n- `src/theater/microscope/PerformanceProfiler.ts`\n- `src/theater/microscope/PerformanceProfiler.test.ts`",
+      "labels": ["Phase 6.3", "microscope", "performance", "enhancement"],
+      "milestone": "Phase 6.3: Microscope Tools"
+    },
+    {
+      "title": "Implement HealthMonitor",
+      "body": "## Description\nCreate the HealthMonitor tool integrating with Microglia.\n\n## Acceptance Criteria\n- [ ] Real-time error tracking\n- [ ] Performance metrics dashboard\n- [ ] Memory leak detection\n- [ ] Signal latency monitoring\n- [ ] Health score calculation\n- [ ] Alert system\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Integrates with Microglia health checks\n- Real-time metrics streaming\n\n## Files\n- `src/theater/microscope/HealthMonitor.ts`\n- `src/theater/microscope/HealthMonitor.test.ts`",
+      "labels": ["Phase 6.3", "microscope", "monitoring", "enhancement"],
+      "milestone": "Phase 6.3: Microscope Tools"
+    },
+    {
+      "title": "Implement Laboratory (testing environment)",
+      "body": "## Description\nCreate the Laboratory for component testing and experimentation.\n\n## Acceptance Criteria\n- [ ] Laboratory class with test management\n- [ ] Isolated test environment\n- [ ] Test result aggregation\n- [ ] Experiment tracking\n- [ ] Report generation\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/laboratory/Laboratory.ts`\n- `src/theater/laboratory/Laboratory.test.ts`",
+      "labels": ["Phase 6.4", "laboratory", "testing", "enhancement"],
+      "milestone": "Phase 6.4: Laboratory"
+    },
+    {
+      "title": "Implement PetriDish (isolated testing)",
+      "body": "## Description\nCreate the PetriDish for isolated component testing.\n\n## Acceptance Criteria\n- [ ] Component isolation (no side effects)\n- [ ] Mock data injection\n- [ ] Signal simulation\n- [ ] State manipulation\n- [ ] Snapshot testing\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/laboratory/PetriDish.ts`\n- `src/theater/laboratory/PetriDish.test.ts`",
+      "labels": ["Phase 6.4", "laboratory", "testing", "enhancement"],
+      "milestone": "Phase 6.4: Laboratory"
+    },
+    {
+      "title": "Implement Culture (test scenarios)",
+      "body": "## Description\nCreate the Culture system for test scenario management.\n\n## Acceptance Criteria\n- [ ] Test scenario definition\n- [ ] Setup/teardown hooks\n- [ ] Assertion framework\n- [ ] Async test support\n- [ ] Test data fixtures\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/laboratory/Culture.ts`\n- `src/theater/laboratory/Culture.test.ts`",
+      "labels": ["Phase 6.4", "laboratory", "testing", "enhancement"],
+      "milestone": "Phase 6.4: Laboratory"
+    },
+    {
+      "title": "Implement Experiment (A/B testing)",
+      "body": "## Description\nCreate the Experiment system for A/B testing and variant comparison.\n\n## Acceptance Criteria\n- [ ] Multi-variant testing\n- [ ] Metrics tracking (CTR, engagement, performance)\n- [ ] Statistical significance calculation\n- [ ] Automatic winner selection\n- [ ] Neuroplasticity integration\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Integrates with Neuroplasticity system\n- Statistical analysis for variant comparison\n\n## Files\n- `src/theater/laboratory/Experiment.ts`\n- `src/theater/laboratory/Experiment.test.ts`",
+      "labels": ["Phase 6.4", "laboratory", "testing", "enhancement"],
+      "milestone": "Phase 6.4: Laboratory"
+    },
+    {
+      "title": "Implement Atlas (documentation hub)",
+      "body": "## Description\nCreate the Atlas system for auto-documentation generation.\n\n## Acceptance Criteria\n- [ ] Atlas class with documentation management\n- [ ] Markdown generation\n- [ ] Component catalogue\n- [ ] Architecture diagrams\n- [ ] Search functionality\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/atlas/Atlas.ts`\n- `src/theater/atlas/Atlas.test.ts`",
+      "labels": ["Phase 6.5", "atlas", "documentation", "enhancement"],
+      "milestone": "Phase 6.5: Atlas"
+    },
+    {
+      "title": "Implement ComponentCatalogue",
+      "body": "## Description\nCreate the ComponentCatalogue for component registry and documentation.\n\n## Acceptance Criteria\n- [ ] Auto-discovery of components\n- [ ] TypeScript metadata extraction\n- [ ] JSDoc parsing\n- [ ] Props documentation\n- [ ] Usage examples from tests\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Uses TypeScript Compiler API\n- Parses test files for examples\n\n## Files\n- `src/theater/atlas/ComponentCatalogue.ts`\n- `src/theater/atlas/ComponentCatalogue.test.ts`",
+      "labels": ["Phase 6.5", "atlas", "documentation", "enhancement"],
+      "milestone": "Phase 6.5: Atlas"
+    },
+    {
+      "title": "Implement Diagram (architecture visualization)",
+      "body": "## Description\nCreate the Diagram system for visualizing component architecture.\n\n## Acceptance Criteria\n- [ ] Neural circuit topology visualization\n- [ ] Component hierarchy tree\n- [ ] Signal flow diagrams\n- [ ] Connection graph\n- [ ] Interactive exploration\n- [ ] Export to SVG/PNG\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Uses D3.js or similar for visualization\n- Graph layout algorithms\n\n## Files\n- `src/theater/atlas/Diagram.ts`\n- `src/theater/atlas/Diagram.test.ts`",
+      "labels": ["Phase 6.5", "atlas", "visualization", "enhancement"],
+      "milestone": "Phase 6.5: Atlas"
+    },
+    {
+      "title": "Implement Protocol (usage guides)",
+      "body": "## Description\nCreate the Protocol system for generating usage guides and best practices.\n\n## Acceptance Criteria\n- [ ] Usage pattern detection\n- [ ] Best practice recommendations\n- [ ] Code example generation\n- [ ] Integration guides\n- [ ] Markdown export\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/atlas/Protocol.ts`\n- `src/theater/atlas/Protocol.test.ts`",
+      "labels": ["Phase 6.5", "atlas", "documentation", "enhancement"],
+      "milestone": "Phase 6.5: Atlas"
+    },
+    {
+      "title": "Implement TheaterServer",
+      "body": "## Description\nCreate the development server for The Anatomy Theater.\n\n## Acceptance Criteria\n- [ ] HTTP server with static file serving\n- [ ] WebSocket support for real-time updates\n- [ ] Hot module replacement (HMR)\n- [ ] API endpoints for data\n- [ ] CORS configuration\n- [ ] HTTPS support\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Built on Node.js HTTP/HTTPS\n- WebSocket for live updates\n- Integration with Vite for HMR\n\n## Files\n- `src/theater/server/TheaterServer.ts`\n- `src/theater/server/TheaterServer.test.ts`",
+      "labels": ["Phase 6.6", "server", "enhancement"],
+      "milestone": "Phase 6.6: Server & Hot Reload"
+    },
+    {
+      "title": "Implement HotReload system",
+      "body": "## Description\nCreate the HotReload system for live code updates.\n\n## Acceptance Criteria\n- [ ] File watcher for component changes\n- [ ] Module reloading without full refresh\n- [ ] State preservation across reloads\n- [ ] Error overlay\n- [ ] Reload notifications\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Integration with Vite HMR\n- File system watcher (chokidar)\n\n## Files\n- `src/theater/server/HotReload.ts`\n- `src/theater/server/HotReload.test.ts`",
+      "labels": ["Phase 6.6", "server", "enhancement"],
+      "milestone": "Phase 6.6: Server & Hot Reload"
+    },
+    {
+      "title": "Implement WebSocket communication",
+      "body": "## Description\nCreate the WebSocket layer for real-time theater updates.\n\n## Acceptance Criteria\n- [ ] WebSocket server\n- [ ] Client connection management\n- [ ] Message protocol\n- [ ] Reconnection handling\n- [ ] Broadcast and targeted messages\n- [ ] Unit tests (>90% coverage)\n\n## Files\n- `src/theater/server/WebSocket.ts`\n- `src/theater/server/WebSocket.test.ts`",
+      "labels": ["Phase 6.6", "server", "enhancement"],
+      "milestone": "Phase 6.6: Server & Hot Reload"
+    },
+    {
+      "title": "Implement Theater CLI",
+      "body": "## Description\nCreate the command-line interface for The Anatomy Theater.\n\n## Acceptance Criteria\n- [ ] `synapse theater` command\n- [ ] Start/stop server\n- [ ] Build for production\n- [ ] Generate documentation\n- [ ] Configuration validation\n- [ ] Unit tests (>90% coverage)\n\n## Commands\n```bash\nsynapse theater start [options]\nsynapse theater build [options]\nsynapse theater docs [options]\n```\n\n## Files\n- `cli/commands/theater.ts`\n- `cli/commands/theater.test.ts`",
+      "labels": ["Phase 6.7", "cli", "enhancement"],
+      "milestone": "Phase 6.7: CLI & Configuration"
+    },
+    {
+      "title": "Implement Theater configuration system",
+      "body": "## Description\nCreate the configuration system for Theater projects.\n\n## Acceptance Criteria\n- [ ] Config file schema (TypeScript)\n- [ ] Default configuration\n- [ ] Environment-based config\n- [ ] Validation with Skeletal system\n- [ ] Config merging\n- [ ] Unit tests (>90% coverage)\n\n## Configuration File\n```typescript\n// anatomy-theater.config.ts\nexport default {\n  title: 'My Theater',\n  specimens: './src/**/*.specimen.ts',\n  port: 6100,\n  features: {...}\n}\n```\n\n## Files\n- `src/theater/config/TheaterConfig.ts`\n- `src/theater/config/TheaterConfig.test.ts`",
+      "labels": ["Phase 6.7", "config", "enhancement"],
+      "milestone": "Phase 6.7: CLI & Configuration"
+    },
+    {
+      "title": "Implement Specimen file loader",
+      "body": "## Description\nCreate the loader for `.specimen.ts` files.\n\n## Acceptance Criteria\n- [ ] File discovery and parsing\n- [ ] Module loading and execution\n- [ ] Hot reload support\n- [ ] Error handling\n- [ ] TypeScript compilation\n- [ ] Unit tests (>90% coverage)\n\n## Specimen File Format\n```typescript\n// Button.specimen.ts\nexport default {\n  title: 'UI/Button',\n  specimen: Button,\n  observations: [...],\n  experiments: [...]\n}\n```\n\n## Files\n- `src/theater/loader/SpecimenLoader.ts`\n- `src/theater/loader/SpecimenLoader.test.ts`",
+      "labels": ["Phase 6.7", "loader", "enhancement"],
+      "milestone": "Phase 6.7: CLI & Configuration"
+    },
+    {
+      "title": "Create Theater UI components",
+      "body": "## Description\nBuild the UI components for The Anatomy Theater using our own system.\n\n## Acceptance Criteria\n- [ ] Navigation sidebar\n- [ ] Component grid\n- [ ] Tool panels\n- [ ] Search bar\n- [ ] Settings modal\n- [ ] All using VisualNeurons\n- [ ] Unit tests (>90% coverage)\n\n## Technical Notes\n- Dogfooding: Built entirely with Synapse UI system\n- Responsive design\n- Accessibility compliant\n\n## Files\n- `src/theater/ui/Navigation.ts`\n- `src/theater/ui/ComponentGrid.ts`\n- `src/theater/ui/ToolPanel.ts`\n- `src/theater/ui/*.test.ts`",
+      "labels": ["Phase 6.8", "ui", "enhancement"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    },
+    {
+      "title": "Write Theater documentation",
+      "body": "## Description\nWrite comprehensive documentation for The Anatomy Theater.\n\n## Acceptance Criteria\n- [ ] Getting started guide\n- [ ] Configuration reference\n- [ ] Specimen file format\n- [ ] API documentation\n- [ ] Best practices\n- [ ] Migration guide from Storybook\n- [ ] Example projects\n\n## Files\n- `docs/theater/README.md`\n- `docs/theater/getting-started.md`\n- `docs/theater/configuration.md`\n- `docs/theater/api.md`\n- `docs/theater/migration.md`",
+      "labels": ["Phase 6.8", "documentation"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    },
+    {
+      "title": "Create example specimens",
+      "body": "## Description\nCreate example specimen files for all existing Synapse components.\n\n## Acceptance Criteria\n- [ ] Button.specimen.ts\n- [ ] Form.specimen.ts\n- [ ] TouchReceptor.specimen.ts\n- [ ] TextReceptor.specimen.ts\n- [ ] All with comprehensive observations\n- [ ] Performance experiments\n- [ ] Accessibility tests\n\n## Files\n- `src/ui/components/Button.specimen.ts`\n- `src/ui/components/Form.specimen.ts`\n- `src/skin/receptors/*.specimen.ts`",
+      "labels": ["Phase 6.8", "examples"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    },
+    {
+      "title": "Integration testing suite",
+      "body": "## Description\nCreate comprehensive integration tests for The Anatomy Theater.\n\n## Acceptance Criteria\n- [ ] Server startup/shutdown\n- [ ] WebSocket communication\n- [ ] Hot reload functionality\n- [ ] Component rendering\n- [ ] Tool functionality\n- [ ] Performance benchmarks\n- [ ] >90% coverage\n\n## Files\n- `src/theater/__tests__/integration/*.test.ts`",
+      "labels": ["Phase 6.8", "testing"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    },
+    {
+      "title": "Performance optimization",
+      "body": "## Description\nOptimize The Anatomy Theater for production use.\n\n## Acceptance Criteria\n- [ ] Bundle size optimization (<100KB gzipped core)\n- [ ] Lazy loading for tools\n- [ ] Virtual scrolling for component lists\n- [ ] Memoization for expensive operations\n- [ ] Code splitting\n- [ ] Performance benchmarks\n\n## Targets\n- Initial load: <2s\n- Time to interactive: <3s\n- Component switch: <100ms\n- Signal trace overhead: <5%",
+      "labels": ["Phase 6.8", "performance"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    },
+    {
+      "title": "Accessibility audit and fixes",
+      "body": "## Description\nEnsure The Anatomy Theater is fully accessible.\n\n## Acceptance Criteria\n- [ ] WCAG 2.1 AA compliance\n- [ ] Keyboard navigation\n- [ ] Screen reader support\n- [ ] ARIA attributes\n- [ ] Color contrast\n- [ ] Focus management\n- [ ] Automated a11y tests\n\n## Tools\n- axe-core for automated testing\n- Manual testing with screen readers",
+      "labels": ["Phase 6.8", "accessibility"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    },
+    {
+      "title": "Production build system",
+      "body": "## Description\nCreate production build system for static deployment.\n\n## Acceptance Criteria\n- [ ] Static site generation\n- [ ] Asset optimization\n- [ ] CDN-ready output\n- [ ] Search index generation\n- [ ] Deployment guides (Netlify, Vercel, GitHub Pages)\n- [ ] CI/CD examples\n\n## Output\n```\ndist/\n├── index.html\n├── assets/\n│   ├── js/\n│   ├── css/\n│   └── images/\n└── data/\n    └── specimens.json\n```",
+      "labels": ["Phase 6.8", "build"],
+      "milestone": "Phase 6.8: Integration & Polish"
+    }
+  ]
+}
