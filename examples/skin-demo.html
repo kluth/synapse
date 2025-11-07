@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Synapse Skin Layer Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 3rem;
+      }
+
+      .header h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .header p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+      }
+
+      .demo-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .demo-section h2 {
+        margin-bottom: 1.5rem;
+        color: #1e293b;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .demo-item {
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .demo-item h3 {
+        font-size: 0.875rem;
+        color: #64748b;
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .form-demo {
+        max-width: 500px;
+        margin: 2rem auto;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #1e293b;
+      }
+
+      .button-row {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .event-log {
+        background: #1e293b;
+        color: #94a3b8;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875rem;
+        padding: 1rem;
+        border-radius: 8px;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-top: 1rem;
+      }
+
+      .event-log-entry {
+        padding: 0.25rem 0;
+        border-bottom: 1px solid #334155;
+      }
+
+      .event-log-entry:last-child {
+        border-bottom: none;
+      }
+
+      .timestamp {
+        color: #64748b;
+        margin-right: 0.5rem;
+      }
+
+      .event-type {
+        color: #0ea5e9;
+        font-weight: bold;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        border-left: 4px solid #0066cc;
+      }
+
+      .feature-card h3 {
+        color: #0066cc;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature-card p {
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      code {
+        background: #e2e8f0;
+        padding: 0.125rem 0.375rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>🧠 Synapse Skin Layer</h1>
+        <p>
+          Standards-based UI components using Custom Elements, Shadow DOM, and
+          HTML Templates
+        </p>
+        <p style="font-size: 1rem; margin-top: 0.5rem; opacity: 0.8">
+          Zero build tools • Zero JSX • Pure Web Standards
+        </p>
+      </div>
+
+      <!-- TouchReceptor Demo -->
+      <div class="demo-section">
+        <h2>TouchReceptor (Button)</h2>
+        <p style="margin-bottom: 1.5rem; color: #64748b">
+          Mechanoreceptor that detects touch interactions. All variants, sizes,
+          and states.
+        </p>
+
+        <div class="demo-grid">
+          <div class="demo-item">
+            <h3>Variants</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem">
+              <touch-receptor
+                id="btn-primary"
+                label="Primary"
+                variant="primary"
+                size="medium"
+              ></touch-receptor>
+              <touch-receptor
+                id="btn-secondary"
+                label="Secondary"
+                variant="secondary"
+                size="medium"
+              ></touch-receptor>
+              <touch-receptor
+                id="btn-danger"
+                label="Danger"
+                variant="danger"
+                size="medium"
+              ></touch-receptor>
+              <touch-receptor
+                id="btn-ghost"
+                label="Ghost"
+                variant="ghost"
+                size="medium"
+              ></touch-receptor>
+            </div>
+          </div>
+
+          <div class="demo-item">
+            <h3>Sizes</h3>
+            <div
+              style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start"
+            >
+              <touch-receptor
+                label="Small"
+                variant="primary"
+                size="small"
+              ></touch-receptor>
+              <touch-receptor
+                label="Medium"
+                variant="primary"
+                size="medium"
+              ></touch-receptor>
+              <touch-receptor
+                label="Large"
+                variant="primary"
+                size="large"
+              ></touch-receptor>
+            </div>
+          </div>
+
+          <div class="demo-item">
+            <h3>States</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem">
+              <touch-receptor
+                label="Disabled"
+                variant="primary"
+                size="medium"
+                disabled
+              ></touch-receptor>
+              <touch-receptor
+                id="btn-loading"
+                label="Click Me"
+                variant="primary"
+                size="medium"
+              ></touch-receptor>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TextReceptor Demo -->
+      <div class="demo-section">
+        <h2>TextReceptor (Input Field)</h2>
+        <p style="margin-bottom: 1.5rem; color: #64748b">
+          Chemoreceptor that receives text/data input. Various types and validation.
+        </p>
+
+        <div class="demo-grid">
+          <div class="demo-item">
+            <h3>Input Types</h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem">
+              <text-receptor
+                placeholder="Text input"
+                type="text"
+              ></text-receptor>
+              <text-receptor
+                placeholder="Email input"
+                type="email"
+              ></text-receptor>
+              <text-receptor
+                placeholder="Password"
+                type="password"
+              ></text-receptor>
+              <text-receptor
+                placeholder="Search..."
+                type="search"
+              ></text-receptor>
+            </div>
+          </div>
+
+          <div class="demo-item">
+            <h3>States</h3>
+            <div style="display: flex; flex-direction: column; gap: 1rem">
+              <text-receptor
+                value="Disabled input"
+                disabled
+              ></text-receptor>
+              <text-receptor
+                value="Read-only input"
+                readonly
+              ></text-receptor>
+              <text-receptor
+                placeholder="Required field"
+                required
+              ></text-receptor>
+              <text-receptor
+                placeholder="With error"
+                error="This field is required"
+              ></text-receptor>
+            </div>
+          </div>
+
+          <div class="demo-item">
+            <h3>Character Limit</h3>
+            <text-receptor
+              placeholder="Max 50 characters"
+              maxlength="50"
+            ></text-receptor>
+            <p style="margin-top: 0.5rem; font-size: 0.8125rem; color: #64748b">
+              Try typing to see character count
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Example -->
+      <div class="demo-section">
+        <h2>Complete Form Example</h2>
+        <div class="form-demo">
+          <form id="demo-form">
+            <div class="form-group">
+              <label for="name-input">Full Name *</label>
+              <text-receptor
+                id="name-input"
+                placeholder="John Doe"
+                type="text"
+                required
+              ></text-receptor>
+            </div>
+
+            <div class="form-group">
+              <label for="email-input">Email *</label>
+              <text-receptor
+                id="email-input"
+                placeholder="john@example.com"
+                type="email"
+                required
+              ></text-receptor>
+            </div>
+
+            <div class="form-group">
+              <label for="message-input">Message</label>
+              <text-receptor
+                id="message-input"
+                placeholder="Your message here..."
+                type="text"
+                maxlength="200"
+              ></text-receptor>
+            </div>
+
+            <div class="button-row">
+              <touch-receptor
+                id="form-reset"
+                label="Reset"
+                variant="ghost"
+                size="medium"
+              ></touch-receptor>
+              <touch-receptor
+                id="form-submit"
+                label="Submit"
+                variant="primary"
+                size="medium"
+                style="flex: 1"
+              ></touch-receptor>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Event Log -->
+      <div class="demo-section">
+        <h2>Event Log</h2>
+        <p style="margin-bottom: 1rem; color: #64748b">
+          Watch events in real-time as you interact with the components above
+        </p>
+        <div class="event-log" id="event-log">
+          <div style="color: #64748b; font-style: italic">
+            Events will appear here...
+          </div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="demo-section">
+        <h2>Key Features</h2>
+        <div class="features">
+          <div class="feature-card">
+            <h3>🌐 Web Standards</h3>
+            <p>
+              Built using Custom Elements v1, Shadow DOM, and HTML Templates.
+              Works in all modern browsers without polyfills.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3>🧬 Biological Metaphor</h3>
+            <p>
+              Components follow neuroscience terminology: TouchReceptor
+              (mechanoreceptor), TextReceptor (chemoreceptor), etc.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3>🚀 Zero Build Tools</h3>
+            <p>
+              No webpack, no babel, no JSX. Just import and use. This page loads
+              components directly from TypeScript compilation.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3>🎨 Shadow DOM Styling</h3>
+            <p>
+              Complete style encapsulation. No CSS conflicts. Customizable via
+              CSS custom properties.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3>⚡ Neural Signals</h3>
+            <p>
+              Components emit both standard DOM events and neural signals for
+              integration with Synapse's neural network.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3>♿ Accessible</h3>
+            <p>
+              Full keyboard navigation, ARIA support, and focus management built
+              in. Works with screen readers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Example -->
+      <div class="demo-section">
+        <h2>Usage Example</h2>
+        <pre style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; overflow-x: auto"><code>&lt;!-- Just use the custom elements in your HTML --&gt;
+&lt;touch-receptor
+  label="Click Me"
+  variant="primary"
+  size="medium"
+&gt;&lt;/touch-receptor&gt;
+
+&lt;text-receptor
+  placeholder="Enter text..."
+  type="text"
+  required
+&gt;&lt;/text-receptor&gt;
+
+&lt;script&gt;
+// Listen for events
+document.querySelector('touch-receptor')
+  .addEventListener('touch', (e) => {
+    console.log('Button touched!', e.detail);
+  });
+
+document.querySelector('text-receptor')
+  .addEventListener('data-input', (e) => {
+    console.log('Text entered:', e.detail.value);
+  });
+&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- Import Components (in production, these would be compiled to JS) -->
+    <script type="module">
+      // In production, import from compiled JS
+      // import './dist/skin/receptors/TouchReceptor.js';
+      // import './dist/skin/receptors/TextReceptor.js';
+
+      // For this demo, we'll simulate the components being loaded
+      console.log('Synapse Skin Layer Demo loaded');
+
+      // Event logging
+      const eventLog = document.getElementById('event-log');
+      let eventCount = 0;
+
+      function logEvent(type, detail) {
+        eventCount++;
+        if (eventCount === 1) {
+          eventLog.innerHTML = '';
+        }
+
+        const entry = document.createElement('div');
+        entry.className = 'event-log-entry';
+
+        const timestamp = new Date().toLocaleTimeString();
+        entry.innerHTML = `
+          <span class="timestamp">[${timestamp}]</span>
+          <span class="event-type">${type}</span>
+          ${JSON.stringify(detail, null, 2)}
+        `;
+
+        eventLog.insertBefore(entry, eventLog.firstChild);
+
+        // Keep only last 20 events
+        while (eventLog.children.length > 20) {
+          eventLog.removeChild(eventLog.lastChild);
+        }
+      }
+
+      // Add event listeners to all receptors
+      document.querySelectorAll('touch-receptor').forEach((receptor) => {
+        receptor.addEventListener('touch', (e) => {
+          logEvent('touch', {
+            label: e.target.getAttribute('label'),
+            variant: e.target.getAttribute('variant'),
+          });
+        });
+
+        receptor.addEventListener('neural-signal', (e) => {
+          logEvent('neural-signal', {
+            type: e.detail.type,
+            strength: e.detail.strength,
+          });
+        });
+      });
+
+      document.querySelectorAll('text-receptor').forEach((receptor) => {
+        receptor.addEventListener('data-input', (e) => {
+          logEvent('data-input', {
+            value: e.detail.value,
+            type: e.detail.type,
+          });
+        });
+      });
+
+      // Loading button demo
+      const loadingBtn = document.getElementById('btn-loading');
+      if (loadingBtn) {
+        loadingBtn.addEventListener('touch', () => {
+          loadingBtn.setAttribute('loading', '');
+          loadingBtn.setAttribute('label', 'Loading...');
+
+          setTimeout(() => {
+            loadingBtn.removeAttribute('loading');
+            loadingBtn.setAttribute('label', 'Success!');
+
+            setTimeout(() => {
+              loadingBtn.setAttribute('label', 'Click Me');
+            }, 1500);
+          }, 2000);
+        });
+      }
+
+      // Form handling
+      const form = document.getElementById('demo-form');
+      const submitBtn = document.getElementById('form-submit');
+      const resetBtn = document.getElementById('form-reset');
+
+      submitBtn?.addEventListener('touch', (e) => {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('name-input');
+        const emailInput = document.getElementById('email-input');
+        const messageInput = document.getElementById('message-input');
+
+        // Simple validation
+        let isValid = true;
+
+        if (!nameInput.getValue || !nameInput.getValue().trim()) {
+          nameInput.setError?.('Name is required');
+          isValid = false;
+        }
+
+        if (!emailInput.getValue || !emailInput.getValue().trim()) {
+          emailInput.setError?.('Email is required');
+          isValid = false;
+        }
+
+        if (isValid) {
+          submitBtn.setAttribute('loading', '');
+          submitBtn.setAttribute('label', 'Submitting...');
+
+          // Simulate API call
+          setTimeout(() => {
+            submitBtn.removeAttribute('loading');
+            submitBtn.setAttribute('label', 'Submitted!');
+            submitBtn.setAttribute('variant', 'secondary');
+
+            logEvent('form-submit', {
+              name: nameInput.getValue?.(),
+              email: emailInput.getValue?.(),
+              message: messageInput.getValue?.() || '',
+            });
+
+            setTimeout(() => {
+              submitBtn.setAttribute('label', 'Submit');
+              submitBtn.setAttribute('variant', 'primary');
+            }, 2000);
+          }, 1500);
+        }
+      });
+
+      resetBtn?.addEventListener('touch', () => {
+        document.getElementById('name-input')?.setValue?.('');
+        document.getElementById('email-input')?.setValue?.('');
+        document.getElementById('message-input')?.setValue?.('');
+
+        logEvent('form-reset', {});
+      });
+    </script>
+  </body>
+</html>

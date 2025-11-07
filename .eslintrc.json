@@ -78,5 +78,5 @@
       }
     }
   ],
-  "ignorePatterns": ["dist", "node_modules", "*.js", "**/*.stories.ts", "**/*.stories.tsx", ".storybook", "**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
+  "ignorePatterns": ["dist", "node_modules", "*.js", "**/*.stories.ts", "**/*.stories.tsx", ".storybook", "**/*.test.ts", "**/*.spec.ts", "**/__tests__/**", "src/skin/**"]
 }

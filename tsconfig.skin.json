@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    /* Add DOM types for Web Components */
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* Relax some strict rules for DOM APIs */
+    "noImplicitOverride": false,
+
+    /* Keep other strict settings */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
+  },
+  "include": [
+    "src/skin/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/__tests__/**",
+    "**/*.stories.ts"
+  ]
+}
