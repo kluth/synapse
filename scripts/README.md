@@ -2,10 +2,36 @@
 
 This directory contains utility scripts for the Synapse Framework project.
 
-## GitHub Issues Creation Script
+## GitHub Issues Creation Scripts
 
-### Prerequisites
+We provide two methods for creating GitHub issues:
 
+### Method 1: Node.js Script (Recommended)
+
+**Prerequisites:**
+- Node.js installed
+- GitHub Personal Access Token
+
+**Usage:**
+```bash
+# Set your GitHub token
+export GH_PAT=your_github_personal_access_token
+# Or
+export GITHUB_TOKEN=your_github_personal_access_token
+
+# Run the script
+node scripts/create-github-issues.js
+```
+
+The Node.js script will:
+- Auto-detect your repository from git remotes
+- Create all 18 issues using the GitHub REST API
+- Handle rate limiting automatically
+- Show progress for each issue created
+
+### Method 2: Bash + GitHub CLI
+
+**Prerequisites:**
 1. **GitHub CLI (gh)** must be installed:
    ```bash
    # macOS
@@ -31,12 +57,7 @@ This directory contains utility scripts for the Synapse Framework project.
    export GH_TOKEN=your_github_personal_access_token
    ```
 
-### Usage
-
-#### Create All Issues at Once
-
-Run the script from the project root:
-
+**Usage:**
 ```bash
 bash scripts/create-github-issues.sh
 ```
