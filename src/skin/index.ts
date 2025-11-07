@@ -21,6 +21,8 @@ export { Receptor } from './receptors/Receptor';
 export type { ReceptorState } from './receptors/Receptor';
 export { TouchReceptor } from './receptors/TouchReceptor';
 export type { TouchReceptorState } from './receptors/TouchReceptor';
+export { TextReceptor } from './receptors/TextReceptor';
+export type { TextReceptorState } from './receptors/TextReceptor';
 
 // Re-export types from core
 export type { Signal } from '../types';
