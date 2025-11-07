@@ -24,3 +24,27 @@ export type {
   RequestInterceptor,
   ResponseInterceptor,
 } from './core/Lung';
+
+// Protocol adapters (Bronchi)
+export { BaseProtocolAdapter } from './protocols/ProtocolAdapter';
+export type { ProtocolAdapter, ProtocolAdapterConfig } from './protocols/ProtocolAdapter';
+
+export { RestAdapter } from './protocols/RestAdapter';
+export type { RestAdapterConfig, QueryParams, RestResponse } from './protocols/RestAdapter';
+
+export { GraphQLAdapter } from './protocols/GraphQLAdapter';
+export type {
+  GraphQLAdapterConfig,
+  GraphQLOperationType,
+  GraphQLVariables,
+  GraphQLError,
+  GraphQLResponse,
+  GraphQLRequest,
+} from './protocols/GraphQLAdapter';
+
+export { WebSocketAdapter } from './protocols/WebSocketAdapter';
+export type {
+  WebSocketAdapterConfig,
+  WebSocketState,
+  WebSocketMessage,
+} from './protocols/WebSocketAdapter';
