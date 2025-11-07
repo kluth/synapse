@@ -63,3 +63,41 @@ export type { ObservationConfig } from './specimens/Observation';
 
 export { Dissection, DissectionBuilder, createDissection } from './specimens/Dissection';
 export type { PropType, PropDefinition, ComponentStructure } from './specimens/Dissection';
+
+// Microscope instruments
+export { Microscope } from './instruments/Microscope';
+export type {
+  InspectionMode,
+  MicroscopeLens,
+  InspectionResult,
+  InspectionIssue,
+  MicroscopeConfig,
+} from './instruments/Microscope';
+
+export { SignalTracer } from './instruments/SignalTracer';
+export type { SignalTrace, SignalFlowGraph, SignalTracerConfig } from './instruments/SignalTracer';
+
+export { StateExplorer } from './instruments/StateExplorer';
+export type {
+  StateSnapshot,
+  StateDiff,
+  TimeTravelAction,
+  StateExplorerConfig,
+} from './instruments/StateExplorer';
+
+export { PerformanceProfiler } from './instruments/PerformanceProfiler';
+export type {
+  PerformanceMetric,
+  RenderProfile,
+  PerformanceBottleneck,
+  PerformanceProfilerConfig,
+} from './instruments/PerformanceProfiler';
+
+export { HealthMonitor } from './instruments/HealthMonitor';
+export type {
+  HealthStatus,
+  HealthCheck,
+  HealthReport,
+  ErrorEntry,
+  HealthMonitorConfig,
+} from './instruments/HealthMonitor';
