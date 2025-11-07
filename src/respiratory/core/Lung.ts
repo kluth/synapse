@@ -238,8 +238,8 @@ export class Lung {
     try {
       const fetchOptions: RequestInit = {
         method: options.method ?? 'GET',
-        headers: options.headers,
         signal: options.signal ?? controller.signal,
+        ...(options.headers !== undefined && { headers: options.headers }),
       };
 
       // Add body for methods that support it
