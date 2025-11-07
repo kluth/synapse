@@ -410,12 +410,12 @@ describe('Artery', () => {
       await artery.stop();
     });
 
-    it('should not send when stream is stopped', async () => {
+    it('should not send when stream is stopped', () => {
       const artery = new Artery('test-stream');
 
-      await expect(
-        artery.send(new BloodCell({ data: 'test' }))
-      ).rejects.toThrow('Artery is not active');
+      expect(() => {
+        artery.send(new BloodCell({ data: 'test' }));
+      }).toThrow('Artery is not active');
     });
   });
 

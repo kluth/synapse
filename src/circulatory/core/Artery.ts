@@ -1,4 +1,4 @@
-import { BloodCell } from './BloodCell';
+import type { BloodCell } from './BloodCell';
 import { EventEmitter } from 'events';
 
 /**
@@ -143,7 +143,7 @@ export class Artery extends EventEmitter {
   /**
    * Start the stream
    */
-  public async start(): Promise<void> {
+  public start(): void {
     if (this.active) {
       return;
     }
@@ -185,21 +185,21 @@ export class Artery extends EventEmitter {
   /**
    * Pause the stream
    */
-  public async pause(): Promise<void> {
+  public pause(): void {
     this.paused = true;
   }
 
   /**
    * Resume the stream
    */
-  public async resume(): Promise<void> {
+  public resume(): void {
     this.paused = false;
   }
 
   /**
    * Send a message through the stream
    */
-  public async send(cell: BloodCell): Promise<void> {
+  public send(cell: BloodCell): void {
     if (!this.active) {
       throw new Error('Artery is not active');
     }
@@ -319,24 +319,22 @@ export class Artery extends EventEmitter {
    * Start processing loop
    */
   private startProcessing(): void {
-    this.processingLoop = setTimeout(() => this.processLoop(), 0);
+    this.processingLoop = setTimeout(() => {
+      void this.processLoop();
+    }, 0);
   }
 
   /**
    * Processing loop
    */
   private async processLoop(): Promise<void> {
-    if (!this.active) {
-      return;
-    }
-
     // Check low water mark before processing
     if (this.paused && this.buffer.length < this.options.lowWaterMark) {
       this.paused = false;
     }
 
     // Continue processing even when paused to drain buffer (but slower)
-    while (this.buffer.length > 0 && this.active) {
+    while (this.active && this.buffer.length > 0) {
       // Slow down processing when paused to simulate backpressure
       if (this.paused) {
         await this.sleep(20);
@@ -359,9 +357,11 @@ export class Artery extends EventEmitter {
     // Calculate throughput
     this.calculateThroughput();
 
-    // Continue loop
+    // Schedule next iteration if stream is still active
     if (this.active) {
-      this.processingLoop = setTimeout(() => this.processLoop(), 10);
+      this.processingLoop = setTimeout(() => {
+        void this.processLoop();
+      }, 10);
     }
   }
 
@@ -377,17 +377,17 @@ export class Artery extends EventEmitter {
     const startTime = Date.now();
 
     try {
-      // Apply filters
-      for (const filter of this.filters) {
-        if (!filter(cell)) {
-          return; // Filtered out
-        }
-      }
-
-      // Apply transformations
+      // Apply transformations first
       let transformed = cell;
       for (const transform of this.transformations) {
         transformed = transform(transformed);
+      }
+
+      // Apply filters after transformations
+      for (const filter of this.filters) {
+        if (!filter(transformed)) {
+          return; // Filtered out
+        }
       }
 
       // Handle batching
@@ -423,14 +423,14 @@ export class Artery extends EventEmitter {
 
     // Check size-based batching
     if (this.options.batchSize > 0 && this.batch.length >= this.options.batchSize) {
-      this.flushBatch();
+      void this.flushBatch();
       return;
     }
 
     // Start timeout-based batching
     if (this.options.batchTimeout > 0 && !this.batchTimer) {
       this.batchTimer = setTimeout(() => {
-        this.flushBatch();
+        void this.flushBatch();
       }, this.options.batchTimeout);
     }
   }
@@ -496,7 +496,7 @@ export class Artery extends EventEmitter {
     const windowStart = now - 1000; // 1 second window
 
     // Clean old timestamps
-    this.messageTimestamps = this.messageTimestamps.filter(ts => ts > windowStart);
+    this.messageTimestamps = this.messageTimestamps.filter((ts) => ts > windowStart);
 
     // Check burst tokens
     if (this.burstTokens > 0) {
@@ -512,10 +512,7 @@ export class Artery extends EventEmitter {
     // Refill burst tokens gradually
     if (this.options.burstSize > 0) {
       const refillRate = this.options.burstSize / 10; // Refill over ~10 seconds
-      this.burstTokens = Math.min(
-        this.options.burstSize,
-        this.burstTokens + refillRate * 0.1
-      );
+      this.burstTokens = Math.min(this.options.burstSize, this.burstTokens + refillRate * 0.1);
     }
 
     return false;
@@ -528,7 +525,7 @@ export class Artery extends EventEmitter {
     const now = Date.now();
     const windowStart = now - 1000;
 
-    const recentMessages = this.messageTimestamps.filter(ts => ts > windowStart);
+    const recentMessages = this.messageTimestamps.filter((ts) => ts > windowStart);
     this.stats.throughput = recentMessages.length;
 
     // Calculate average latency
@@ -567,6 +564,6 @@ export class Artery extends EventEmitter {
    * Sleep utility
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

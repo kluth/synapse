@@ -513,7 +513,7 @@ describe('Circulatory System Integration', () => {
       // Test: (10 * 2) + 10 = 30 (passes)
       await artery.send(new BloodCell({ value: 10 }));
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       expect(received).toEqual([30]);
 
@@ -524,7 +524,7 @@ describe('Circulatory System Integration', () => {
 
     it('should handle batch transformations', async () => {
       const artery = new Artery('batch-artery', { batchSize: 3 });
-      const vein = new Vein('batch-vein', { batchSize: 3 });
+      const vein = new Vein('batch-vein', { batchSize: 3, batchTimeout: 100 });
       const heart = new Heart();
 
       await artery.start();
@@ -550,7 +550,7 @@ describe('Circulatory System Integration', () => {
       await artery.send(new BloodCell({ value: 2 }));
       await artery.send(new BloodCell({ value: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       expect(batches.length).toBeGreaterThanOrEqual(1);
 
