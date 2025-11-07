@@ -37,7 +37,6 @@ export type { Viewport, IsolationMode, StageConfig, MountedComponent } from './c
 export { Amphitheater } from './core/Amphitheater';
 export type {
   SpecimenCategory,
-  SpecimenMetadata,
   AmphitheaterTheme,
   AmphitheaterLayout,
   AmphitheaterConfig,
@@ -54,3 +53,13 @@ export type {
 
 export type { TheaterConfig, TheaterTheme } from './core/TheaterConfig';
 export { DEFAULT_THEATER_CONFIG } from './core/TheaterConfig';
+
+// Specimen system
+export { Specimen } from './specimens/Specimen';
+export type { SpecimenMetadata, SpecimenContext, SpecimenRenderFn } from './specimens/Specimen';
+
+export { Observation, ObservationBuilder, createObservations } from './specimens/Observation';
+export type { ObservationConfig } from './specimens/Observation';
+
+export { Dissection, DissectionBuilder, createDissection } from './specimens/Dissection';
+export type { PropType, PropDefinition, ComponentStructure } from './specimens/Dissection';
