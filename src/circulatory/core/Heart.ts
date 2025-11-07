@@ -312,10 +312,19 @@ export class Heart extends EventEmitter {
   /**
    * Convert topic pattern to regex
    */
-  private topicToPattern(topic: string): RegExp {
-    // Convert wildcard patterns like "user.*" to regex
-    const pattern = topic.replace(/\./g, '\\.').replace(/\*/g, '[^.]+').replace(/#/g, '.+');
+  // Escape regex meta-characters except for '*' and '#'
+  private escapeRegExp(str: string): string {
+    // Escape all regex meta-characters except * and #
+    // ([.*+?^${}()|[\]\\])
+    return str.replace(/([.+?^${}()|[\]\\])/g, '\\$1');
+  }
 
+  private topicToPattern(topic: string): RegExp {
+    // First escape regex meta-characters except * and #
+    // (*) and (#) wildcards are NOT escaped so we can replace them as needed
+    let escaped = this.escapeRegExp(topic);
+    // Convert wildcard patterns: * => [^.]+, # => .+
+    const pattern = escaped.replace(/\*/g, '[^.]+').replace(/#/g, '.+');
     return new RegExp(`^${pattern}$`);
   }
 
