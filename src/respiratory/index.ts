@@ -78,3 +78,30 @@ export type {
   OpenAPITag,
   OpenAPIGeneratorConfig,
 } from './resources/OpenAPIGenerator';
+
+// Resource management (Oxygen)
+export { Resource } from './resources/Resource';
+export type {
+  ResourceConfig,
+  ResourceHealth,
+  ResourceState,
+  ResourceStats,
+} from './resources/Resource';
+
+export { ResourcePool } from './resources/ResourcePool';
+export type { PoolConfig, PoolStats } from './resources/ResourcePool';
+
+export { DatabaseResource } from './resources/DatabaseResource';
+export type { DatabaseConfig, DatabaseConnection, Transaction } from './resources/DatabaseResource';
+
+export { CacheResource } from './resources/CacheResource';
+export type { CacheConfig, CacheClient } from './resources/CacheResource';
+
+export { StorageResource } from './resources/StorageResource';
+export type {
+  StorageConfig,
+  StorageClient,
+  StorageObject,
+  StorageObjectMetadata,
+  UploadOptions,
+} from './resources/StorageResource';
