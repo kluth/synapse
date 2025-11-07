@@ -163,8 +163,13 @@ export class Route {
   /**
    * Convert route path to regex
    */
+  // Escape RegExp meta-characters in path, then replace param segments
   private pathToRegex(path: string): RegExp {
-    const pattern = path.replace(/:[^/]+/g, '([^/]+)').replace(/\//g, '\\/');
+    // Escape RegExp meta-characters (including backslashes)
+    const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Replace params (:xyz) after escaping
+    const escapedPath = escapeRegExp(path);
+    const pattern = escapedPath.replace(/\\:[^\\/]+/g, '([^/]+)').replace(/\\\//g, '\\/');
     return new RegExp(`^${pattern}$`);
   }
 
