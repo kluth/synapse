@@ -169,7 +169,7 @@ export class Route {
     const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     // Replace params (:xyz) after escaping
     const escapedPath = escapeRegExp(path);
-    const pattern = escapedPath.replace(/\\:[^\\/]+/g, '([^/]+)').replace(/\\\//g, '\\/');
+    const pattern = escapedPath.replace(/\\:[^\\/]+/g, '([^/]+)').replace(/\//g, '\\/');
     return new RegExp(`^${pattern}$`);
   }
 
