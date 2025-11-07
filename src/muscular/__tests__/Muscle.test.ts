@@ -40,7 +40,7 @@ describe('Muscle', () => {
         'InputParams',
         new Schema({
           x: new FieldSchema('number'),
-        })
+        }),
       );
 
       const addOne = (params: { x: number }) => params.x + 1;
@@ -56,7 +56,7 @@ describe('Muscle', () => {
         'InputParams',
         new Schema({
           x: new FieldSchema('number'),
-        })
+        }),
       );
 
       const addOne = (params: { x: number }) => params.x + 1;
@@ -72,7 +72,7 @@ describe('Muscle', () => {
         'OutputResult',
         new Schema({
           result: new FieldSchema('number'),
-        })
+        }),
       );
 
       const compute = () => ({ result: 42 });
@@ -88,7 +88,7 @@ describe('Muscle', () => {
         'OutputResult',
         new Schema({
           result: new FieldSchema('number'),
-        })
+        }),
       );
 
       const compute = () => ({ result: 'invalid' });

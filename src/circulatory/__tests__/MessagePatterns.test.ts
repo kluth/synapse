@@ -1,12 +1,6 @@
 import { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
-import {
-  RequestResponse,
-  PublishSubscribe,
-  FireAndForget,
-  Saga,
-  EventSourcing,
-} from '../patterns';
+import { RequestResponse, PublishSubscribe, FireAndForget, Saga, EventSourcing } from '../patterns';
 
 describe('Message Patterns', () => {
   describe('Request-Response', () => {
@@ -52,13 +46,11 @@ describe('Message Patterns', () => {
 
     it('should timeout on no response', async () => {
       rr.onRequest('slow', async () => {
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
         return { done: true };
       });
 
-      await expect(
-        rr.request('slow', {}, { timeout: 100 })
-      ).rejects.toThrow('Request timeout');
+      await expect(rr.request('slow', {}, { timeout: 100 })).rejects.toThrow('Request timeout');
     });
 
     it('should handle request errors', async () => {
@@ -66,9 +58,7 @@ describe('Message Patterns', () => {
         throw new Error('Request failed');
       });
 
-      await expect(
-        rr.request('fail', {})
-      ).rejects.toThrow('Request failed');
+      await expect(rr.request('fail', {})).rejects.toThrow('Request failed');
     });
 
     it('should support request correlation', async () => {
@@ -109,7 +99,7 @@ describe('Message Patterns', () => {
 
       await pubsub.publish('news', { title: 'Breaking News' });
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received1).toHaveLength(1);
       expect(received2).toHaveLength(1);
@@ -125,7 +115,7 @@ describe('Message Patterns', () => {
       await pubsub.publish('user.updated', { id: 2 });
       await pubsub.publish('order.created', { id: 3 });
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(2);
     });
@@ -138,12 +128,12 @@ describe('Message Patterns', () => {
       });
 
       await pubsub.publish('news', { id: 1 });
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       unsubscribe();
 
       await pubsub.publish('news', { id: 2 });
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
     });
@@ -161,7 +151,7 @@ describe('Message Patterns', () => {
 
       await pubsub.publish('test', { data: 'test' });
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Second subscriber should still receive
       expect(received).toHaveLength(1);
@@ -193,14 +183,14 @@ describe('Message Patterns', () => {
       // Should return immediately
       expect(received).toHaveLength(0);
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
     });
 
     it('should not block on slow handlers', async () => {
       faf.onMessage('slow', async () => {
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
       });
 
       const start = Date.now();
@@ -222,7 +212,7 @@ describe('Message Patterns', () => {
       await faf.send('priority-test', { id: 2 }, { priority: 10 });
       await faf.send('priority-test', { id: 3 }, { priority: 5 });
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Should process in priority order: 2, 3, 1
       expect(received).toEqual([2, 3, 1]);
@@ -421,7 +411,7 @@ describe('Message Patterns', () => {
       await es.append('stream-1', 'UserCreated', { name: 'Bob' });
       await es.append('stream-1', 'OrderCreated', { product: 'Widget' });
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(projection.totalUsers).toBe(2);
       expect(projection.totalOrders).toBe(1);

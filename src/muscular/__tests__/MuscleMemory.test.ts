@@ -265,18 +265,20 @@ describe('MuscleMemory', () => {
       let loaderCalls = 0;
       const loader = jest.fn(async (key: string) => {
         loaderCalls++;
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return `loaded-${key}`;
       });
 
       // Make 5 concurrent requests for the same key
-      const promises = Array(5).fill(null).map(() => cache.getOrLoad('key1', loader));
+      const promises = Array(5)
+        .fill(null)
+        .map(() => cache.getOrLoad('key1', loader));
 
       jest.runAllTimers();
       const results = await Promise.all(promises);
 
       // All should get the same value
-      expect(results.every(r => r === 'loaded-key1')).toBe(true);
+      expect(results.every((r) => r === 'loaded-key1')).toBe(true);
       // Loader should only be called once (not 5 times)
       expect(loaderCalls).toBe(1);
     });

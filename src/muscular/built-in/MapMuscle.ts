@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**

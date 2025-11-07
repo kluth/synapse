@@ -74,8 +74,8 @@ export class Artery extends EventEmitter {
   private paused = false;
   private buffer: BloodCell[] = [];
   private batch: BloodCell[] = [];
-  private batchTimer?: NodeJS.Timeout;
-  private processingLoop?: NodeJS.Timeout;
+  private batchTimer?: NodeJS.Timeout | undefined;
+  private processingLoop?: NodeJS.Timeout | undefined;
 
   // Handlers
   private dataHandlers: DataHandler[] = [];

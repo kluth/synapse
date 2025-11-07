@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Cache entry with metadata
  */
 interface CacheEntry<T> {
   value: T;
-  expiresAt?: number;
-  tags?: string[];
+  expiresAt?: number | undefined;
+  tags?: string[] | undefined;
   createdAt: number;
 }
 
@@ -176,7 +178,7 @@ export class MuscleMemory<T> {
   public async getOrLoad(
     key: string,
     loader: (key: string) => Promise<T>,
-    options?: SetOptions
+    options?: SetOptions,
   ): Promise<T> {
     // Check if value is in cache
     const cached = this.get(key);
@@ -192,12 +194,12 @@ export class MuscleMemory<T> {
 
     // Start loading
     const loadPromise = loader(key)
-      .then(value => {
+      .then((value) => {
         this.set(key, value, options);
         this.pendingLoads.delete(key);
         return value;
       })
-      .catch(error => {
+      .catch((error) => {
         this.pendingLoads.delete(key);
         throw error;
       });
@@ -230,7 +232,7 @@ export class MuscleMemory<T> {
     const keysToDelete: string[] = [];
 
     for (const [key, entry] of this.cache.entries()) {
-      if (entry.tags && entry.tags.includes(tag)) {
+      if (entry.tags?.includes(tag)) {
         keysToDelete.push(key);
       }
     }

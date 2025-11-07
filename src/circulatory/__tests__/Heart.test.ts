@@ -23,7 +23,7 @@ describe('Heart', () => {
       await heart.publish('test-topic', new BloodCell({ data: 'hello' }));
 
       // Wait for async processing
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(messages).toHaveLength(1);
       expect(messages[0].payload).toEqual({ data: 'hello' });
@@ -38,7 +38,7 @@ describe('Heart', () => {
 
       await heart.publish('test-topic', new BloodCell({ data: 'hello' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(messages1).toHaveLength(1);
       expect(messages2).toHaveLength(1);
@@ -50,7 +50,7 @@ describe('Heart', () => {
       heart.subscribe('topic-a', (cell) => messages.push(cell));
       await heart.publish('topic-b', new BloodCell({ data: 'hello' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(messages).toHaveLength(0);
     });
@@ -62,7 +62,7 @@ describe('Heart', () => {
       unsubscribe();
 
       await heart.publish('test-topic', new BloodCell({ data: 'hello' }));
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(messages).toHaveLength(0);
     });
@@ -81,7 +81,7 @@ describe('Heart', () => {
       await heart.publish('test-topic', new BloodCell({ id: 2 }, { priority: 5 }));
       await heart.publish('test-topic', new BloodCell({ id: 3 }, { priority: 10 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Should process in order: high, medium, low
       expect(processedOrder).toEqual([3, 2, 1]);
@@ -98,7 +98,7 @@ describe('Heart', () => {
       await heart.publish('test-topic', new BloodCell({ id: 2 }, { priority: 5 }));
       await heart.publish('test-topic', new BloodCell({ id: 3 }, { priority: 5 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(processedOrder).toEqual([1, 2, 3]);
     });
@@ -117,7 +117,7 @@ describe('Heart', () => {
       });
 
       await heart.publish('test-topic', new BloodCell({ data: 'test' }));
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(dlqMessages).toHaveLength(1);
       expect(dlqMessages[0].payload).toEqual({ data: 'test' });
@@ -134,13 +134,9 @@ describe('Heart', () => {
         throw new Error('Processing failed');
       });
 
-      await heart.publish(
-        'test-topic',
-        new BloodCell({ data: 'test' }),
-        { maxRetries: 3 }
-      );
+      await heart.publish('test-topic', new BloodCell({ data: 'test' }), { maxRetries: 3 });
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       expect(attempts).toBeGreaterThanOrEqual(2); // At least initial + some retries
       expect(dlqMessages).toHaveLength(1);
@@ -157,13 +153,9 @@ describe('Heart', () => {
         // Success - no error
       });
 
-      await heart.publish(
-        'test-topic',
-        new BloodCell({ data: 'test' }),
-        { maxRetries: 3 }
-      );
+      await heart.publish('test-topic', new BloodCell({ data: 'test' }), { maxRetries: 3 });
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(attempts).toBe(1); // Only once
       expect(dlqMessages).toHaveLength(0);
@@ -182,7 +174,7 @@ describe('Heart', () => {
       await heart.publish('user.updated', new BloodCell({ id: 2 }));
       await heart.publish('order.created', new BloodCell({ id: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(userMessages).toHaveLength(2);
       expect(orderMessages).toHaveLength(1);
@@ -200,7 +192,7 @@ describe('Heart', () => {
       await heart.publish('test-topic', new BloodCell({ id: 1 }, { type: 'UserCreated' }));
       await heart.publish('test-topic', new BloodCell({ id: 2 }, { type: 'UserUpdated' }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(messages).toHaveLength(1);
     });
@@ -219,13 +211,12 @@ describe('Heart', () => {
         messages.push(cell);
       });
 
-      await heart.publish(
-        'test-topic',
-        new BloodCell({ data: 'test' }),
-        { deliveryMode: 'at-least-once', maxRetries: 1 }
-      );
+      await heart.publish('test-topic', new BloodCell({ data: 'test' }), {
+        deliveryMode: 'at-least-once',
+        maxRetries: 1,
+      });
 
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(messages).toHaveLength(1); // Eventually delivered
     });
@@ -244,7 +235,7 @@ describe('Heart', () => {
       const cell = new BloodCell({ data: 'test' });
       await heart.publish('test-topic', cell);
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(acks).toContain(cell.id);
     });
@@ -271,13 +262,13 @@ describe('Heart', () => {
       await persistentHeart.publish('test-topic', new BloodCell({ data: 'test2' }));
 
       // Wait for queue to process
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Now subscribe and replay persisted messages
       persistentHeart.subscribe('test-topic', (cell) => messages.push(cell));
       await persistentHeart.replay('test-topic');
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Should receive 2 messages from replay
       expect(messages).toHaveLength(2);
@@ -295,10 +286,10 @@ describe('Heart', () => {
 
       // Create an already expired message
       const expiredCell = new BloodCell({ data: 'test' }, { ttl: 1 });
-      await new Promise(resolve => setTimeout(resolve, 10)); // Wait for expiration
+      await new Promise((resolve) => setTimeout(resolve, 10)); // Wait for expiration
 
       await heart.publish('test-topic', expiredCell);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(messages).toHaveLength(0);
     });
@@ -312,7 +303,7 @@ describe('Heart', () => {
       await heart.publish('test-topic', new BloodCell({ data: 2 }));
       await heart.publish('test-topic', new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = heart.getStats();
       expect(stats.published).toBeGreaterThanOrEqual(3);

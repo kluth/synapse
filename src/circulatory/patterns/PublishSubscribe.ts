@@ -1,4 +1,6 @@
-import { Heart } from '../core/Heart';
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 
 /**

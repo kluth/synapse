@@ -2,13 +2,7 @@ import { Heart } from '../core/Heart';
 import { Artery } from '../core/Artery';
 import { Vein } from '../core/Vein';
 import { BloodCell } from '../core/BloodCell';
-import {
-  RequestResponse,
-  PublishSubscribe,
-  FireAndForget,
-  Saga,
-  EventSourcing,
-} from '../patterns';
+import { RequestResponse, PublishSubscribe, FireAndForget, Saga, EventSourcing } from '../patterns';
 
 describe('Circulatory System Integration', () => {
   describe('Heart + Artery + Vein Integration', () => {
@@ -50,7 +44,7 @@ describe('Circulatory System Integration', () => {
       // Send through artery
       await artery.send(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(received).toHaveLength(1);
       expect(received[0].payload).toEqual({ data: 'test' });
@@ -79,7 +73,7 @@ describe('Circulatory System Integration', () => {
         await artery.send(new BloodCell({ id: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(received.length).toBeGreaterThanOrEqual(3);
       await artery.stop();
@@ -104,7 +98,7 @@ describe('Circulatory System Integration', () => {
         await artery.send(new BloodCell({ id: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       expect(received).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
@@ -142,7 +136,7 @@ describe('Circulatory System Integration', () => {
       // Make request
       const result = await rr.request('createUser', { name: 'John' });
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(result.name).toBe('John');
       expect(notifications).toHaveLength(1);
@@ -176,7 +170,7 @@ describe('Circulatory System Integration', () => {
         },
       ]);
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(result.success).toBe(true);
 
@@ -211,7 +205,7 @@ describe('Circulatory System Integration', () => {
         await heart.publish('perf-test', new BloodCell({ id: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const elapsed = Date.now() - start;
 
@@ -232,7 +226,7 @@ describe('Circulatory System Integration', () => {
         await heart.publish('throughput-test', new BloodCell({ id: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const stats = heart.getStats();
 
@@ -255,7 +249,7 @@ describe('Circulatory System Integration', () => {
       }
 
       await Promise.all(promises);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       expect(received.length).toBeGreaterThanOrEqual(90);
     });
@@ -275,12 +269,12 @@ describe('Circulatory System Integration', () => {
         promises.push(
           heart.publish('topic-1', new BloodCell({ id: i })),
           heart.publish('topic-2', new BloodCell({ id: i })),
-          heart.publish('topic-3', new BloodCell({ id: i }))
+          heart.publish('topic-3', new BloodCell({ id: i })),
         );
       }
 
       await Promise.all(promises);
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       expect(topic1.length).toBeGreaterThanOrEqual(80);
       expect(topic2.length).toBeGreaterThanOrEqual(80);
@@ -306,12 +300,12 @@ describe('Circulatory System Integration', () => {
       const subscribePromises = [];
       for (let i = 0; i < 10; i++) {
         subscribePromises.push(
-          new Promise<void>(resolve => {
+          new Promise<void>((resolve) => {
             heart.subscribe('concurrent-topic', (cell) => {
               received.push(cell);
             });
             resolve();
-          })
+          }),
         );
       }
 
@@ -320,13 +314,11 @@ describe('Circulatory System Integration', () => {
       // Concurrent publish
       const publishPromises = [];
       for (let i = 0; i < 10; i++) {
-        publishPromises.push(
-          heart.publish('concurrent-topic', new BloodCell({ id: i }))
-        );
+        publishPromises.push(heart.publish('concurrent-topic', new BloodCell({ id: i })));
       }
 
       await Promise.all(publishPromises);
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Each message should be delivered to all 10 subscribers
       expect(received.length).toBeGreaterThanOrEqual(90); // 10 messages * 10 subscribers = 100
@@ -339,7 +331,7 @@ describe('Circulatory System Integration', () => {
       heart.subscribe('concurrent-processing', async (cell) => {
         const start = Date.now();
         // Simulate some processing
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
         processedCount++;
         processingTimes.push(Date.now() - start);
       });
@@ -351,7 +343,7 @@ describe('Circulatory System Integration', () => {
       }
 
       await Promise.all(promises);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       expect(processedCount).toBeGreaterThanOrEqual(45);
     });
@@ -377,11 +369,11 @@ describe('Circulatory System Integration', () => {
         })(),
       ]);
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Check that messages from each source are in order
-      const sourceA = received.filter(m => m.source === 'A');
-      const sourceB = received.filter(m => m.source === 'B');
+      const sourceA = received.filter((m) => m.source === 'A');
+      const sourceB = received.filter((m) => m.source === 'B');
 
       expect(sourceA.length).toBe(10);
       expect(sourceB.length).toBe(10);
@@ -425,7 +417,7 @@ describe('Circulatory System Integration', () => {
         await heart.publish('error-recovery', new BloodCell({ id: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       expect(errorCount).toBeGreaterThan(0);
       expect(received.length).toBeGreaterThan(0);
@@ -445,13 +437,9 @@ describe('Circulatory System Integration', () => {
         throw new Error('Always fails');
       });
 
-      await heart.publish(
-        'dlq-test',
-        new BloodCell({ data: 'test' }),
-        { maxRetries: 2 }
-      );
+      await heart.publish('dlq-test', new BloodCell({ data: 'test' }), { maxRetries: 2 });
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       expect(attempts).toBeGreaterThanOrEqual(2);
       expect(dlq).toHaveLength(1);
@@ -472,7 +460,7 @@ describe('Circulatory System Integration', () => {
       });
 
       await heart.publish('crash-test', new BloodCell({ data: 'test' }));
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(received2).toHaveLength(1);
     });
@@ -513,7 +501,7 @@ describe('Circulatory System Integration', () => {
       // Test: (10 * 2) + 10 = 30 (passes)
       await artery.send(new BloodCell({ value: 10 }));
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       expect(received).toEqual([30]);
 
@@ -550,7 +538,7 @@ describe('Circulatory System Integration', () => {
       await artery.send(new BloodCell({ value: 2 }));
       await artery.send(new BloodCell({ value: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       expect(batches.length).toBeGreaterThanOrEqual(1);
 
@@ -618,7 +606,7 @@ describe('Circulatory System Integration', () => {
       // Create order
       const result = await rr.request('createOrder', { total: 100, items: ['Widget'] });
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       expect(result.success).toBe(true);
       expect(orderEvents.length).toBeGreaterThanOrEqual(3);
@@ -655,7 +643,7 @@ describe('Circulatory System Integration', () => {
       // Trigger workflow
       await pubsub.publish('user.created', { id: 1, name: 'John' });
 
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(userServiceEvents).toHaveLength(1);
       expect(orderServiceEvents).toHaveLength(1);

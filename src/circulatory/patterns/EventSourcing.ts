@@ -1,4 +1,5 @@
-import { Heart } from '../core/Heart';
+/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 
 /**
@@ -58,11 +59,7 @@ export class EventSourcing {
   /**
    * Append event to stream
    */
-  public async append(
-    streamId: string,
-    type: string,
-    payload: any
-  ): Promise<void> {
+  public async append(streamId: string, type: string, payload: any): Promise<void> {
     const cell = new BloodCell(payload, {
       type,
       metadata: { streamId },
@@ -77,7 +74,7 @@ export class EventSourcing {
   public async replay(streamId: string): Promise<Event[]> {
     const messages = await this.heart.getPersistedMessages(`es.${streamId}`);
 
-    return messages.map(cell => ({
+    return messages.map((cell) => ({
       id: cell.id,
       streamId,
       type: cell.type!,
@@ -92,7 +89,7 @@ export class EventSourcing {
   public async rebuildState<T>(
     streamId: string,
     reducer: StateReducer<T>,
-    initialState: T = {} as T
+    initialState: T = {} as T,
   ): Promise<T> {
     const events = await this.replay(streamId);
 
@@ -152,7 +149,7 @@ export class EventSourcing {
   private async handleEvent(cell: BloodCell): Promise<void> {
     const event: Event = {
       id: cell.id,
-      streamId: cell.metadata.streamId,
+      streamId: cell.metadata['streamId'] as string,
       type: cell.type!,
       payload: cell.payload,
       timestamp: cell.timestamp,
