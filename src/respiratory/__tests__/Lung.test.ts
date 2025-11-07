@@ -278,13 +278,7 @@ describe.skip('Lung - HTTP Client', () => {
 
   describe('Resilience Integration', () => {
     it('should retry failed requests', async () => {
-      const mockFailure = {
-        ok: false,
-        status: 500,
-        statusText: 'Internal Server Error',
-        headers: new Map(),
-        json: async () => ({}),
-      };
+
 
       const mockSuccess = {
         ok: true,
