@@ -2,7 +2,6 @@ import { Muscle } from '../core/Muscle';
 import { MuscleGroup } from '../core/MuscleGroup';
 import { MuscleMemory } from '../core/MuscleMemory';
 import {
-  ComputeMuscle,
   TransformMuscle,
   AggregateMuscle,
   FilterMuscle,
