@@ -17,6 +17,7 @@ const config: StorybookConfig = {
   },
   async viteFinal(config) {
     return mergeConfig(config, {
+      base: process.env.NODE_ENV === 'production' ? '/synapse/' : '/',
       resolve: {
         alias: {
           events: 'events',
