@@ -48,3 +48,33 @@ export type {
   WebSocketState,
   WebSocketMessage,
 } from './protocols/WebSocketAdapter';
+
+// API endpoints (Alveoli)
+export { Route } from './resources/Route';
+export type {
+  RouteParameter,
+  RouteRequestBody,
+  RouteResponse,
+  RouteContext,
+  RouteHandler,
+  RouteMiddleware,
+  RouteConfig,
+} from './resources/Route';
+
+export { Router, RouterError } from './resources/Router';
+export type { RouterRequest, RouterResponse, RouterConfig } from './resources/Router';
+
+export { OpenAPIGenerator } from './resources/OpenAPIGenerator';
+export type {
+  OpenAPISpec,
+  OpenAPIInfo,
+  OpenAPIServer,
+  OpenAPIPathItem,
+  OpenAPIOperation,
+  OpenAPIParameter,
+  OpenAPIRequestBody,
+  OpenAPIResponse,
+  OpenAPIComponents,
+  OpenAPITag,
+  OpenAPIGeneratorConfig,
+} from './resources/OpenAPIGenerator';
