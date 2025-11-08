@@ -25,6 +25,16 @@ export { NeuralCircuit } from './network';
 // Neuroplasticity (self-healing and optimization)
 export { Neuroplasticity } from './plasticity';
 
+// Immune System (security and authentication)
+export { Antibody, TCell } from './immune';
+export type {
+  ThreatType,
+  ThreatSeverity,
+  DetectedThreat,
+  AuthenticationResult,
+  Session,
+} from './immune';
+
 // Interfaces
 export type { INeuralNode, IConnection } from './interfaces';
 
