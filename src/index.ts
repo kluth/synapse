@@ -26,13 +26,14 @@ export { NeuralCircuit } from './network';
 export { Neuroplasticity } from './plasticity';
 
 // Immune System (security and authentication)
-export { Antibody, TCell, BCell } from './immune';
+export { Antibody, TCell, BCell, Macrophage } from './immune';
 export type {
   ThreatType,
   ThreatSeverity,
   DetectedThreat,
   AuthenticationResult,
   AuthorizationResult,
+  SanitizationResult,
   Session,
   Permission,
   Role,

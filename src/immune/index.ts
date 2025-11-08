@@ -8,9 +8,9 @@
  * - Antibody: Threat detection system
  * - TCell: Authentication system
  * - BCell: Authorization system
+ * - Macrophage: Input sanitization system
  *
  * Components planned:
- * - Macrophage: Input sanitization
  * - Lymphocyte: Security policy management
  */
 
@@ -51,3 +51,14 @@ export type {
   BCellConfig,
   AuthorizationStatistics,
 } from './authorization/BCell';
+
+// Macrophage - Input Sanitization
+export { Macrophage } from './sanitization/Macrophage';
+export type {
+  SanitizationType,
+  SanitizationResult,
+  CustomRule,
+  ValidationResult,
+  MacrophageConfig,
+  SanitizationStatistics,
+} from './sanitization/Macrophage';
