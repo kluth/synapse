@@ -5,6 +5,8 @@
 
 export { LineChart } from './LineChart';
 export { BarChart } from './BarChart';
+export { PieChart } from './PieChart';
+export { ScatterPlot } from './ScatterPlot';
 
 export type {
   ChartDataPoint,
@@ -14,6 +16,8 @@ export type {
   LineChartProps,
   BarChartProps,
   PieChartProps,
+  PieDataPoint,
+  PieChartState,
   ScatterPlotProps,
   BaseChartState,
   ChartTheme,

@@ -76,14 +76,20 @@ export interface BarChartProps extends BaseChartProps {
 }
 
 /**
+ * Pie chart data point
+ */
+export interface PieDataPoint {
+  value: number;
+  label: string;
+  color?: string;
+  metadata?: Record<string, unknown>;
+}
+
+/**
  * Pie chart specific props
  */
 export interface PieChartProps extends ComponentProps {
-  data: Array<{
-    value: number;
-    label: string;
-    color?: string;
-  }>;
+  data: PieDataPoint[];
   width: number;
   height: number;
   innerRadius?: number; // For donut charts
@@ -106,6 +112,15 @@ export interface ScatterPlotProps extends BaseChartProps {
 export interface BaseChartState extends ComponentState {
   hoveredPoint: ChartDataPoint | null;
   selectedPoint: ChartDataPoint | null;
+  isAnimating?: boolean;
+}
+
+/**
+ * Pie chart state
+ */
+export interface PieChartState extends ComponentState {
+  hoveredSlice: PieDataPoint | null;
+  selectedSlice: PieDataPoint | null;
   isAnimating?: boolean;
 }
 
