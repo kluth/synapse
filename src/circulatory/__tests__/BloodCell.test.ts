@@ -32,7 +32,7 @@ describe('BloodCell', () => {
         {
           source: 'service-a',
           destination: 'service-b',
-        }
+        },
       );
       expect(cell.source).toBe('service-a');
       expect(cell.destination).toBe('service-b');
@@ -58,7 +58,7 @@ describe('BloodCell', () => {
             userId: 'user-123',
             tenantId: 'tenant-456',
           },
-        }
+        },
       );
       expect(cell.metadata.userId).toBe('user-123');
       expect(cell.metadata.tenantId).toBe('tenant-456');
@@ -82,7 +82,7 @@ describe('BloodCell', () => {
         new Schema({
           message: new FieldSchema('string'),
           count: new FieldSchema('number'),
-        })
+        }),
       );
 
       const cell = new BloodCell({ message: 'hello', count: 5 }, { schema });
@@ -94,7 +94,7 @@ describe('BloodCell', () => {
         'Message',
         new Schema({
           message: new FieldSchema('string'),
-        })
+        }),
       );
 
       expect(() => {

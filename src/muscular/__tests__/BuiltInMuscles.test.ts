@@ -266,7 +266,10 @@ describe('Built-in Muscles', () => {
         { type: 'A', value: 3 },
       ];
       expect(groupByType.execute(items)).toEqual({
-        A: [{ type: 'A', value: 1 }, { type: 'A', value: 3 }],
+        A: [
+          { type: 'A', value: 1 },
+          { type: 'A', value: 3 },
+        ],
         B: [{ type: 'B', value: 2 }],
       });
     });

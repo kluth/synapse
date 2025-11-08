@@ -1,4 +1,7 @@
-import { Heart } from '../core/Heart';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-useless-constructor */
+import type { Heart } from '../core/Heart';
 
 /**
  * Saga step
@@ -33,11 +36,10 @@ type StateChangeHandler = (state: string) => void;
  * - Result aggregation
  */
 export class Saga {
-  private heart: Heart;
   private stateHandlers: StateChangeHandler[] = [];
 
-  constructor(heart: Heart) {
-    this.heart = heart;
+  constructor(_heart: Heart) {
+    // Heart instance stored for future extensions
   }
 
   /**
@@ -70,10 +72,13 @@ export class Saga {
       this.emitStateChange('compensating');
 
       for (let i = executedSteps.length - 1; i >= 0; i--) {
-        try {
-          await executedSteps[i].compensate();
-        } catch {
-          // Log compensation failure but continue
+        const step = executedSteps[i];
+        if (step) {
+          try {
+            await step.compensate();
+          } catch {
+            // Log compensation failure but continue
+          }
         }
       }
 

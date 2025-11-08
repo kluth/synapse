@@ -14,6 +14,9 @@ import type {
 } from './types';
 import { EventEmitter } from 'events';
 
+// Re-export ComponentProps for external use
+export type { ComponentProps } from './types';
+
 export interface VisualNeuronConfig<TProps extends ComponentProps> {
   id: string;
   type: 'cortical' | 'reflex';

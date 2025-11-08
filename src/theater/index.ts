@@ -1,0 +1,193 @@
+/**
+ * The Anatomy Theater - Component Development and Documentation System
+ *
+ * Phase 6 of the Synapse framework - a powerful component showcase and development
+ * environment with medical-themed terminology.
+ *
+ * ## Core Components
+ *
+ * - **Theater**: Main orchestrator for the entire system
+ * - **Stage**: Component rendering and observation platform
+ * - **Amphitheater**: Component gallery and navigation
+ * - **Instrument**: Base class for development tools
+ *
+ * ## Features
+ *
+ * - Real-time neural signal visualization
+ * - Time-travel state debugging
+ * - Live connection topology
+ * - Signal replay
+ * - Smart auto-documentation
+ * - Health monitoring
+ * - A/B testing
+ * - Accessibility testing
+ * - Performance profiling
+ * - Component composition playground
+ *
+ * @module theater
+ */
+
+// Core components
+export { Theater } from './core/Theater';
+export type { TheaterState, TheaterEvents } from './core/Theater';
+
+export { Stage, VIEWPORTS } from './core/Stage';
+export type { Viewport, IsolationMode, StageConfig, MountedComponent } from './core/Stage';
+
+export { Amphitheater } from './core/Amphitheater';
+export type {
+  SpecimenCategory,
+  AmphitheaterTheme,
+  AmphitheaterLayout,
+  AmphitheaterConfig,
+  FilterCriteria,
+} from './core/Amphitheater';
+
+export { Instrument } from './core/Instrument';
+export type {
+  InstrumentState,
+  InstrumentPosition,
+  InstrumentConfig,
+  InstrumentData,
+} from './core/Instrument';
+
+export type { TheaterConfig, TheaterTheme } from './core/TheaterConfig';
+export { DEFAULT_THEATER_CONFIG } from './core/TheaterConfig';
+
+// Specimen system
+export { Specimen } from './specimens/Specimen';
+export type { SpecimenMetadata, SpecimenContext, SpecimenRenderFn } from './specimens/Specimen';
+
+export { Observation, ObservationBuilder, createObservations } from './specimens/Observation';
+export type { ObservationConfig } from './specimens/Observation';
+
+export { Dissection, DissectionBuilder, createDissection } from './specimens/Dissection';
+export type { PropType, PropDefinition, ComponentStructure } from './specimens/Dissection';
+
+// Microscope instruments
+export { Microscope } from './instruments/Microscope';
+export type {
+  InspectionMode,
+  MicroscopeLens,
+  InspectionResult,
+  InspectionIssue,
+  MicroscopeConfig,
+} from './instruments/Microscope';
+
+export { SignalTracer } from './instruments/SignalTracer';
+export type { SignalTrace, SignalFlowGraph, SignalTracerConfig } from './instruments/SignalTracer';
+
+export { StateExplorer } from './instruments/StateExplorer';
+export type {
+  StateSnapshot,
+  StateDiff,
+  TimeTravelAction,
+  StateExplorerConfig,
+} from './instruments/StateExplorer';
+
+export { PerformanceProfiler } from './instruments/PerformanceProfiler';
+export type {
+  PerformanceMetric,
+  RenderProfile,
+  PerformanceBottleneck,
+  PerformanceProfilerConfig,
+} from './instruments/PerformanceProfiler';
+
+export { HealthMonitor } from './instruments/HealthMonitor';
+export type {
+  HealthStatus,
+  HealthCheck,
+  HealthReport,
+  ErrorEntry,
+  HealthMonitorConfig,
+} from './instruments/HealthMonitor';
+
+// Laboratory (testing environment)
+export { Laboratory } from './laboratory/Laboratory';
+export type { LaboratoryConfig, LaboratoryState, LaboratoryStats } from './laboratory/Laboratory';
+
+export { Experiment } from './laboratory/Experiment';
+export type { ExperimentConfig, ExperimentResult, ExperimentState } from './laboratory/Experiment';
+
+export { TestSubject } from './laboratory/TestSubject';
+export type { TestSubjectConfig, Interaction } from './laboratory/TestSubject';
+
+export { Hypothesis } from './laboratory/Hypothesis';
+export type { HypothesisResult, AssertionFn, MatcherFn } from './laboratory/Hypothesis';
+
+export { LabReporter } from './laboratory/LabReport';
+export type { LabReport, ReportFormat } from './laboratory/LabReport';
+
+// Atlas (documentation and cataloging)
+export { Atlas } from './atlas/Atlas';
+export type {
+  ComponentDocumentation,
+  PropDocumentation,
+  StateDocumentation,
+  SignalDocumentation,
+  CodeExample,
+  DocumentationQuery,
+  SearchResult,
+  AtlasConfig,
+  AtlasStatistics,
+} from './atlas/Atlas';
+
+export { ComponentCatalogue } from './atlas/ComponentCatalogue';
+export type {
+  CatalogueEntry,
+  CatalogueFilter,
+  CatalogueGroup,
+  DependencyGraph,
+  CatalogueConfig,
+  CatalogueStatistics,
+} from './atlas/ComponentCatalogue';
+
+export { Diagram } from './atlas/Diagram';
+export type {
+  DiagramType,
+  DiagramFormat,
+  DiagramConfig,
+  DiagramNode,
+  DiagramEdge,
+  StateMachineState,
+  StateMachineTransition,
+} from './atlas/Diagram';
+
+export { Protocol } from './atlas/Protocol';
+export type {
+  ProtocolType,
+  ProtocolSeverity,
+  ProtocolExample,
+  ProtocolGuideline,
+  ChecklistItem,
+  ComponentProtocol,
+  ProtocolQuery,
+  ProtocolConfig,
+  ProtocolStatistics,
+} from './atlas/Protocol';
+
+// Server (development server and hot reload)
+export { TheaterServer } from './server/TheaterServer';
+export type {
+  ServerConfig,
+  ServerState,
+  ServerStatistics,
+  RequestInfo,
+} from './server/TheaterServer';
+
+export { HotReload } from './server/HotReload';
+export type {
+  WatchPattern,
+  FileChangeEvent,
+  HotReloadConfig,
+  WatchStatistics,
+} from './server/HotReload';
+
+export { WebSocketBridge } from './server/WebSocketBridge';
+export type {
+  MessageType,
+  WebSocketMessage,
+  ClientConnection,
+  WebSocketConfig,
+  BridgeStatistics,
+} from './server/WebSocketBridge';

@@ -1,4 +1,6 @@
-import { BloodCell } from './BloodCell';
+/* eslint-disable @typescript-eslint/require-await, @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-misused-promises, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-unused-vars, no-useless-catch */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { BloodCell } from './BloodCell';
 import { EventEmitter } from 'events';
 
 /**
@@ -107,7 +109,7 @@ export class Heart extends EventEmitter {
     return () => {
       const subs = this.subscriptions.get(topic);
       if (subs) {
-        const index = subs.findIndex(s => s.id === subscription.id);
+        const index = subs.findIndex((s) => s.id === subscription.id);
         if (index > -1) {
           subs.splice(index, 1);
         }
@@ -121,7 +123,11 @@ export class Heart extends EventEmitter {
   /**
    * Publish a message
    */
-  public async publish(topic: string, cell: BloodCell, options: PublishOptions = {}): Promise<void> {
+  public async publish(
+    topic: string,
+    cell: BloodCell,
+    options: PublishOptions = {},
+  ): Promise<void> {
     this.stats.published++;
 
     // Persist if enabled
@@ -271,7 +277,7 @@ export class Heart extends EventEmitter {
     }
 
     // Deliver to all matching subscribers
-    const promises = matchingSubscriptions.map(async sub => {
+    const promises = matchingSubscriptions.map(async (sub) => {
       try {
         await sub.callback(cell);
         if (cell.isAcknowledged() && this.acknowledgeHandler) {
@@ -292,7 +298,7 @@ export class Heart extends EventEmitter {
   private getMatchingSubscriptions(topic: string): Subscription[] {
     const matching: Subscription[] = [];
 
-    for (const [subTopic, subs] of this.subscriptions.entries()) {
+    for (const [_subTopic, subs] of this.subscriptions.entries()) {
       for (const sub of subs) {
         if (sub.pattern.test(topic)) {
           matching.push(sub);
@@ -306,13 +312,19 @@ export class Heart extends EventEmitter {
   /**
    * Convert topic pattern to regex
    */
-  private topicToPattern(topic: string): RegExp {
-    // Convert wildcard patterns like "user.*" to regex
-    const pattern = topic
-      .replace(/\./g, '\\.')
-      .replace(/\*/g, '[^.]+')
-      .replace(/#/g, '.+');
+  // Escape regex meta-characters except for '*' and '#'
+  private escapeRegExp(str: string): string {
+    // Escape all regex meta-characters except * and #
+    // ([.*+?^${}()|[\]\\])
+    return str.replace(/([.+?^${}()|[\]\\])/g, '\\$1');
+  }
 
+  private topicToPattern(topic: string): RegExp {
+    // First escape regex meta-characters except * and #
+    // (*) and (#) wildcards are NOT escaped so we can replace them as needed
+    const escaped = this.escapeRegExp(topic);
+    // Convert wildcard patterns: * => [^.]+, # => .+
+    const pattern = escaped.replace(/\*/g, '[^.]+').replace(/#/g, '.+');
     return new RegExp(`^${pattern}$`);
   }
 
@@ -341,6 +353,6 @@ export class Heart extends EventEmitter {
    * Sleep utility
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

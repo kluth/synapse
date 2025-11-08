@@ -30,7 +30,7 @@ describe('Artery', () => {
       await artery.start();
       await artery.send(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
       expect(received[0].payload).toEqual({ data: 'test' });
@@ -49,7 +49,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 2 }));
       await artery.send(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(3);
       await artery.stop();
@@ -93,7 +93,7 @@ describe('Artery', () => {
         // Expected - buffer full
       }
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(backpressureEvents.length).toBeGreaterThan(0);
 
@@ -113,7 +113,7 @@ describe('Artery', () => {
         await artery.send(new BloodCell({ data: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(artery.isPaused()).toBe(true);
 
@@ -139,7 +139,7 @@ describe('Artery', () => {
         await artery.send(new BloodCell({ data: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 200)); // Wait for buffer to drain
+      await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for buffer to drain
       expect(artery.isPaused()).toBe(false); // Should resume after draining
 
       await artery.stop();
@@ -164,7 +164,7 @@ describe('Artery', () => {
         await artery.send(new BloodCell({ data: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 2100));
+      await new Promise((resolve) => setTimeout(resolve, 2100));
 
       const elapsed = Date.now() - startTime;
 
@@ -191,7 +191,7 @@ describe('Artery', () => {
         await artery.send(new BloodCell({ data: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Burst should be delivered quickly
       expect(received.length).toBe(5);
@@ -231,7 +231,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 3 }));
       await artery.send(new BloodCell({ data: 4 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(batches.length).toBeGreaterThanOrEqual(1);
       expect(batches[0]).toHaveLength(3);
@@ -254,7 +254,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 1 }));
       await artery.send(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(batches.length).toBeGreaterThanOrEqual(1);
       expect(batches[0].length).toBeGreaterThanOrEqual(2);
@@ -278,10 +278,10 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 2 }));
 
       // Wait for messages to be processed into batch
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       await artery.flush();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(batches).toHaveLength(1);
       expect(batches[0]).toHaveLength(2);
@@ -297,7 +297,7 @@ describe('Artery', () => {
 
       artery.transform((cell) => {
         return new BloodCell({
-          data: cell.payload.data.toUpperCase()
+          data: cell.payload.data.toUpperCase(),
         });
       });
 
@@ -306,7 +306,7 @@ describe('Artery', () => {
       await artery.start();
       await artery.send(new BloodCell({ data: 'hello' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received[0].payload.data).toBe('HELLO');
 
@@ -326,7 +326,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 2 }));
       await artery.send(new BloodCell({ data: 9 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(2);
       expect(received[0].payload.data).toBe(7);
@@ -348,7 +348,7 @@ describe('Artery', () => {
       await artery.start();
       await artery.send(new BloodCell({ data: 5 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // (5 * 2) + 10 = 20
       expect(received[0].payload.data).toBe(20);
@@ -374,7 +374,7 @@ describe('Artery', () => {
       });
 
       await artery.send(new BloodCell({ data: 'test' }));
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(errors.length).toBeGreaterThan(0);
       expect(errors[0].message).toContain('Transform failed');
@@ -402,7 +402,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 2 })); // Should error
       await artery.send(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(errorCount).toBe(1);
       expect(received).toHaveLength(2); // 1 and 3
@@ -410,12 +410,12 @@ describe('Artery', () => {
       await artery.stop();
     });
 
-    it('should not send when stream is stopped', async () => {
+    it('should not send when stream is stopped', () => {
       const artery = new Artery('test-stream');
 
-      await expect(
-        artery.send(new BloodCell({ data: 'test' }))
-      ).rejects.toThrow('Artery is not active');
+      expect(() => {
+        artery.send(new BloodCell({ data: 'test' }));
+      }).toThrow('Artery is not active');
     });
   });
 
@@ -430,7 +430,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 2 }));
       await artery.send(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = artery.getStats();
       expect(stats.sent).toBeGreaterThanOrEqual(3);
@@ -452,7 +452,7 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 1 }));
       await artery.send(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = artery.getStats();
       expect(stats.errors).toBeGreaterThanOrEqual(2);
@@ -470,7 +470,7 @@ describe('Artery', () => {
         await artery.send(new BloodCell({ data: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = artery.getStats();
       expect(stats.throughput).toBeGreaterThan(0);
@@ -491,7 +491,7 @@ describe('Artery', () => {
       await artery.start();
       await artery.send(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received1).toHaveLength(1);
       expect(received2).toHaveLength(1);
@@ -509,13 +509,13 @@ describe('Artery', () => {
       await artery.send(new BloodCell({ data: 1 }));
 
       // Wait for first message to be processed
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       unsubscribe();
 
       await artery.send(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
 

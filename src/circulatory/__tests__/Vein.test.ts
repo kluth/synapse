@@ -32,7 +32,7 @@ describe('Vein', () => {
       // Simulate incoming message
       await vein.receive(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
       expect(received[0].payload).toEqual({ data: 'test' });
@@ -54,7 +54,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 2 }));
       await vein.receive(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(3);
 
@@ -80,7 +80,7 @@ describe('Vein', () => {
       const cell = new BloodCell({ data: 'test' });
       await vein.receive(cell);
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(acks).toContain(cell.id);
 
@@ -105,7 +105,7 @@ describe('Vein', () => {
       const cell = new BloodCell({ data: 'test' });
       await vein.receive(cell);
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Not acknowledged yet
       expect(acks).toHaveLength(0);
@@ -113,7 +113,7 @@ describe('Vein', () => {
       // Manual acknowledgment
       await vein.acknowledge(receivedCell!);
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(acks).toHaveLength(1);
 
@@ -137,7 +137,7 @@ describe('Vein', () => {
 
       await vein.receive(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Should receive at least twice (initial + retry)
       expect(receiveCount).toBeGreaterThanOrEqual(2);
@@ -162,7 +162,7 @@ describe('Vein', () => {
 
       await vein.receive(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Should receive only once
       expect(receiveCount).toBe(1);
@@ -189,7 +189,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 2 }));
       await vein.receive(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(batches).toHaveLength(1);
       expect(batches[0]).toHaveLength(3);
@@ -214,7 +214,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 1 }));
       await vein.receive(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(batches).toHaveLength(1);
       expect(batches[0]).toHaveLength(2);
@@ -244,7 +244,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 2 }));
       await vein.receive(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(acks).toHaveLength(3);
 
@@ -335,9 +335,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 1 }));
       await vein.receive(new BloodCell({ data: 2 }));
 
-      await expect(
-        vein.receive(new BloodCell({ data: 3 }))
-      ).rejects.toThrow('Buffer full');
+      await expect(vein.receive(new BloodCell({ data: 3 }))).rejects.toThrow('Buffer full');
 
       await vein.stop();
     });
@@ -387,7 +385,7 @@ describe('Vein', () => {
 
       await vein.receive(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(errors.length).toBeGreaterThan(0);
 
@@ -416,7 +414,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 2 }));
       await vein.receive(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(errorCount).toBe(1);
       expect(received).toHaveLength(2);
@@ -443,7 +441,7 @@ describe('Vein', () => {
 
       await vein.receive(new BloodCell({ data: 'test' }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Both consumers should receive
       expect(received1).toHaveLength(1);
@@ -464,13 +462,13 @@ describe('Vein', () => {
 
       await vein.receive(new BloodCell({ data: 1 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       unsubscribe();
 
       await vein.receive(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
 
@@ -490,7 +488,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 2 }));
       await vein.receive(new BloodCell({ data: 3 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = vein.getStats();
       expect(stats.received).toBeGreaterThanOrEqual(3);
@@ -511,7 +509,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 1 }));
       await vein.receive(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = vein.getStats();
       expect(stats.acknowledged).toBeGreaterThanOrEqual(2);
@@ -533,7 +531,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 1 }));
       await vein.receive(new BloodCell({ data: 2 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const stats = vein.getStats();
       expect(stats.errors).toBeGreaterThanOrEqual(2);
@@ -557,7 +555,7 @@ describe('Vein', () => {
         await vein.receive(new BloodCell({ data: i }));
       }
 
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       expect(received).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
@@ -581,7 +579,7 @@ describe('Vein', () => {
       await vein.receive(new BloodCell({ data: 2 }, { priority: 10 }));
       await vein.receive(new BloodCell({ data: 3 }, { priority: 5 }));
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Should process in priority order: 2, 3, 1
       expect(received).toEqual([2, 3, 1]);

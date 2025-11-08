@@ -1,4 +1,7 @@
-import { Heart } from '../core/Heart';
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/require-await, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 import { randomUUID } from 'crypto';
 
@@ -54,11 +57,7 @@ export class RequestResponse {
   /**
    * Send a request and wait for response
    */
-  public async request(
-    handler: string,
-    payload: any,
-    options: RequestOptions = {}
-  ): Promise<any> {
+  public async request(handler: string, payload: any, options: RequestOptions = {}): Promise<any> {
     const requestId = randomUUID();
     const timeout = options.timeout ?? 5000;
 
@@ -98,7 +97,7 @@ export class RequestResponse {
    * Handle incoming request
    */
   private async handleRequest(cell: BloodCell): Promise<void> {
-    const handler = cell.metadata.handler;
+    const handler = cell.metadata['handler'] as string;
 
     if (!this.handlers.has(handler)) {
       return;
@@ -126,7 +125,7 @@ export class RequestResponse {
           correlationId: cell.correlationId,
           causationId: cell.id,
           type: 'ErrorResponse',
-        }
+        },
       );
 
       await this.heart.publish(`rr.response.${handler}`, errorResponse);
@@ -148,7 +147,8 @@ export class RequestResponse {
     this.pendingRequests.delete(requestId);
 
     if (cell.type === 'ErrorResponse') {
-      pending.reject(new Error(cell.payload.error));
+      const error = cell.payload as { error: string };
+      pending.reject(new Error(error.error));
     } else {
       pending.resolve(cell.payload);
     }

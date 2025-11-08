@@ -1,7 +1,7 @@
 import { Muscle } from '../core/Muscle';
 import { MuscleGroup } from '../core/MuscleGroup';
 import { MuscleMemory } from '../core/MuscleMemory';
-import { ComputeMuscle, TransformMuscle, AggregateMuscle, FilterMuscle, MapMuscle } from '../built-in';
+import { TransformMuscle, AggregateMuscle, FilterMuscle, MapMuscle } from '../built-in';
 import { Bone } from '../../skeletal/core/Bone';
 import { Schema } from '../../skeletal/core/Schema';
 import { FieldSchema } from '../../skeletal/core/FieldSchema';
@@ -10,11 +10,17 @@ describe('Muscular System Integration Tests', () => {
   describe('Complex Pipelines', () => {
     it('should create ETL pipeline for data processing', async () => {
       // Extract - parse JSON
-      const extract = TransformMuscle.parseJSON<{ users: Array<{ name: string; age: number; active: boolean }> }>();
+      const extract = TransformMuscle.parseJSON<{
+        users: Array<{ name: string; age: number; active: boolean }>;
+      }>();
 
       // Transform - filter active users, extract names, convert to uppercase
-      const filterActive = FilterMuscle.create((u: { name: string; age: number; active: boolean }) => u.active);
-      const extractNames = MapMuscle.property<{ name: string; age: number; active: boolean }>('name');
+      const filterActive = FilterMuscle.create(
+        (u: { name: string; age: number; active: boolean }) => u.active,
+      );
+      const extractNames = MapMuscle.property<{ name: string; age: number; active: boolean }>(
+        'name',
+      );
       const toUpper = MapMuscle.create((name: string) => name.toUpperCase());
 
       // Load - join into comma-separated string
@@ -71,7 +77,7 @@ describe('Muscular System Integration Tests', () => {
           // Simplified version - in reality this would recurse
           return n * 2; // Placeholder
         },
-        { deterministic: true }
+        { deterministic: true },
       );
 
       expensiveComputation.execute(10);
@@ -89,7 +95,7 @@ describe('Muscular System Integration Tests', () => {
           callCount++;
           return Math.random();
         },
-        { deterministic: false }
+        { deterministic: false },
       );
 
       nonDeterministic.execute();
@@ -108,7 +114,7 @@ describe('Muscular System Integration Tests', () => {
           email: new FieldSchema('string'),
           age: new FieldSchema('number'),
           name: new FieldSchema('string'),
-        })
+        }),
       );
 
       const registerUser = new Muscle(
@@ -116,7 +122,7 @@ describe('Muscular System Integration Tests', () => {
         (data: { email: string; age: number; name: string }) => {
           return { ...data, id: Date.now(), createdAt: new Date() };
         },
-        { inputSchema: userSchema }
+        { inputSchema: userSchema },
       );
 
       const validUser = { email: 'test@example.com', age: 25, name: 'John' };
@@ -132,14 +138,12 @@ describe('Muscular System Integration Tests', () => {
         new Schema({
           email: new FieldSchema('string'),
           age: new FieldSchema('number'),
-        })
+        }),
       );
 
-      const registerUser = new Muscle(
-        'registerUser',
-        (data: any) => data,
-        { inputSchema: userSchema }
-      );
+      const registerUser = new Muscle('registerUser', (data: any) => data, {
+        inputSchema: userSchema,
+      });
 
       expect(() => registerUser.execute({ email: 'test@example.com', age: 'invalid' })).toThrow();
     });
@@ -160,7 +164,7 @@ describe('Muscular System Integration Tests', () => {
             maxAttempts: 3,
             delay: 10,
           },
-        }
+        },
       );
 
       const result = await flakeyAPI.executeAsync();
@@ -186,17 +190,17 @@ describe('Muscular System Integration Tests', () => {
       const startTime = Date.now();
 
       const task1 = new Muscle('task1', async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return 'result1';
       });
 
       const task2 = new Muscle('task2', async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return 'result2';
       });
 
       const task3 = new Muscle('task3', async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return 'result3';
       });
 
@@ -249,7 +253,7 @@ describe('Muscular System Integration Tests', () => {
               state.balance += 50; // Restore
             },
           },
-        }
+        },
       );
 
       const failing = new Muscle('failing', async () => {

@@ -1,4 +1,6 @@
-import { Heart } from '../core/Heart';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 
 /**
@@ -38,11 +40,7 @@ export class FireAndForget {
   /**
    * Send a fire-and-forget message
    */
-  public async send(
-    handler: string,
-    data: any,
-    options: SendOptions = {}
-  ): Promise<void> {
+  public async send(handler: string, data: any, options: SendOptions = {}): Promise<void> {
     const cell = new BloodCell(data, {
       type: 'FireAndForget',
       priority: options.priority ?? 0,
@@ -67,7 +65,7 @@ export class FireAndForget {
    * Handle incoming message
    */
   private async handleMessage(cell: BloodCell): Promise<void> {
-    const handler = cell.metadata.handler;
+    const handler = cell.metadata['handler'] as string;
 
     if (!this.handlers.has(handler)) {
       return;

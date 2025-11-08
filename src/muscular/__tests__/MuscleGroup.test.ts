@@ -38,13 +38,13 @@ describe('MuscleGroup', () => {
       const executionOrder: number[] = [];
 
       const slow = new Muscle('slow', async () => {
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
         executionOrder.push(1);
         return 'slow';
       });
 
       const fast = new Muscle('fast', async () => {
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
         executionOrder.push(2);
         return 'fast';
       });
@@ -70,17 +70,17 @@ describe('MuscleGroup', () => {
 
     it('should fail fast if any muscle fails', async () => {
       const success1 = new Muscle('success1', async () => {
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
         return 'success1';
       });
 
       const failing = new Muscle('failing', async () => {
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
         throw new Error('Failed!');
       });
 
       const success2 = new Muscle('success2', async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         return 'success2';
       });
 
@@ -95,14 +95,10 @@ describe('MuscleGroup', () => {
       const double = new Muscle('double', (x: number) => x * 2);
       const triple = new Muscle('triple', (x: number) => x * 3);
 
-      const conditional = MuscleGroup.conditional(
-        (x: number) => x > 10,
-        double,
-        triple
-      );
+      const conditional = MuscleGroup.conditional((x: number) => x > 10, double, triple);
 
       expect(await conditional.execute(15)).toBe(30); // 15 * 2
-      expect(await conditional.execute(5)).toBe(15);  // 5 * 3
+      expect(await conditional.execute(5)).toBe(15); // 5 * 3
     });
 
     it('should support multiple branches', async () => {
@@ -152,23 +148,35 @@ describe('MuscleGroup', () => {
       const state = { count: 0, values: [] as number[] };
       const originalState = { ...state };
 
-      const increment = new Muscle('increment', async () => {
-        state.count++;
-        return state.count;
-      }, {
-        metadata: {
-          rollback: () => { state.count--; }
-        }
-      });
+      const increment = new Muscle(
+        'increment',
+        async () => {
+          state.count++;
+          return state.count;
+        },
+        {
+          metadata: {
+            rollback: () => {
+              state.count--;
+            },
+          },
+        },
+      );
 
-      const addValue = new Muscle('addValue', async (val: number) => {
-        state.values.push(val);
-        return val;
-      }, {
-        metadata: {
-          rollback: () => { state.values.pop(); }
-        }
-      });
+      const addValue = new Muscle(
+        'addValue',
+        async (val: number) => {
+          state.values.push(val);
+          return val;
+        },
+        {
+          metadata: {
+            rollback: () => {
+              state.values.pop();
+            },
+          },
+        },
+      );
 
       const failing = new Muscle('failing', async () => {
         throw new Error('Transaction failed');
@@ -193,38 +201,50 @@ describe('MuscleGroup', () => {
       const executed: string[] = [];
       const compensated: string[] = [];
 
-      const step1 = new Muscle('step1', async () => {
-        executed.push('step1');
-        return 'result1';
-      }, {
-        metadata: {
-          compensate: async () => {
-            compensated.push('step1');
-          }
-        }
-      });
+      const step1 = new Muscle(
+        'step1',
+        async () => {
+          executed.push('step1');
+          return 'result1';
+        },
+        {
+          metadata: {
+            compensate: async () => {
+              compensated.push('step1');
+            },
+          },
+        },
+      );
 
-      const step2 = new Muscle('step2', async () => {
-        executed.push('step2');
-        return 'result2';
-      }, {
-        metadata: {
-          compensate: async () => {
-            compensated.push('step2');
-          }
-        }
-      });
+      const step2 = new Muscle(
+        'step2',
+        async () => {
+          executed.push('step2');
+          return 'result2';
+        },
+        {
+          metadata: {
+            compensate: async () => {
+              compensated.push('step2');
+            },
+          },
+        },
+      );
 
-      const step3 = new Muscle('step3', async () => {
-        executed.push('step3');
-        throw new Error('Step 3 failed');
-      }, {
-        metadata: {
-          compensate: async () => {
-            compensated.push('step3');
-          }
-        }
-      });
+      const step3 = new Muscle(
+        'step3',
+        async () => {
+          executed.push('step3');
+          throw new Error('Step 3 failed');
+        },
+        {
+          metadata: {
+            compensate: async () => {
+              compensated.push('step3');
+            },
+          },
+        },
+      );
 
       const saga = MuscleGroup.saga([step1, step2, step3]);
 

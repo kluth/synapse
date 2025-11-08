@@ -93,19 +93,14 @@ describe('Edge Cases and Error Handling', () => {
         new Muscle('double', (x: number) => x * 2),
       ]);
 
-      const outer = MuscleGroup.sequential([
-        inner,
-        new Muscle('subtract5', (x: number) => x - 5),
-      ]);
+      const outer = MuscleGroup.sequential([inner, new Muscle('subtract5', (x: number) => x - 5)]);
 
       // (5 + 1) * 2 - 5 = 7
       expect(await outer.execute(5)).toBe(7);
     });
 
     it('should handle deeply nested groups', async () => {
-      const level3 = MuscleGroup.sequential([
-        new Muscle('add1', (x: number) => x + 1),
-      ]);
+      const level3 = MuscleGroup.sequential([new Muscle('add1', (x: number) => x + 1)]);
 
       const level2 = MuscleGroup.sequential([level3, new Muscle('double', (x: number) => x * 2)]);
       const level1 = MuscleGroup.sequential([level2, new Muscle('add10', (x: number) => x + 10)]);
@@ -335,7 +330,10 @@ describe('Edge Cases and Error Handling', () => {
           { type: 'A', value: 2 },
         ]);
         expect(result).toEqual({
-          A: [{ type: 'A', value: 1 }, { type: 'A', value: 2 }],
+          A: [
+            { type: 'A', value: 1 },
+            { type: 'A', value: 2 },
+          ],
         });
       });
     });

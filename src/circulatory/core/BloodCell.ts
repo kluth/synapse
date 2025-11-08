@@ -1,19 +1,19 @@
-import { Bone } from '../../skeletal/core/Bone';
+import type { Bone } from '../../skeletal/core/Bone';
 import { randomUUID } from 'crypto';
 
 /**
  * Blood Cell options
  */
 export interface BloodCellOptions {
-  source?: string;
-  destination?: string;
-  correlationId?: string;
-  causationId?: string;
-  type?: string;
-  priority?: number;
-  ttl?: number;
-  schema?: Bone;
-  metadata?: Record<string, any>;
+  source?: string | undefined;
+  destination?: string | undefined;
+  correlationId?: string | undefined;
+  causationId?: string | undefined;
+  type?: string | undefined;
+  priority?: number | undefined;
+  ttl?: number | undefined;
+  schema?: Bone | undefined;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 /**
@@ -33,19 +33,19 @@ type BloodCellStatus = 'pending' | 'acknowledged' | 'rejected';
  * - TTL support
  * - Acknowledgment tracking
  */
-export class BloodCell<T = any> {
+export class BloodCell<T = unknown> {
   public readonly id: string;
   public readonly payload: T;
   public readonly timestamp: number;
-  public readonly source?: string;
-  public readonly destination?: string;
-  public readonly correlationId?: string;
-  public readonly causationId?: string;
-  public readonly type?: string;
+  public readonly source?: string | undefined;
+  public readonly destination?: string | undefined;
+  public readonly correlationId?: string | undefined;
+  public readonly causationId?: string | undefined;
+  public readonly type?: string | undefined;
   public readonly priority: number;
-  public readonly ttl?: number;
-  public readonly expiresAt?: number;
-  public readonly metadata: Record<string, any>;
+  public readonly ttl?: number | undefined;
+  public readonly expiresAt?: number | undefined;
+  public readonly metadata: Record<string, unknown>;
 
   private status: BloodCellStatus = 'pending';
   private _rejectionReason?: string;
@@ -61,9 +61,9 @@ export class BloodCell<T = any> {
     this.type = options.type;
     this.priority = options.priority ?? 0;
     this.ttl = options.ttl;
-    this.metadata = options.metadata || {};
+    this.metadata = options.metadata ?? {};
 
-    if (this.ttl) {
+    if (this.ttl !== undefined) {
       this.expiresAt = this.timestamp + this.ttl;
     }
 
@@ -71,7 +71,7 @@ export class BloodCell<T = any> {
     if (options.schema) {
       const validation = options.schema.validate(payload);
       if (!validation.valid) {
-        throw new Error(`Payload validation failed: ${validation.errors.join(', ')}`);
+        throw new Error(`Payload validation failed: ${validation.errors.map(String).join(', ')}`);
       }
     }
 
@@ -82,7 +82,7 @@ export class BloodCell<T = any> {
    * Check if message is expired
    */
   public isExpired(): boolean {
-    if (!this.expiresAt) {
+    if (this.expiresAt === undefined) {
       return false;
     }
     return Date.now() > this.expiresAt;
@@ -141,10 +141,13 @@ export class BloodCell<T = any> {
   /**
    * Create a child message (for message lineage tracking)
    */
-  public createChild<U>(payload: U, options: Omit<BloodCellOptions, 'correlationId' | 'causationId'> = {}): BloodCell<U> {
+  public createChild<U>(
+    payload: U,
+    options: Omit<BloodCellOptions, 'correlationId' | 'causationId'> = {},
+  ): BloodCell<U> {
     return new BloodCell(payload, {
       ...options,
-      correlationId: this.correlationId || this.id,
+      correlationId: this.correlationId ?? this.id,
       causationId: this.id,
     });
   }
@@ -167,7 +170,7 @@ export class BloodCell<T = any> {
   /**
    * Serialize to JSON
    */
-  public toJSON(): any {
+  public toJSON(): Record<string, unknown> {
     return {
       id: this.id,
       payload: this.payload,
@@ -190,25 +193,27 @@ export class BloodCell<T = any> {
   /**
    * Deserialize from JSON
    */
-  public static fromJSON<T>(json: any): BloodCell<T> {
-    const cell = new BloodCell<T>(json.payload, {
-      source: json.source,
-      destination: json.destination,
-      correlationId: json.correlationId,
-      causationId: json.causationId,
-      type: json.type,
-      priority: json.priority,
-      ttl: json.ttl,
-      metadata: json.metadata,
+  public static fromJSON<T>(json: Record<string, unknown>): BloodCell<T> {
+    const cell = new BloodCell<T>(json['payload'] as T, {
+      source: json['source'] as string | undefined,
+      destination: json['destination'] as string | undefined,
+      correlationId: json['correlationId'] as string | undefined,
+      causationId: json['causationId'] as string | undefined,
+      type: json['type'] as string | undefined,
+      priority: json['priority'] as number | undefined,
+      ttl: json['ttl'] as number | undefined,
+      metadata: json['metadata'] as Record<string, unknown> | undefined,
     });
 
-    // Restore internal state
-    (cell as any).id = json.id;
-    (cell as any).timestamp = json.timestamp;
-    (cell as any).expiresAt = json.expiresAt;
-    (cell as any).status = json.status;
-    (cell as any)._rejectionReason = json.rejectionReason;
-    (cell as any)._retryCount = json.retryCount;
+    // Restore internal state using type-safe assignments
+    Object.assign(cell, {
+      id: json['id'],
+      timestamp: json['timestamp'],
+      expiresAt: json['expiresAt'],
+      status: json['status'],
+      _rejectionReason: json['rejectionReason'],
+      _retryCount: json['retryCount'],
+    });
 
     return cell;
   }

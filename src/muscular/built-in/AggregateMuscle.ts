@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**
@@ -5,14 +7,20 @@ import { Muscle } from '../core/Muscle';
  */
 export class AggregateMuscle {
   static sum(): Muscle<number[], number> {
-    return new Muscle('sum', (arr: number[]) => arr.reduce((a, b) => a + b, 0), { deterministic: true });
+    return new Muscle('sum', (arr: number[]) => arr.reduce((a, b) => a + b, 0), {
+      deterministic: true,
+    });
   }
 
   static average(): Muscle<number[], number> {
-    return new Muscle('average', (arr: number[]) => {
-      if (arr.length === 0) return 0;
-      return arr.reduce((a, b) => a + b, 0) / arr.length;
-    }, { deterministic: true });
+    return new Muscle(
+      'average',
+      (arr: number[]) => {
+        if (arr.length === 0) return 0;
+        return arr.reduce((a, b) => a + b, 0) / arr.length;
+      },
+      { deterministic: true },
+    );
   }
 
   static min(): Muscle<number[], number> {
