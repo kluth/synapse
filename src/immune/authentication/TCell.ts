@@ -514,7 +514,7 @@ export class TCell extends EventEmitter {
       success: true,
       userId,
       token: session.token,
-      refreshToken: session.refreshToken,
+      ...(session.refreshToken !== undefined && { refreshToken: session.refreshToken }),
       method: 'password',
       timestamp: Date.now(),
       metadata: { sessionId: session.id },
@@ -582,7 +582,7 @@ export class TCell extends EventEmitter {
       createdAt: Date.now(),
       lastActivity: Date.now(),
       expiresAt: Date.now() + this.config.sessionTimeout,
-      metadata,
+      ...(metadata !== undefined && { metadata }),
     };
 
     this.sessions.set(sessionId, session);

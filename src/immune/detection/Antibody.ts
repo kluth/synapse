@@ -408,7 +408,7 @@ export class Antibody extends EventEmitter {
           description: pattern.description,
           input: input.substring(0, 200), // Truncate long inputs
           pattern: pattern.name,
-          source,
+          ...(source !== undefined && { source }),
           timestamp: Date.now(),
           metadata: {
             matchCount: matches.length,
