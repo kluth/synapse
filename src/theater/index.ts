@@ -117,3 +117,51 @@ export type { HypothesisResult, AssertionFn, MatcherFn } from './laboratory/Hypo
 
 export { LabReporter } from './laboratory/LabReport';
 export type { LabReport, ReportFormat } from './laboratory/LabReport';
+
+// Atlas (documentation and cataloging)
+export { Atlas } from './atlas/Atlas';
+export type {
+  ComponentDocumentation,
+  PropDocumentation,
+  StateDocumentation,
+  SignalDocumentation,
+  CodeExample,
+  DocumentationQuery,
+  SearchResult,
+  AtlasConfig,
+  AtlasStatistics,
+} from './atlas/Atlas';
+
+export { ComponentCatalogue } from './atlas/ComponentCatalogue';
+export type {
+  CatalogueEntry,
+  CatalogueFilter,
+  CatalogueGroup,
+  DependencyGraph,
+  CatalogueConfig,
+  CatalogueStatistics,
+} from './atlas/ComponentCatalogue';
+
+export { Diagram } from './atlas/Diagram';
+export type {
+  DiagramType,
+  DiagramFormat,
+  DiagramConfig,
+  DiagramNode,
+  DiagramEdge,
+  StateMachineState,
+  StateMachineTransition,
+} from './atlas/Diagram';
+
+export { Protocol } from './atlas/Protocol';
+export type {
+  ProtocolType,
+  ProtocolSeverity,
+  ProtocolExample,
+  ProtocolGuideline,
+  ChecklistItem,
+  ComponentProtocol,
+  ProtocolQuery,
+  ProtocolConfig,
+  ProtocolStatistics,
+} from './atlas/Protocol';
