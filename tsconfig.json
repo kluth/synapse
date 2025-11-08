@@ -54,7 +54,8 @@
   },
   "include": [
     "src/**/*",
-    "cli/**/*"
+    "cli/**/*",
+    "examples/**/*"
   ],
   "exclude": [
     "node_modules",
