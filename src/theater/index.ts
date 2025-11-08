@@ -101,3 +101,19 @@ export type {
   ErrorEntry,
   HealthMonitorConfig,
 } from './instruments/HealthMonitor';
+
+// Laboratory (testing environment)
+export { Laboratory } from './laboratory/Laboratory';
+export type { LaboratoryConfig, LaboratoryState, LaboratoryStats } from './laboratory/Laboratory';
+
+export { Experiment } from './laboratory/Experiment';
+export type { ExperimentConfig, ExperimentResult, ExperimentState } from './laboratory/Experiment';
+
+export { TestSubject } from './laboratory/TestSubject';
+export type { TestSubjectConfig, Interaction } from './laboratory/TestSubject';
+
+export { Hypothesis } from './laboratory/Hypothesis';
+export type { HypothesisResult, AssertionFn, MatcherFn } from './laboratory/Hypothesis';
+
+export { LabReporter } from './laboratory/LabReport';
+export type { LabReport, ReportFormat } from './laboratory/LabReport';
