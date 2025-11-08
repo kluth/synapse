@@ -7,9 +7,9 @@
  * Components implemented:
  * - Antibody: Threat detection system
  * - TCell: Authentication system
+ * - BCell: Authorization system
  *
  * Components planned:
- * - BCell: Authorization system
  * - Macrophage: Input sanitization
  * - Lymphocyte: Security policy management
  */
@@ -36,3 +36,18 @@ export type {
   TCellConfig,
   AuthStatistics,
 } from './authentication/TCell';
+
+// BCell - Authorization
+export { BCell } from './authorization/BCell';
+export type {
+  Action,
+  ResourceType,
+  Permission,
+  PermissionCondition,
+  Role,
+  AuthorizationRequest,
+  AuthorizationResult,
+  Subject,
+  BCellConfig,
+  AuthorizationStatistics,
+} from './authorization/BCell';
