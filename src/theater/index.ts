@@ -165,3 +165,29 @@ export type {
   ProtocolConfig,
   ProtocolStatistics,
 } from './atlas/Protocol';
+
+// Server (development server and hot reload)
+export { TheaterServer } from './server/TheaterServer';
+export type {
+  ServerConfig,
+  ServerState,
+  ServerStatistics,
+  RequestInfo,
+} from './server/TheaterServer';
+
+export { HotReload } from './server/HotReload';
+export type {
+  WatchPattern,
+  FileChangeEvent,
+  HotReloadConfig,
+  WatchStatistics,
+} from './server/HotReload';
+
+export { WebSocketBridge } from './server/WebSocketBridge';
+export type {
+  MessageType,
+  WebSocketMessage,
+  ClientConnection,
+  WebSocketConfig,
+  BridgeStatistics,
+} from './server/WebSocketBridge';
