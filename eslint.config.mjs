@@ -40,6 +40,7 @@ export default tseslint.config(
       'dist/**',
       'src/skin/**',
       '.storybook/**',
+      'coverage/**',
     ],
   },
   prettierConfig,

@@ -3,6 +3,12 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * E2E Test Configuration for Synapse Framework
  *
+ * Comprehensive cross-browser and cross-device testing:
+ * - Desktop: Chrome, Firefox, Safari (multiple resolutions)
+ * - Mobile: iPhone (13, 13 Pro, SE), Android (Pixel 5, Galaxy S9+)
+ * - Tablet: iPad (gen 7, Pro 11), Galaxy Tab S4
+ * - Custom Viewports: 720p, 1080p, 4K
+ *
  * Black-box testing via Playwright - no internal code modifications
  * All tests treat the framework as immutable
  */
@@ -48,23 +54,82 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
 
-  // Configure projects for major browsers
+  // Configure projects for major browsers and form factors
   projects: [
+    // Desktop Browsers
     {
-      name: 'chromium',
+      name: 'chromium-desktop',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'firefox-desktop',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit-desktop',
+      use: { ...devices['Desktop Safari'] },
+    },
 
-    // Uncomment to test other browsers
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
+    // Mobile Devices - iPhone
+    {
+      name: 'mobile-iphone-13',
+      use: { ...devices['iPhone 13'] },
+    },
+    {
+      name: 'mobile-iphone-13-pro',
+      use: { ...devices['iPhone 13 Pro'] },
+    },
+    {
+      name: 'mobile-iphone-se',
+      use: { ...devices['iPhone SE'] },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    // Mobile Devices - Android
+    {
+      name: 'mobile-pixel-5',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'mobile-galaxy-s9',
+      use: { ...devices['Galaxy S9+'] },
+    },
+
+    // Tablet Devices
+    {
+      name: 'tablet-ipad',
+      use: { ...devices['iPad (gen 7)'] },
+    },
+    {
+      name: 'tablet-ipad-pro',
+      use: { ...devices['iPad Pro 11'] },
+    },
+    {
+      name: 'tablet-galaxy-tab',
+      use: { ...devices['Galaxy Tab S4'] },
+    },
+
+    // Custom Desktop Viewports
+    {
+      name: 'desktop-1080p',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 },
+      },
+    },
+    {
+      name: 'desktop-4k',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 3840, height: 2160 },
+      },
+    },
+    {
+      name: 'desktop-small',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 720 },
+      },
+    },
   ],
 
   // Run dev server before starting the tests

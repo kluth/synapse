@@ -32,14 +32,19 @@ This E2E test suite validates the Synapse Framework by:
 # Install dependencies (if not already done)
 npm install
 
-# Install Playwright browsers
+# Install all Playwright browsers (Chromium, Firefox, WebKit)
+npx playwright install
+
+# Or install specific browsers only
 npx playwright install chromium
+npx playwright install firefox
+npx playwright install webkit
 ```
 
 ### Running Tests
 
 ```bash
-# Run all E2E tests
+# Run all E2E tests (all browsers and devices)
 npm run test:e2e
 
 # Run in UI mode (interactive)
@@ -50,6 +55,56 @@ npx playwright test e2e/tests/lifecycle.spec.ts
 
 # Debug mode
 npx playwright test --debug
+```
+
+### Running Tests on Specific Browsers
+
+```bash
+# Desktop browsers
+npx playwright test --project=chromium-desktop
+npx playwright test --project=firefox-desktop
+npx playwright test --project=webkit-desktop
+
+# All desktop browsers
+npx playwright test --project=chromium-desktop --project=firefox-desktop --project=webkit-desktop
+```
+
+### Running Tests on Specific Devices
+
+```bash
+# Mobile - iPhone
+npx playwright test --project=mobile-iphone-13
+npx playwright test --project=mobile-iphone-13-pro
+npx playwright test --project=mobile-iphone-se
+
+# Mobile - Android
+npx playwright test --project=mobile-pixel-5
+npx playwright test --project=mobile-galaxy-s9
+
+# Tablet - iPad
+npx playwright test --project=tablet-ipad
+npx playwright test --project=tablet-ipad-pro
+
+# Tablet - Android
+npx playwright test --project=tablet-galaxy-tab
+
+# Custom resolutions
+npx playwright test --project=desktop-1080p
+npx playwright test --project=desktop-4k
+npx playwright test --project=desktop-small
+```
+
+### Running Tests by Form Factor
+
+```bash
+# All mobile devices
+npx playwright test --grep-invert "desktop|tablet"
+
+# All tablets
+npx playwright test --project=tablet-*
+
+# Specific test on specific device
+npx playwright test responsive.spec.ts --project=mobile-iphone-13
 ```
 
 ### Development Workflow
@@ -159,6 +214,32 @@ See [TEST_PLAN.md](./TEST_PLAN.md) for the complete test plan.
 - 🟠 HIGH: Visualization Charts, Signals (~50 tests)
 - 🟡 MEDIUM: Integration, Advanced Charts (~35 tests)
 
+## 🌐 Cross-Browser & Device Coverage
+
+### Desktop Browsers
+- **Chromium** (Chrome, Edge, Opera)
+- **Firefox** (Desktop Firefox)
+- **WebKit** (Safari)
+
+### Mobile Devices
+- **iPhone 13** (390x844, iOS Safari)
+- **iPhone 13 Pro** (390x844, iOS Safari)
+- **iPhone SE** (375x667, iOS Safari)
+- **Pixel 5** (393x851, Android Chrome)
+- **Galaxy S9+** (412x846, Android Chrome)
+
+### Tablet Devices
+- **iPad (gen 7)** (810x1080, iOS Safari)
+- **iPad Pro 11** (834x1194, iOS Safari)
+- **Galaxy Tab S4** (712x1138, Android Chrome)
+
+### Custom Desktop Resolutions
+- **720p**: 1280x720 (Small Desktop)
+- **1080p**: 1920x1080 (Standard Desktop)
+- **4K**: 3840x2160 (High Resolution)
+
+**Total: 15 different configurations**
+
 ## 🔧 Configuration
 
 ### Playwright Config
@@ -169,7 +250,8 @@ Key settings:
 - Base URL: http://localhost:5173
 - Timeout: 30 seconds per test
 - Retries: 2 on CI, 0 locally
-- Browsers: Chromium (Firefox/WebKit optional)
+- Projects: 15 browser/device configurations
+- Parallel execution enabled (faster test runs)
 
 ### TypeScript Config
 
