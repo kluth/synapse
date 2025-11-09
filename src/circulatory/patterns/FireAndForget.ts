@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 
@@ -13,7 +11,7 @@ export interface SendOptions {
 /**
  * Message handler
  */
-type MessageHandler = (data: any) => void | Promise<void>;
+type MessageHandler<TData = unknown> = (data: TData) => void | Promise<void>;
 
 /**
  * FireAndForget - Fire-and-Forget messaging pattern
@@ -26,7 +24,7 @@ type MessageHandler = (data: any) => void | Promise<void>;
  */
 export class FireAndForget {
   private heart: Heart;
-  private handlers: Map<string, MessageHandler[]> = new Map();
+  private handlers: Map<string, MessageHandler<unknown>[]> = new Map();
 
   constructor(heart: Heart) {
     this.heart = heart;
@@ -40,7 +38,11 @@ export class FireAndForget {
   /**
    * Send a fire-and-forget message
    */
-  public async send(handler: string, data: any, options: SendOptions = {}): Promise<void> {
+  public async send<TData = unknown>(
+    handler: string,
+    data: TData,
+    options: SendOptions = {},
+  ): Promise<void> {
     const cell = new BloodCell(data, {
       type: 'FireAndForget',
       priority: options.priority ?? 0,
@@ -53,12 +55,12 @@ export class FireAndForget {
   /**
    * Register message handler
    */
-  public onMessage(handler: string, callback: MessageHandler): void {
+  public onMessage<TData = unknown>(handler: string, callback: MessageHandler<TData>): void {
     if (!this.handlers.has(handler)) {
       this.handlers.set(handler, []);
     }
 
-    this.handlers.get(handler)!.push(callback);
+    this.handlers.get(handler)!.push(callback as MessageHandler<unknown>);
   }
 
   /**

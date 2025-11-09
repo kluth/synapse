@@ -1,34 +1,33 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 
 /**
  * Event
  */
-export interface Event {
+export interface Event<TPayload = unknown> {
   id: string;
   streamId: string;
   type: string;
-  payload: any;
+  payload: TPayload;
   timestamp: number;
 }
 
 /**
  * State reducer
  */
-type StateReducer<T> = (state: T, event: Event) => T;
+type StateReducer<T, TPayload = unknown> = (state: T, event: Event<TPayload>) => T;
 
 /**
  * Event handler
  */
-type EventHandler = (event: Event) => void | Promise<void>;
+type EventHandler<TPayload = unknown> = (event: Event<TPayload>) => void | Promise<void>;
 
 /**
  * Snapshot
  */
-interface Snapshot {
+interface Snapshot<TState = unknown> {
   streamId: string;
-  state: any;
+  state: TState;
   version: number;
   timestamp: number;
 }
@@ -44,8 +43,8 @@ interface Snapshot {
  */
 export class EventSourcing {
   private heart: Heart;
-  private eventHandlers: Map<string, EventHandler[]> = new Map();
-  private snapshots: Map<string, Snapshot> = new Map();
+  private eventHandlers: Map<string, EventHandler<unknown>[]> = new Map();
+  private snapshots: Map<string, Snapshot<unknown>> = new Map();
 
   constructor(heart: Heart) {
     this.heart = heart;
@@ -59,7 +58,11 @@ export class EventSourcing {
   /**
    * Append event to stream
    */
-  public async append(streamId: string, type: string, payload: any): Promise<void> {
+  public async append<TPayload = unknown>(
+    streamId: string,
+    type: string,
+    payload: TPayload,
+  ): Promise<void> {
     const cell = new BloodCell(payload, {
       type,
       metadata: { streamId },
@@ -71,14 +74,14 @@ export class EventSourcing {
   /**
    * Replay events from a stream
    */
-  public async replay(streamId: string): Promise<Event[]> {
+  public async replay<TPayload = unknown>(streamId: string): Promise<Event<TPayload>[]> {
     const messages = await this.heart.getPersistedMessages(`es.${streamId}`);
 
     return messages.map((cell) => ({
       id: cell.id,
       streamId,
       type: cell.type!,
-      payload: cell.payload,
+      payload: cell.payload as TPayload,
       timestamp: cell.timestamp,
     }));
   }
@@ -86,12 +89,12 @@ export class EventSourcing {
   /**
    * Rebuild state from events
    */
-  public async rebuildState<T>(
+  public async rebuildState<T, TPayload = unknown>(
     streamId: string,
-    reducer: StateReducer<T>,
+    reducer: StateReducer<T, TPayload>,
     initialState: T = {} as T,
   ): Promise<T> {
-    const events = await this.replay(streamId);
+    const events = await this.replay<TPayload>(streamId);
 
     let state = initialState;
 
@@ -105,7 +108,7 @@ export class EventSourcing {
   /**
    * Create snapshot of current state
    */
-  public async createSnapshot(streamId: string, state: any): Promise<void> {
+  public async createSnapshot<TState = unknown>(streamId: string, state: TState): Promise<void> {
     const events = await this.replay(streamId);
 
     this.snapshots.set(streamId, {
@@ -119,14 +122,16 @@ export class EventSourcing {
   /**
    * Replay from snapshot
    */
-  public async replayFromSnapshot(streamId: string): Promise<Event[]> {
+  public async replayFromSnapshot<TPayload = unknown>(
+    streamId: string,
+  ): Promise<Event<TPayload>[]> {
     const snapshot = this.snapshots.get(streamId);
 
     if (!snapshot) {
-      return this.replay(streamId);
+      return this.replay<TPayload>(streamId);
     }
 
-    const allEvents = await this.replay(streamId);
+    const allEvents = await this.replay<TPayload>(streamId);
 
     // Return events after snapshot version
     return allEvents.slice(snapshot.version);
@@ -135,19 +140,19 @@ export class EventSourcing {
   /**
    * Register event handler for projections
    */
-  public onEvent(type: string, handler: EventHandler): void {
+  public onEvent<TPayload = unknown>(type: string, handler: EventHandler<TPayload>): void {
     if (!this.eventHandlers.has(type)) {
       this.eventHandlers.set(type, []);
     }
 
-    this.eventHandlers.get(type)!.push(handler);
+    this.eventHandlers.get(type)!.push(handler as EventHandler<unknown>);
   }
 
   /**
    * Handle incoming event
    */
   private async handleEvent(cell: BloodCell): Promise<void> {
-    const event: Event = {
+    const event: Event<unknown> = {
       id: cell.id,
       streamId: cell.metadata['streamId'] as string,
       type: cell.type!,

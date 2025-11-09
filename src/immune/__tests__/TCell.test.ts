@@ -98,7 +98,7 @@ describe('TCell - Authentication System', () => {
         password: 'SecurePass123!',
       });
 
-      expect(result.metadata?.sessionId).toBeDefined();
+      expect(result.metadata?.['sessionId']).toBeDefined();
     });
 
     it('should emit auth:success event', () => {
@@ -188,7 +188,7 @@ describe('TCell - Authentication System', () => {
         password: 'SecurePass123!',
       });
 
-      const sessionId = result.metadata?.sessionId as string;
+      const sessionId = result.metadata?.['sessionId'] as string;
       const session = tcell.getSession(sessionId);
 
       expect(session).toBeDefined();
@@ -212,7 +212,7 @@ describe('TCell - Authentication System', () => {
         password: 'SecurePass123!',
       });
 
-      const sessionId = result.metadata?.sessionId as string;
+      const sessionId = result.metadata?.['sessionId'] as string;
       const revoked = tcell.revokeSession(sessionId);
 
       expect(revoked).toBe(true);
@@ -258,7 +258,7 @@ describe('TCell - Authentication System', () => {
     beforeEach(async () => {
       tcell = new TCell({
         maxFailedAttempts: 3,
-        verbose: false
+        verbose: false,
       });
       await tcell.registerUser('user@example.com', 'SecurePass123!');
     });
@@ -287,11 +287,10 @@ describe('TCell - Authentication System', () => {
         });
 
         // Trigger lockout
-        tcell.authenticate({ identifier: 'user@example.com', password: 'Wrong1!' }).then(() =>
-          tcell.authenticate({ identifier: 'user@example.com', password: 'Wrong2!' })
-        ).then(() =>
-          tcell.authenticate({ identifier: 'user@example.com', password: 'Wrong3!' })
-        );
+        tcell
+          .authenticate({ identifier: 'user@example.com', password: 'Wrong1!' })
+          .then(() => tcell.authenticate({ identifier: 'user@example.com', password: 'Wrong2!' }))
+          .then(() => tcell.authenticate({ identifier: 'user@example.com', password: 'Wrong3!' }));
       });
     });
 
@@ -454,7 +453,7 @@ describe('TCell - Authentication System', () => {
     it('should cleanup expired sessions', () => {
       const tcell = new TCell({
         sessionTimeout: 1,
-        verbose: false
+        verbose: false,
       });
 
       // Sessions will expire immediately
@@ -469,7 +468,7 @@ describe('TCell - Authentication System', () => {
     it('should require minimum length', async () => {
       const tcell = new TCell({
         minPasswordLength: 12,
-        verbose: false
+        verbose: false,
       });
 
       const result = await tcell.registerUser('user@example.com', 'Short1!');
@@ -481,7 +480,7 @@ describe('TCell - Authentication System', () => {
       const tcell = new TCell({
         requirePasswordComplexity: false,
         minPasswordLength: 8,
-        verbose: false
+        verbose: false,
       });
 
       const result = await tcell.registerUser('user@example.com', 'simplepass');

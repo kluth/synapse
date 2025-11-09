@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Diaphragm - Breathing Control & Resilience Patterns
  *
@@ -97,7 +96,7 @@ export class Diaphragm extends EventEmitter {
   private queuedRequests: Array<() => void> = [];
 
   // Request coalescing
-  private pendingRequests: Map<string, Promise<any>> = new Map();
+  private pendingRequests: Map<string, Promise<unknown>> = new Map();
 
   // Statistics
   private stats: DiaphragmStats = {
@@ -151,8 +150,7 @@ export class Diaphragm extends EventEmitter {
   public async withRetry<T>(fn: () => Promise<T>, key?: string): Promise<T> {
     // Check for request coalescing
     if (key !== undefined && key.length > 0 && this.pendingRequests.has(key)) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unsafe-return
-      return this.pendingRequests.get(key)!;
+      return this.pendingRequests.get(key)! as Promise<T>;
     }
 
     const promise = this.executeWithRetry(fn);

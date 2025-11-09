@@ -10,9 +10,10 @@ import type { ChartDataPoint, PieDataPoint } from '../../src/visualization/types
 
 // Test VisualNeuron implementation
 class TestNeuron extends VisualNeuron<{ label: string }, { count: number }> {
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any
-  ): Promise<TOutput> {
+  protected override async executeProcessing<
+    _TInput = unknown,
+    TOutput = unknown,
+  >(): Promise<TOutput> {
     return undefined as TOutput;
   }
 
@@ -102,6 +103,10 @@ createBtn.addEventListener('click', () => {
 activateBtn.addEventListener('click', async () => {
   if (currentNeuron) {
     await currentNeuron.activate();
+    
+    // Trigger a render to increment count
+    currentNeuron.render();
+    
     statusSpan.textContent = 'active';
     statusSpan.className = 'status active';
     deactivateBtn.disabled = false;
@@ -130,9 +135,7 @@ const showScatterBtn = document.getElementById('show-scatter-plot') as HTMLButto
 const chartContainer = document.getElementById('chart-container') as HTMLDivElement;
 const chartInfo = document.getElementById('chart-info') as HTMLDivElement;
 
-async function renderChart(
-  chart: LineChart | BarChart | PieChart | ScatterPlot
-): Promise<void> {
+async function renderChart(chart: LineChart | BarChart | PieChart | ScatterPlot): Promise<void> {
   if (currentChart) {
     await currentChart.deactivate();
   }
@@ -157,7 +160,7 @@ function createSVGFromSignal(signal: RenderSignal): SVGElement {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
   // Set SVG attributes
-  Object.entries(vdom.props).forEach(([key, value]) => {
+  Object.entries(vdom.props ?? {}).forEach(([key, value]) => {
     svg.setAttribute(key, String(value));
   });
 
@@ -178,7 +181,11 @@ function createSVGFromSignal(signal: RenderSignal): SVGElement {
   return svg;
 }
 
-function createSVGElement(vdom: any): SVGElement {
+function createSVGElement(vdom: {
+  tag: string;
+  props?: Record<string, unknown>;
+  children?: (string | { tag: string; props?: Record<string, unknown> })[];
+}): SVGElement {
   const element = document.createElementNS('http://www.w3.org/2000/svg', vdom.tag);
 
   // Set attributes
@@ -190,13 +197,26 @@ function createSVGElement(vdom: any): SVGElement {
 
   // Add children
   if (vdom.children) {
-    vdom.children.forEach((child: any) => {
-      if (typeof child === 'string') {
-        element.appendChild(document.createTextNode(child));
-      } else {
-        element.appendChild(createSVGElement(child));
-      }
-    });
+    vdom.children.forEach(
+      (child: string | { tag: string; props?: Record<string, unknown> }) => {
+        if (typeof child === 'string') {
+          element.appendChild(document.createTextNode(child));
+        } else {
+          element.appendChild(
+            createSVGElement(
+              child as {
+                tag: string;
+                props?: Record<string, unknown>;
+                children?: (
+                  | string
+                  | { tag: string; props?: Record<string, unknown> }
+                )[];
+              },
+            ),
+          );
+        }
+      },
+    );
   }
 
   return element;
@@ -286,7 +306,9 @@ showScatterBtn.addEventListener('click', async () => {
 });
 
 // Signal propagation demo
-const createNetworkBtn = document.getElementById('create-network') as HTMLButtonElement;
+const createNetworkBtn = document.getElementById(
+  'create-network',
+) as HTMLButtonElement;
 const sendSignalBtn = document.getElementById('send-signal') as HTMLButtonElement;
 const signalLog = document.getElementById('signal-log') as HTMLDivElement;
 
@@ -301,9 +323,13 @@ sendSignalBtn.addEventListener('click', () => {
 });
 
 // Make framework available globally for testing
-(window as any).Synapse = {
-  currentNeuron,
-  currentChart,
+(window as unknown as { Synapse: Record<string, unknown> }).Synapse = {
+  get currentNeuron() {
+    return currentNeuron;
+  },
+  get currentChart() {
+    return currentChart;
+  },
   VisualNeuron,
   LineChart,
   BarChart,

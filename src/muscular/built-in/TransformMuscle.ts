@@ -1,48 +1,116 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**
  * TransformMuscle - Data transformations
  */
 export class TransformMuscle {
-  static toString(): Muscle<any, string> {
-    return new Muscle('toString', (x: any) => String(x), { deterministic: true });
+  static toString(): Muscle<unknown, string> {
+    return new Muscle(
+      'toString',
+      (...args: unknown[]) => {
+        const x = args[0];
+        return String(x);
+      },
+      { deterministic: true },
+    );
   }
 
-  static toNumber(): Muscle<any, number> {
-    return new Muscle('toNumber', (x: any) => Number(x), { deterministic: true });
+  static toNumber(): Muscle<unknown, number> {
+    return new Muscle(
+      'toNumber',
+      (...args: unknown[]) => {
+        const x = args[0];
+        return Number(x);
+      },
+      { deterministic: true },
+    );
   }
 
-  static toBoolean(): Muscle<any, boolean> {
-    return new Muscle('toBoolean', (x: any) => Boolean(x), { deterministic: true });
+  static toBoolean(): Muscle<unknown, boolean> {
+    return new Muscle(
+      'toBoolean',
+      (...args: unknown[]) => {
+        const x = args[0];
+        return Boolean(x);
+      },
+      { deterministic: true },
+    );
   }
 
   static toUpperCase(): Muscle<string, string> {
-    return new Muscle('toUpperCase', (x: string) => x.toUpperCase(), { deterministic: true });
+    return new Muscle(
+      'toUpperCase',
+      (...args: unknown[]) => {
+        const x = args[0] as string;
+        return x.toUpperCase();
+      },
+      { deterministic: true },
+    );
   }
 
   static toLowerCase(): Muscle<string, string> {
-    return new Muscle('toLowerCase', (x: string) => x.toLowerCase(), { deterministic: true });
+    return new Muscle(
+      'toLowerCase',
+      (...args: unknown[]) => {
+        const x = args[0] as string;
+        return x.toLowerCase();
+      },
+      { deterministic: true },
+    );
   }
 
   static trim(): Muscle<string, string> {
-    return new Muscle('trim', (x: string) => x.trim(), { deterministic: true });
+    return new Muscle(
+      'trim',
+      (...args: unknown[]) => {
+        const x = args[0] as string;
+        return x.trim();
+      },
+      { deterministic: true },
+    );
   }
 
-  static parseJSON<T = any>(): Muscle<string, T> {
-    return new Muscle('parseJSON', (x: string) => JSON.parse(x), { deterministic: true });
+  static parseJSON<T = unknown>(): Muscle<string, T> {
+    return new Muscle(
+      'parseJSON',
+      (...args: unknown[]) => {
+        const x = args[0] as string;
+        return JSON.parse(x) as T;
+      },
+      { deterministic: true },
+    );
   }
 
-  static stringifyJSON(): Muscle<any, string> {
-    return new Muscle('stringifyJSON', (x: any) => JSON.stringify(x), { deterministic: true });
+  static stringifyJSON(): Muscle<unknown, string> {
+    return new Muscle(
+      'stringifyJSON',
+      (...args: unknown[]) => {
+        const x = args[0];
+        return JSON.stringify(x);
+      },
+      { deterministic: true },
+    );
   }
 
   static split(separator: string): Muscle<string, string[]> {
-    return new Muscle('split', (x: string) => x.split(separator), { deterministic: true });
+    return new Muscle(
+      'split',
+      (...args: unknown[]) => {
+        const x = args[0] as string;
+        return x.split(separator);
+      },
+      { deterministic: true },
+    );
   }
 
   static join(separator: string): Muscle<string[], string> {
-    return new Muscle('join', (x: string[]) => x.join(separator), { deterministic: true });
+    return new Muscle(
+      'join',
+      (...args: unknown[]) => {
+        const x = args[0] as string[];
+        return x.join(separator);
+      },
+      { deterministic: true },
+    );
   }
 }

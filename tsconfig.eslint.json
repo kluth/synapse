@@ -1,14 +1,9 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*", "cli/**/*", "examples/**/*"],
+  "include": ["src/**/*", "cli/**/*", "examples/**/*", "e2e/**/*", "*.ts", "*.mjs", "src/**/*.test.ts", "src/**/__tests__/**/*.ts", "src/**/*.stories.ts"],
   "exclude": [
     "node_modules",
     "dist",
-    "**/*.stories.ts",
-    "**/*.stories.tsx",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**",
     "src/skin/**"
   ]
 }

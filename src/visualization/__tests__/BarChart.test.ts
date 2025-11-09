@@ -122,7 +122,7 @@ describe('BarChart', () => {
       chart.updateProps({ barSpacing: 10 });
       const bars = chart.calculateBarPositions();
       if (bars.length > 1) {
-        const gap = bars[1].x - (bars[0].x + bars[0].width);
+        const gap = bars[1]!.x - (bars[0]!.x + bars[0]!.width);
         expect(gap).toBe(10);
       }
     });
@@ -175,15 +175,16 @@ describe('BarChart', () => {
 
     it('should include chart dimensions in render output', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.width).toBe(800);
-      expect(renderSignal.data.vdom.props.height).toBe(400);
+      expect(renderSignal.data.vdom?.props?.['width']).toBe(800);
+      expect(renderSignal.data.vdom?.props?.['height']).toBe(400);
     });
 
     it('should render correct number of bars', () => {
       const renderSignal = chart.render();
-      const bars = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'rect'
-      );
+      const bars =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) => (child as { tag?: string }).tag === 'rect',
+        ) ?? [];
       expect(bars.length).toBe(mockData.length);
     });
 
@@ -208,10 +209,10 @@ describe('BarChart', () => {
     it('should apply custom color to bars', () => {
       chart.updateProps({ color: '#ff0000' });
       const renderSignal = chart.render();
-      const bars = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'rect'
-      );
-      expect(bars[0].props.fill).toBe('#ff0000');
+      const bars = (renderSignal.data.vdom?.children?.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'rect',
+      ) ?? []) as unknown as Array<{ props: { fill: string } }>;
+      expect(bars[0]!.props.fill).toBe('#ff0000');
     });
 
     it('should support per-bar colors', () => {
@@ -221,17 +222,17 @@ describe('BarChart', () => {
       }));
       chart.updateProps({ data: coloredData });
       const renderSignal = chart.render();
-      const bars = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'rect'
-      );
-      expect(bars[0].props.fill).toBe('#000');
-      expect(bars[1].props.fill).toBe('#111');
+      const bars = (renderSignal.data.vdom?.children?.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'rect',
+      ) ?? []) as unknown as Array<{ props: { fill: string } }>;
+      expect(bars[0]!.props.fill).toBe('#000');
+      expect(bars[1]!.props.fill).toBe('#111');
     });
 
     it('should apply hover styles', async () => {
-      const point = mockData[1];
+      const point = mockData[1]!;
       chart.onPointHover(point);
-      const renderSignal = chart.render();
+      chart.render();
       expect(chart.getState().hoveredPoint).toEqual(point);
     });
   });
@@ -247,34 +248,34 @@ describe('BarChart', () => {
     });
 
     it('should update state when hovering over bar', async () => {
-      const point = mockData[1];
+      const point = mockData[1]!;
       chart.onPointHover(point);
       const state = chart.getState();
       expect(state.hoveredPoint).toEqual(point);
     });
 
     it('should update state when clicking on bar', async () => {
-      const point = mockData[2];
+      const point = mockData[2]!;
       chart.onPointClick(point);
       const state = chart.getState();
       expect(state.selectedPoint).toEqual(point);
     });
 
     it('should emit UI event on bar click', async () => {
-      const events: any[] = [];
+      const events: unknown[] = [];
       chart.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
+        if ((signal as { type?: string }).type === 'ui:click') {
           events.push(signal);
         }
       });
 
-      const point = mockData[0];
+      const point = mockData[0]!;
       chart.onPointClick(point);
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(events.length).toBeGreaterThan(0);
-      expect(events[0].data.payload).toEqual(point);
+      expect((events[0] as { data: { payload: unknown } }).data['payload']).toEqual(point);
     });
   });
 
@@ -310,9 +311,9 @@ describe('BarChart', () => {
     });
 
     it('should trigger re-render when props change', () => {
-      const spy = jest.spyOn(chart as any, 'requestRender');
+      const _spy = jest.spyOn(chart as unknown as { requestRender: () => void }, 'requestRender');
       chart.updateProps({ color: '#00ff00' });
-      expect(spy).toHaveBeenCalled();
+      expect(_spy).toHaveBeenCalled();
     });
 
     it('should update when orientation changes', () => {
@@ -327,7 +328,7 @@ describe('BarChart', () => {
     });
 
     it('should handle many bars efficiently', () => {
-      const largeData: ChartDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
+      const largeData: ChartDataPoint[] = Array.from({ length: 100 }, (_item, i) => ({
         x: i,
         y: Math.random() * 100,
         label: `Bar ${i}`,
@@ -350,8 +351,8 @@ describe('BarChart', () => {
 
     it('should include ARIA labels', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.role).toBe('img');
-      expect(renderSignal.data.vdom.props['aria-label']).toBeDefined();
+      expect(renderSignal.data.vdom?.props?.['role']).toBe('img');
+      expect(renderSignal.data.vdom?.props?.['aria-label']).toBeDefined();
     });
 
     it('should provide data table alternative', () => {
@@ -362,9 +363,10 @@ describe('BarChart', () => {
 
     it('should include labels for screen readers', () => {
       const renderSignal = chart.render();
-      const bars = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'rect'
-      );
+      const bars =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) => (child as { tag?: string }).tag === 'rect',
+        ) ?? [];
       // Bars should have accessible titles
       expect(bars.length).toBeGreaterThan(0);
     });

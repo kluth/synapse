@@ -85,8 +85,8 @@ describe('Microglia - Health Monitoring and Observability', () => {
 
       const metrics = microglia.getMetrics('neuron-1');
 
-      expect(metrics.cpu).toBe(45.5);
-      expect(metrics.memory).toBe(128);
+      expect(metrics['cpu']).toBe(45.5);
+      expect(metrics['memory']).toBe(128);
     });
 
     it('should track metric history', () => {

@@ -164,7 +164,7 @@ export class OpenAPIGenerator {
 
       const operation = this.routeToOperation(route);
       const method = route.method.toLowerCase() as keyof OpenAPIPathItem;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       paths[route.path]![method] = operation;
 
       // Collect tags
@@ -274,7 +274,6 @@ export class OpenAPIGenerator {
     if (response.headers !== undefined) {
       openAPIResponse.headers = {};
       Object.entries(response.headers).forEach(([name, param]) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         openAPIResponse.headers![name] = this.parameterToOpenAPI(param);
       });
     }

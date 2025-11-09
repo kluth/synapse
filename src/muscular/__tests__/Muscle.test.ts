@@ -6,7 +6,10 @@ import { FieldSchema } from '../../skeletal/core/FieldSchema';
 describe('Muscle', () => {
   describe('Basic Functionality', () => {
     it('should create a muscle with a pure function', () => {
-      const addOne = (x: number) => x + 1;
+      const addOne = (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x + 1;
+      };
       const muscle = new Muscle('addOne', addOne);
 
       expect(muscle.name).toBe('addOne');
@@ -14,14 +17,21 @@ describe('Muscle', () => {
     });
 
     it('should execute the wrapped function', () => {
-      const multiply = (a: number, b: number) => a * b;
+      const multiply = (...args: unknown[]) => {
+        const a = args[0] as number;
+        const b = args[1] as number;
+        return a * b;
+      };
       const muscle = new Muscle('multiply', multiply);
 
       expect(muscle.execute(3, 4)).toBe(12);
     });
 
     it('should store metadata', () => {
-      const fn = (x: number) => x * 2;
+      const fn = (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      };
       const muscle = new Muscle('double', fn, {
         metadata: {
           description: 'Doubles a number',
@@ -43,7 +53,10 @@ describe('Muscle', () => {
         }),
       );
 
-      const addOne = (params: { x: number }) => params.x + 1;
+      const addOne = (...args: unknown[]) => {
+        const params = args[0] as { x: number };
+        return params.x + 1;
+      };
       const muscle = new Muscle('addOne', addOne, {
         inputSchema,
       });
@@ -59,7 +72,10 @@ describe('Muscle', () => {
         }),
       );
 
-      const addOne = (params: { x: number }) => params.x + 1;
+      const addOne = (...args: unknown[]) => {
+        const params = args[0] as { x: number };
+        return params.x + 1;
+      };
       const muscle = new Muscle('addOne', addOne, {
         inputSchema,
       });
@@ -102,7 +118,10 @@ describe('Muscle', () => {
 
   describe('Memoization', () => {
     it('should memoize deterministic functions', () => {
-      const fn = jest.fn((x: number) => x * 2);
+      const fn = jest.fn((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
       const muscle = new Muscle('double', fn, {
         deterministic: true,
       });
@@ -124,7 +143,10 @@ describe('Muscle', () => {
     });
 
     it('should cache based on input parameters', () => {
-      const fn = jest.fn((x: number) => x * 2);
+      const fn = jest.fn((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
       const muscle = new Muscle('double', fn, {
         deterministic: true,
       });
@@ -186,7 +208,11 @@ describe('Muscle', () => {
 
   describe('Execution Context', () => {
     it('should accept execution context', () => {
-      const fn = (x: number, context?: any) => x + (context?.offset || 0);
+      const fn = (...args: unknown[]) => {
+        const x = args[0] as number;
+        const context = args[1] as { offset?: number } | undefined;
+        return x + (context?.offset || 0);
+      };
       const muscle = new Muscle('add', fn);
 
       expect(muscle.execute(5, { offset: 10 })).toBe(15);
@@ -197,7 +223,9 @@ describe('Muscle', () => {
         logger?: { log: (msg: string) => void };
       }
 
-      const fn = (x: number, context?: Context) => {
+      const fn = (...args: unknown[]) => {
+        const x = args[0] as number;
+        const context = args[1] as Context | undefined;
         context?.logger?.log(`Processing ${x}`);
         return x * 2;
       };

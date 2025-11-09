@@ -42,7 +42,7 @@ describe('OpenAPIGenerator', () => {
       const spec = genWithServers.generate(router);
 
       expect(spec.servers).toHaveLength(2);
-      expect(spec.servers?.[0].url).toBe('https://api.example.com');
+      expect(spec.servers?.[0]!.url).toBe('https://api.example.com');
     });
 
     it('should include contact and license', () => {
@@ -80,8 +80,8 @@ describe('OpenAPIGenerator', () => {
       const spec = generator.generate(router);
 
       expect(spec.paths['/users']).toBeDefined();
-      expect(spec.paths['/users'].get).toBeDefined();
-      expect(spec.paths['/users'].post).toBeDefined();
+      expect(spec.paths['/users']!.get).toBeDefined();
+      expect(spec.paths['/users']!.post).toBeDefined();
     });
 
     it('should include route summary and description', () => {
@@ -94,8 +94,8 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/users'].get?.summary).toBe('List users');
-      expect(spec.paths['/users'].get?.description).toBe('Get a list of all users');
+      expect(spec.paths['/users']!.get?.summary).toBe('List users');
+      expect(spec.paths['/users']!.get?.description).toBe('Get a list of all users');
     });
 
     it('should include operationId', () => {
@@ -107,7 +107,7 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/users'].get?.operationId).toBe('listUsers');
+      expect(spec.paths['/users']!.get?.operationId).toBe('listUsers');
     });
 
     it('should mark deprecated routes', () => {
@@ -119,7 +119,7 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/legacy'].get?.deprecated).toBe(true);
+      expect(spec.paths['/legacy']!.get?.deprecated).toBe(true);
     });
   });
 
@@ -140,9 +140,9 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      const params = spec.paths['/users/:id'].get?.parameters;
+      const params = spec.paths['/users/:id']!.get?.parameters;
       expect(params).toBeDefined();
-      expect(params?.[0]).toMatchObject({
+      expect(params?.[0]!).toMatchObject({
         name: 'id',
         in: 'path',
         required: true,
@@ -170,10 +170,10 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      const params = spec.paths['/users'].get?.parameters;
+      const params = spec.paths['/users']!.get?.parameters;
       expect(params).toHaveLength(2);
-      expect(params?.[0].name).toBe('page');
-      expect(params?.[1].name).toBe('limit');
+      expect(params?.[0]!.name).toBe('page');
+      expect(params?.[1]!.name).toBe('limit');
     });
 
     it('should include parameter examples', () => {
@@ -191,8 +191,8 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      const params = spec.paths['/users/:id'].get?.parameters;
-      expect(params?.[0].example).toBe('123');
+      const params = spec.paths['/users/:id']!.get?.parameters;
+      expect(params?.[0]!.example).toBe('123');
     });
   });
 
@@ -214,7 +214,7 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      const requestBody = spec.paths['/users'].post?.requestBody;
+      const requestBody = spec.paths['/users']!.post?.requestBody;
       expect(requestBody).toBeDefined();
       expect(requestBody?.description).toBe('User to create');
       expect(requestBody?.required).toBe(true);
@@ -240,9 +240,10 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      const examples = spec.paths['/users'].post?.requestBody?.content['application/json'].examples;
+      const examples =
+        spec.paths['/users']!.post?.requestBody?.content!['application/json']!.examples;
       expect(examples).toBeDefined();
-      expect(examples?.john).toEqual({ name: 'John Doe' });
+      expect(examples?.['john']).toEqual({ name: 'John Doe' });
     });
   });
 
@@ -252,8 +253,8 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/users'].get?.responses['200']).toBeDefined();
-      expect(spec.paths['/users'].get?.responses['200'].description).toBe('Successful response');
+      expect(spec.paths['/users']!.get?.responses['200']).toBeDefined();
+      expect(spec.paths['/users']!.get?.responses!['200']!.description).toBe('Successful response');
     });
 
     it('should include custom responses', () => {
@@ -279,9 +280,9 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/users'].post?.responses['201']).toBeDefined();
-      expect(spec.paths['/users'].post?.responses['201'].description).toBe('User created');
-      expect(spec.paths['/users'].post?.responses['400']).toBeDefined();
+      expect(spec.paths['/users']!.post?.responses!['201']).toBeDefined();
+      expect(spec.paths['/users']!.post?.responses!['201']!.description).toBe('User created');
+      expect(spec.paths['/users']!.post?.responses!['400']).toBeDefined();
     });
 
     it('should include response examples', () => {
@@ -306,9 +307,9 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      const response = spec.paths['/users/:id'].get?.responses['200'];
-      const examples = response?.content?.['application/json'].examples;
-      expect(examples?.john).toEqual({ id: 1, name: 'John Doe' });
+      const response = spec.paths['/users/:id']!.get?.responses!['200'];
+      const examples = response?.content?.['application/json']!.examples;
+      expect(examples?.['john']).toEqual({ id: 1, name: 'John Doe' });
     });
   });
 
@@ -336,7 +337,7 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/users'].get?.tags).toEqual(['users', 'public']);
+      expect(spec.paths['/users']!.get?.tags).toEqual(['users', 'public']);
     });
   });
 
@@ -395,11 +396,11 @@ describe('OpenAPIGenerator', () => {
 
       const spec = generator.generate(router);
 
-      expect(spec.paths['/resource'].get).toBeDefined();
-      expect(spec.paths['/resource'].post).toBeDefined();
-      expect(spec.paths['/resource'].put).toBeDefined();
-      expect(spec.paths['/resource'].patch).toBeDefined();
-      expect(spec.paths['/resource'].delete).toBeDefined();
+      expect(spec.paths['/resource']!.get).toBeDefined();
+      expect(spec.paths['/resource']!.post).toBeDefined();
+      expect(spec.paths['/resource']!.put).toBeDefined();
+      expect(spec.paths['/resource']!.patch).toBeDefined();
+      expect(spec.paths['/resource']!.delete).toBeDefined();
     });
   });
 });

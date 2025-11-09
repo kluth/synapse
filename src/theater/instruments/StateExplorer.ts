@@ -150,7 +150,7 @@ export class StateExplorer implements MicroscopeLens {
   /**
    * Initialize explorer
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async initialize(): Promise<void> {
     this.snapshots = [];
     this.currentIndex = -1;
@@ -160,7 +160,7 @@ export class StateExplorer implements MicroscopeLens {
   /**
    * Cleanup explorer
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async cleanup(): Promise<void> {
     this.snapshots = [];
     this.currentIndex = -1;
@@ -170,7 +170,7 @@ export class StateExplorer implements MicroscopeLens {
   /**
    * Inspect component state
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async inspect(component: VisualNeuron): Promise<InspectionResult> {
     const componentId = this.getComponentId(component);
     const state = this.extractState(component);
@@ -210,9 +210,9 @@ export class StateExplorer implements MicroscopeLens {
         isPaused: this.isPaused,
         stats: {
           totalSnapshots: this.snapshots.length,
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
           stateKeys: state !== null && state !== undefined ? Object.keys(state).length : 0,
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
           propsKeys: props !== null && props !== undefined ? Object.keys(props).length : 0,
         },
         analysis: changeAnalysis,

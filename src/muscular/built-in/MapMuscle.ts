@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**
@@ -7,14 +5,28 @@ import { Muscle } from '../core/Muscle';
  */
 export class MapMuscle {
   static create<T, U>(mapper: (item: T) => U): Muscle<T[], U[]> {
-    return new Muscle('map', (arr: T[]) => arr.map(mapper), { deterministic: true });
+    return new Muscle(
+      'map',
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
+        return arr.map(mapper);
+      },
+      { deterministic: true },
+    );
   }
 
-  static property<T>(property: keyof T): Muscle<T[], any[]> {
-    return MapMuscle.create<T, any>((item) => item[property]);
+  static property<T>(property: keyof T): Muscle<T[], T[keyof T][]> {
+    return MapMuscle.create<T, T[keyof T]>((item) => item[property]);
   }
 
   static withIndex<T, U>(mapper: (item: T, index: number) => U): Muscle<T[], U[]> {
-    return new Muscle('mapWithIndex', (arr: T[]) => arr.map(mapper), { deterministic: true });
+    return new Muscle(
+      'mapWithIndex',
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
+        return arr.map(mapper);
+      },
+      { deterministic: true },
+    );
   }
 }

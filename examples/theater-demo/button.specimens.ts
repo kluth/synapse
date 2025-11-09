@@ -30,9 +30,14 @@ export const DefaultButton = new Specimen(
     id: 'button-default',
     name: 'Default Button',
   },
-  (context) => {
+  () => {
     const button = new ButtonComponent({
-      label: 'Click Me',
+      id: 'specimen-btn-default',
+      type: 'cortical',
+      threshold: 0.5,
+      props: {
+        label: 'Click Me',
+      },
     });
     button.activate();
     return button;
@@ -51,8 +56,13 @@ export const PrimaryButton = new Specimen(
   },
   () => {
     const button = new ButtonComponent({
-      label: 'Primary Action',
-      variant: 'primary',
+      id: 'specimen-btn-primary',
+      type: 'cortical',
+      threshold: 0.5,
+      props: {
+        label: 'Primary Action',
+        variant: 'primary',
+      },
     });
     button.activate();
     return button;
@@ -71,8 +81,13 @@ export const SecondaryButton = new Specimen(
   },
   () => {
     const button = new ButtonComponent({
-      label: 'Secondary Action',
-      variant: 'secondary',
+      id: 'specimen-btn-secondary',
+      type: 'cortical',
+      threshold: 0.5,
+      props: {
+        label: 'Secondary Action',
+        variant: 'secondary',
+      },
     });
     button.activate();
     return button;
@@ -91,8 +106,13 @@ export const DangerButton = new Specimen(
   },
   () => {
     const button = new ButtonComponent({
-      label: 'Delete',
-      variant: 'danger',
+      id: 'specimen-btn-danger',
+      type: 'cortical',
+      threshold: 0.5,
+      props: {
+        label: 'Delete',
+        variant: 'danger',
+      },
     });
     button.activate();
     return button;
@@ -111,8 +131,13 @@ export const DisabledButton = new Specimen(
   },
   () => {
     const button = new ButtonComponent({
-      label: 'Disabled',
-      disabled: true,
+      id: 'specimen-btn-disabled',
+      type: 'cortical',
+      threshold: 0.5,
+      props: {
+        label: 'Disabled',
+        disabled: true,
+      },
     });
     button.activate();
     return button;
@@ -130,12 +155,17 @@ export const InteractiveButton = new Specimen(
     tags: ['interactive', 'stateful'],
     description: 'Button that tracks click count',
   },
-  (context) => {
+  () => {
     const button = new ButtonComponent({
-      label: `Clicked 0 times`,
-      onClick: () => {
-        const count = button.getState().clickCount;
-        button.updateProps({ label: `Clicked ${count} times` });
+      id: 'specimen-btn-interactive',
+      type: 'cortical',
+      threshold: 0.5,
+      props: {
+        label: `Clicked 0 times`,
+        onClick: () => {
+          const count = button.getState().clickCount;
+          button.updateProps({ label: `Clicked ${count + 1} times` });
+        },
       },
     });
     button.activate();

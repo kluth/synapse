@@ -4,7 +4,7 @@
  */
 
 import { LineChart } from '../LineChart';
-import type { ChartDataPoint, LineChartProps } from '../types';
+import type { ChartDataPoint } from '../types';
 
 describe('LineChart', () => {
   let chart: LineChart;
@@ -155,8 +155,8 @@ describe('LineChart', () => {
 
     it('should include chart dimensions in render output', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.width).toBe(800);
-      expect(renderSignal.data.vdom.props.height).toBe(400);
+      expect(renderSignal.data.vdom?.props?.['width']).toBe(800);
+      expect(renderSignal.data.vdom?.props?.['height']).toBe(400);
     });
 
     it('should generate SVG path data for the line', () => {
@@ -187,18 +187,20 @@ describe('LineChart', () => {
     it('should apply custom color to line', () => {
       chart.updateProps({ color: '#ff0000' });
       const renderSignal = chart.render();
-      const pathElement = renderSignal.data.vdom.children.find(
-        (child: any) => child.tag === 'path'
+      const pathElement = renderSignal.data.vdom?.children?.find(
+        (child: unknown) => (child as { tag?: string }).tag === 'path',
       );
-      expect(pathElement.props.stroke).toBe('#ff0000');
+      expect((pathElement as unknown as { props: { stroke: string } }).props.stroke).toBe(
+        '#ff0000',
+      );
     });
 
     it('should support custom line width', () => {
       chart.updateProps({ lineWidth: 3 });
       const renderSignal = chart.render();
-      const pathElement = renderSignal.data.vdom.children.find(
-        (child: any) => child.tag === 'path'
-      );
+      const pathElement = renderSignal.data.vdom?.children?.find(
+        (child: unknown) => (child as { tag?: string }).tag === 'path',
+      ) as unknown as { props: { strokeWidth: number } };
       expect(pathElement.props.strokeWidth).toBe(3);
     });
 
@@ -223,34 +225,34 @@ describe('LineChart', () => {
     });
 
     it('should update state when hovering over point', async () => {
-      const point = mockData[1];
+      const point = mockData[1]!;
       chart.onPointHover(point);
       const state = chart.getState();
       expect(state.hoveredPoint).toEqual(point);
     });
 
     it('should update state when clicking on point', async () => {
-      const point = mockData[2];
+      const point = mockData[2]!;
       chart.onPointClick(point);
       const state = chart.getState();
       expect(state.selectedPoint).toEqual(point);
     });
 
     it('should emit UI event on point click', async () => {
-      const events: any[] = [];
+      const events: unknown[] = [];
       chart.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
+        if ((signal as { type?: string }).type === 'ui:click') {
           events.push(signal);
         }
       });
 
-      const point = mockData[0];
+      const point = mockData[0]!;
       chart.onPointClick(point);
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(events.length).toBeGreaterThan(0);
-      expect(events[0].data.payload).toEqual(point);
+      expect((events[0] as { data: { payload: unknown } }).data['payload']).toEqual(point);
     });
   });
 
@@ -269,16 +271,16 @@ describe('LineChart', () => {
     });
 
     it('should trigger re-render when props change', () => {
-      const spy = jest.spyOn(chart as any, 'requestRender');
+      const _spy = jest.spyOn(chart as unknown as { requestRender: () => void }, 'requestRender');
       chart.updateProps({ color: '#00ff00' });
-      expect(spy).toHaveBeenCalled();
+      expect(_spy).toHaveBeenCalled();
     });
 
     it('should not trigger re-render when props are identical', () => {
-      const spy = jest.spyOn(chart as any, 'requestRender');
+      const _spy = jest.spyOn(chart as unknown as { requestRender: () => void }, 'requestRender');
       const currentProps = chart.getProps();
       chart.updateProps(currentProps);
-      expect(spy).not.toHaveBeenCalled();
+      expect(_spy).not.toHaveBeenCalled();
     });
   });
 
@@ -288,7 +290,7 @@ describe('LineChart', () => {
     });
 
     it('should handle large datasets efficiently', () => {
-      const largeData: ChartDataPoint[] = Array.from({ length: 1000 }, (_, i) => ({
+      const largeData: ChartDataPoint[] = Array.from({ length: 1000 }, (_item, i) => ({
         x: i,
         y: Math.sin(i / 100) * 100,
       }));
@@ -319,8 +321,8 @@ describe('LineChart', () => {
 
     it('should include ARIA labels', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.role).toBe('img');
-      expect(renderSignal.data.vdom.props['aria-label']).toBeDefined();
+      expect(renderSignal.data.vdom?.props?.['role']).toBe('img');
+      expect(renderSignal.data.vdom?.props?.['aria-label']).toBeDefined();
     });
 
     it('should provide data table alternative', () => {

@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/html';
 import { Card, type CardProps } from './Card';
 
-const meta: Meta = {
+const meta: Meta<CardProps> = {
   title: 'Components/Card',
   tags: ['autodocs'],
-  render: (args: CardProps) => {
+  render: (args) => {
     const container = document.createElement('div');
     container.style.padding = '20px';
 
     const card = new Card({
       id: `card-${crypto.randomUUID()}`,
-      config: {
-        initialProps: args,
-        initialState: {
-          hovered: false,
-          pressed: false,
-        },
+      type: 'reflex',
+      threshold: 0.5,
+      props: args,
+      initialState: {
+        hovered: false,
+        pressed: false,
       },
     });
 
@@ -26,42 +26,46 @@ const meta: Meta = {
 
     const cardElement = document.createElement(vdom.tag);
 
-    Object.entries(vdom.props).forEach(([key, value]) => {
-      if (value === undefined) return;
-      if (key === 'className') {
-        cardElement.className = value as string;
-      } else {
-        cardElement.setAttribute(key, String(value));
-      }
-    });
+    if (vdom.props) {
+      Object.entries(vdom.props).forEach(([key, value]) => {
+        if (value === undefined) return;
+        if (key === 'className') {
+          cardElement.className = value as string;
+        } else {
+          cardElement.setAttribute(key, String(value));
+        }
+      });
+    }
 
     Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-      cardElement.style[key as never] = value;
+      cardElement.style[key as any] = String(value);
     });
 
-    vdom.children.forEach((child) => {
-      if (typeof child === 'object' && 'tag' in child) {
-        const element = document.createElement(child.tag);
+    if (vdom.children) {
+      vdom.children.forEach((child) => {
+        if (typeof child === 'object' && 'tag' in child) {
+          const element = document.createElement(child.tag);
 
-        if (child.props !== undefined) {
-          Object.entries(child.props).forEach(([key, value]) => {
-            if (key === 'className') {
-              element.className = value as string;
-            } else if (key === 'style') {
-              element.setAttribute('style', value as string);
-            } else {
-              element.setAttribute(key, String(value));
-            }
-          });
+          if (child.props !== undefined) {
+            Object.entries(child.props).forEach(([key, value]) => {
+              if (key === 'className') {
+                element.className = value as string;
+              } else if (key === 'style') {
+                element.setAttribute('style', value as string);
+              } else {
+                element.setAttribute(key, String(value));
+              }
+            });
+          }
+
+          if (child.children !== undefined) {
+            element.textContent = child.children.join('');
+          }
+
+          cardElement.appendChild(element);
         }
-
-        if (child.children !== undefined) {
-          element.textContent = child.children.join('');
-        }
-
-        cardElement.appendChild(element);
-      }
-    });
+      });
+    }
 
     if (args.onClick !== undefined) {
       cardElement.addEventListener('click', args.onClick);
@@ -69,14 +73,14 @@ const meta: Meta = {
         card.setState({ hovered: true });
         const updated = card['performRender']();
         Object.entries(updated.data.styles).forEach(([key, value]) => {
-          cardElement.style[key as never] = value;
+          cardElement.style[key as any] = String(value);
         });
       });
       cardElement.addEventListener('mouseleave', () => {
         card.setState({ hovered: false, pressed: false });
         const updated = card['performRender']();
         Object.entries(updated.data.styles).forEach(([key, value]) => {
-          cardElement.style[key as never] = value;
+          cardElement.style[key as any] = String(value);
         });
       });
     }
@@ -213,19 +217,19 @@ export const CardGrid: Story = {
     cards.forEach((cardData) => {
       const card = new Card({
         id: `card-grid-${crypto.randomUUID()}`,
-        config: {
-          initialProps: {
-            title: cardData.title,
-            subtitle: cardData.subtitle,
-            children: cardData.content,
-            variant: 'elevated',
-            padding: 'medium',
-            hoverable: true,
-          },
-          initialState: {
-            hovered: false,
-            pressed: false,
-          },
+        type: 'reflex',
+        threshold: 0.5,
+        props: {
+          title: cardData.title,
+          subtitle: cardData.subtitle,
+          children: cardData.content,
+          variant: 'elevated',
+          padding: 'medium',
+          hoverable: true,
+        },
+        initialState: {
+          hovered: false,
+          pressed: false,
         },
       });
 
@@ -236,42 +240,46 @@ export const CardGrid: Story = {
 
       const cardElement = document.createElement(vdom.tag);
 
-      Object.entries(vdom.props).forEach(([key, value]) => {
-        if (value === undefined) return;
-        if (key === 'className') {
-          cardElement.className = value as string;
-        } else {
-          cardElement.setAttribute(key, String(value));
-        }
-      });
+      if (vdom.props) {
+        Object.entries(vdom.props).forEach(([key, value]) => {
+          if (value === undefined) return;
+          if (key === 'className') {
+            cardElement.className = value as string;
+          } else {
+            cardElement.setAttribute(key, String(value));
+          }
+        });
+      }
 
       Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-        cardElement.style[key as never] = value;
+        cardElement.style[key as any] = String(value);
       });
 
-      vdom.children.forEach((child) => {
-        if (typeof child === 'object' && 'tag' in child) {
-          const element = document.createElement(child.tag);
+      if (vdom.children) {
+        vdom.children.forEach((child) => {
+          if (typeof child === 'object' && 'tag' in child) {
+            const element = document.createElement(child.tag);
 
-          if (child.props !== undefined) {
-            Object.entries(child.props).forEach(([key, value]) => {
-              if (key === 'className') {
-                element.className = value as string;
-              } else if (key === 'style') {
-                element.setAttribute('style', value as string);
-              } else {
-                element.setAttribute(key, String(value));
-              }
-            });
+            if (child.props !== undefined) {
+              Object.entries(child.props).forEach(([key, value]) => {
+                if (key === 'className') {
+                  element.className = value as string;
+                } else if (key === 'style') {
+                  element.setAttribute('style', value as string);
+                } else {
+                  element.setAttribute(key, String(value));
+                }
+              });
+            }
+
+            if (child.children !== undefined) {
+              element.textContent = child.children.join('');
+            }
+
+            cardElement.appendChild(element);
           }
-
-          if (child.children !== undefined) {
-            element.textContent = child.children.join('');
-          }
-
-          cardElement.appendChild(element);
-        }
-      });
+        });
+      }
 
       container.appendChild(cardElement);
     });

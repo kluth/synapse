@@ -4,6 +4,7 @@
 
 import { TestSubject } from '../laboratory/TestSubject';
 import { VisualNeuron } from '../../ui/VisualNeuron';
+import type { Input } from '../../types';
 
 // Test component
 class TestComponent extends VisualNeuron<{ label: string; count: number }> {
@@ -17,8 +18,10 @@ class TestComponent extends VisualNeuron<{ label: string; count: number }> {
     });
   }
 
-  protected executeProcessing(): Promise<void> {
-    return Promise.resolve();
+  protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
+    _input: Input<_TInput>,
+  ): Promise<TOutput> {
+    return undefined as TOutput;
   }
 
   protected performRender() {
@@ -138,7 +141,7 @@ describe('TestSubject - Component Testing Wrapper', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       const state = subject.getState();
-      expect(state.clicks).toBe(0);
+      expect(state['clicks']).toBe(0);
     });
 
     it('should update component state', async () => {
@@ -149,7 +152,7 @@ describe('TestSubject - Component Testing Wrapper', () => {
       subject.setState({ clicks: 5 });
 
       const state = subject.getState();
-      expect(state.clicks).toBe(5);
+      expect(state['clicks']).toBe(5);
     });
   });
 
@@ -213,7 +216,7 @@ describe('TestSubject - Component Testing Wrapper', () => {
 
       const interactions = subject.getInteractions();
       expect(interactions).toHaveLength(1);
-      expect(interactions[0].type).toBe('click');
+      expect(interactions[0]?.type).toBe('click');
     });
 
     it('should simulate input interaction', async () => {
@@ -224,8 +227,8 @@ describe('TestSubject - Component Testing Wrapper', () => {
       await subject.interact({ type: 'input', data: 'test value' });
 
       const interactions = subject.getInteractions();
-      expect(interactions[0].type).toBe('input');
-      expect(interactions[0].data).toBe('test value');
+      expect(interactions[0]?.type).toBe('input');
+      expect(interactions[0]?.data).toBe('test value');
     });
 
     it('should simulate focus interaction', async () => {
@@ -236,7 +239,7 @@ describe('TestSubject - Component Testing Wrapper', () => {
       await subject.interact({ type: 'focus' });
 
       const interactions = subject.getInteractions();
-      expect(interactions[0].type).toBe('focus');
+      expect(interactions[0]?.type).toBe('focus');
     });
 
     it('should simulate blur interaction', async () => {
@@ -247,7 +250,7 @@ describe('TestSubject - Component Testing Wrapper', () => {
       await subject.interact({ type: 'blur' });
 
       const interactions = subject.getInteractions();
-      expect(interactions[0].type).toBe('blur');
+      expect(interactions[0]?.type).toBe('blur');
     });
 
     it('should simulate keyboard interaction', async () => {
@@ -258,8 +261,8 @@ describe('TestSubject - Component Testing Wrapper', () => {
       await subject.interact({ type: 'keydown', data: 'Enter' });
 
       const interactions = subject.getInteractions();
-      expect(interactions[0].type).toBe('keydown');
-      expect(interactions[0].data).toBe('Enter');
+      expect(interactions[0]?.type).toBe('keydown');
+      expect(interactions[0]?.data).toBe('Enter');
     });
 
     it('should support interaction delay', async () => {
@@ -372,9 +375,9 @@ describe('TestSubject - Component Testing Wrapper', () => {
         void subject.setState({ clicks: 10 });
       }, 50);
 
-      await subject.waitFor(() => subject.getState().clicks === 10, { timeout: 200 });
+      await subject.waitFor(() => subject.getState()['clicks'] === 10, { timeout: 200 });
 
-      expect(subject.getState().clicks).toBe(10);
+      expect(subject.getState()['clicks']).toBe(10);
     });
 
     it('should timeout waiting for condition', async () => {
@@ -400,8 +403,8 @@ describe('TestSubject - Component Testing Wrapper', () => {
 
       const snapshot = subject.snapshot();
 
-      expect(snapshot.props.count).toBe(10);
-      expect(snapshot.state.clicks).toBe(5);
+      expect(snapshot.props['count']).toBe(10);
+      expect(snapshot.state['clicks']).toBe(5);
       expect(snapshot.mounted).toBe(true);
       expect(snapshot.active).toBe(true);
       expect(snapshot.renderOutput).toBeDefined();

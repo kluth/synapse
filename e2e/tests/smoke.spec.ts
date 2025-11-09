@@ -73,19 +73,20 @@ test.describe('Synapse Framework - Smoke Tests', () => {
     // WHEN: Checking for global Synapse object
     // THEN: It should be available with expected properties
     const hasSynapse = await page.evaluate(() => {
-      return typeof (window as any).Synapse !== 'undefined';
+      return typeof (window as unknown as { Synapse?: unknown }).Synapse !== 'undefined';
     });
 
     expect(hasSynapse).toBe(true);
 
     const hasClasses = await page.evaluate(() => {
-      const syn = (window as any).Synapse;
+      const syn = (window as unknown as { Synapse?: Record<string, unknown> }).Synapse;
       return (
-        typeof syn.VisualNeuron !== 'undefined' &&
-        typeof syn.LineChart !== 'undefined' &&
-        typeof syn.BarChart !== 'undefined' &&
-        typeof syn.PieChart !== 'undefined' &&
-        typeof syn.ScatterPlot !== 'undefined'
+        syn !== undefined &&
+        typeof syn['VisualNeuron'] !== 'undefined' &&
+        typeof syn['LineChart'] !== 'undefined' &&
+        typeof syn['BarChart'] !== 'undefined' &&
+        typeof syn['PieChart'] !== 'undefined' &&
+        typeof syn['ScatterPlot'] !== 'undefined'
       );
     });
 

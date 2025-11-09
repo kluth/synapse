@@ -56,13 +56,8 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
     const xRange = bounds.maxX - bounds.minX || 1;
     const yRange = bounds.maxY - bounds.minY || 1;
 
-    const x =
-      effectivePadding.left +
-      ((point.x - bounds.minX) / xRange) * chartWidth;
-    const y =
-      effectivePadding.top +
-      chartHeight -
-      ((point.y - bounds.minY) / yRange) * chartHeight;
+    const x = effectivePadding.left + ((point.x - bounds.minX) / xRange) * chartWidth;
+    const y = effectivePadding.top + chartHeight - ((point.y - bounds.minY) / yRange) * chartHeight;
 
     return { x, y };
   }
@@ -87,13 +82,9 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
     const xRange = bounds.maxX - bounds.minX || 1;
     const yRange = bounds.maxY - bounds.minY || 1;
 
-    const x =
-      bounds.minX +
-      ((point.x - effectivePadding.left) / chartWidth) * xRange;
+    const x = bounds.minX + ((point.x - effectivePadding.left) / chartWidth) * xRange;
     const y =
-      bounds.minY +
-      ((chartHeight - (point.y - effectivePadding.top)) / chartHeight) *
-        yRange;
+      bounds.minY + ((chartHeight - (point.y - effectivePadding.top)) / chartHeight) * yRange;
 
     return { x, y };
   }
@@ -109,7 +100,7 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
     }
 
     if (data.length === 1) {
-      const point = this.dataToCanvas(data[0]);
+      const point = this.dataToCanvas(data[0]!);
       return `M ${point.x},${point.y}`;
     }
 
@@ -127,11 +118,16 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
    */
   private generateLinearPath(points: CanvasPoint[]): string {
     if (points.length === 0) return '';
+    const firstPoint = points[0];
+    if (!firstPoint) return '';
 
-    let path = `M ${points[0].x},${points[0].y}`;
+    let path = `M ${firstPoint.x},${firstPoint.y}`;
 
     for (let i = 1; i < points.length; i++) {
-      path += ` L ${points[i].x},${points[i].y}`;
+      const point = points[i];
+      if (point) {
+        path += ` L ${point.x},${point.y}`;
+      }
     }
 
     return path;
@@ -142,13 +138,17 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
    */
   private generateSmoothPath(points: CanvasPoint[]): string {
     if (points.length === 0) return '';
-    if (points.length === 1) return `M ${points[0].x},${points[0].y}`;
+    const firstPoint = points[0];
+    if (!firstPoint) return '';
+    if (points.length === 1) return `M ${firstPoint.x},${firstPoint.y}`;
 
-    let path = `M ${points[0].x},${points[0].y}`;
+    let path = `M ${firstPoint.x},${firstPoint.y}`;
 
     for (let i = 0; i < points.length - 1; i++) {
       const current = points[i];
       const next = points[i + 1];
+
+      if (!current || !next) continue;
 
       // Calculate control points for smooth curves
       const cpX1 = current.x + (next.x - current.x) / 3;
@@ -172,14 +172,13 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
       return null;
     }
 
-    let nearestPoint = data[0];
+    let nearestPoint: ChartDataPoint | null = data[0] || null;
     let minDistance = Infinity;
 
     for (const point of data) {
       const canvasCoords = this.dataToCanvas(point);
       const distance = Math.sqrt(
-        Math.pow(canvasCoords.x - canvasPoint.x, 2) +
-          Math.pow(canvasCoords.y - canvasPoint.y, 2)
+        Math.pow(canvasCoords.x - canvasPoint.x, 2) + Math.pow(canvasCoords.y - canvasPoint.y, 2),
       );
 
       if (distance < minDistance) {
@@ -219,7 +218,7 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
   /**
    * Get data as accessible table
    */
-  public getDataAsTable(): Array<{ x: number; y: number; label?: string }> {
+  public getDataAsTable(): Array<{ x: number; y: number; label: string | undefined }> {
     const { data } = this.receptiveField;
     return data.map((d) => ({ x: d.x, y: d.y, label: d.label }));
   }
@@ -228,8 +227,7 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
    * Render the line chart
    */
   protected performRender(): RenderSignal {
-    const { width, height, color, lineWidth, showPoints, pointRadius } =
-      this.receptiveField;
+    const { width, height, color, lineWidth, showPoints, pointRadius } = this.receptiveField;
     const pathData = this.generatePathData();
 
     const children: Array<SVGElement | string> = [];
@@ -240,6 +238,7 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
       props: {
         d: pathData,
         stroke: color || '#3b82f6',
+        'stroke-width': lineWidth || 2,
         strokeWidth: lineWidth || 2,
         fill: 'none',
         strokeLinecap: 'round',
@@ -273,6 +272,7 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
       props: {
         width,
         height,
+        viewBox: `0 0 ${width} ${height}`,
         role: 'img',
         'aria-label': `Line chart with ${this.receptiveField.data.length} data points`,
       },
@@ -298,9 +298,7 @@ export class LineChart extends VisualNeuron<LineChartProps, BaseChartState> {
   /**
    * Process incoming signals
    */
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any
-  ): Promise<TOutput> {
+  protected override async executeProcessing<TOutput = unknown>(_input: unknown): Promise<TOutput> {
     // Handle chart-specific signals here
     return undefined as TOutput;
   }

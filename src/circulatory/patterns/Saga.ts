@@ -1,24 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-useless-constructor */
 import type { Heart } from '../core/Heart';
 
 /**
  * Saga step
  */
-export interface SagaStep {
+export interface SagaStep<TResult = unknown> {
   name: string;
-  action: () => Promise<any>;
+  action: () => Promise<TResult>;
   compensate: () => Promise<void>;
 }
 
 /**
  * Saga result
  */
-export interface SagaResult {
+export interface SagaResult<TResults = unknown> {
   success: boolean;
   error?: string;
-  results?: any[];
+  results?: TResults[];
 }
 
 /**
@@ -45,9 +42,11 @@ export class Saga {
   /**
    * Execute saga steps
    */
-  public async execute(steps: SagaStep[]): Promise<SagaResult> {
-    const results: any[] = [];
-    const executedSteps: SagaStep[] = [];
+  public async execute<TResults = unknown>(
+    steps: SagaStep<TResults>[],
+  ): Promise<SagaResult<TResults>> {
+    const results: TResults[] = [];
+    const executedSteps: SagaStep<TResults>[] = [];
 
     this.emitStateChange('started');
 

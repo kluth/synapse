@@ -69,15 +69,17 @@ describe('Diaphragm - Breathing Control', () => {
 
       // Check that delays are increasing
       expect(timestamps.length).toBe(3);
-      const delay1 = timestamps[1] - timestamps[0];
-      const delay2 = timestamps[2] - timestamps[1];
+      const delay1 = timestamps[1]! - timestamps[0]!;
+      const delay2 = timestamps[2]! - timestamps[1]!;
       expect(delay2).toBeGreaterThan(delay1);
     });
 
     it('should emit retry events', async () => {
       const diaphragm = new Diaphragm({ maxAttempts: 3, initialDelay: 10 });
       const retryEvents: unknown[] = [];
-      diaphragm.on('retry', (event) => retryEvents.push(event));
+      diaphragm.on('retry', (event) => {
+        retryEvents.push(event);
+      });
 
       let attempts = 0;
       const fn = async () => {
@@ -277,7 +279,9 @@ describe('Diaphragm - Breathing Control', () => {
       });
 
       const throttleEvents: unknown[] = [];
-      diaphragm.on('throttled', (event) => throttleEvents.push(event));
+      diaphragm.on('throttled', (event) => {
+        throttleEvents.push(event);
+      });
 
       await diaphragm.withThrottle(async () => 1);
       await diaphragm.withThrottle(async () => 2);

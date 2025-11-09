@@ -20,11 +20,11 @@ class TestComponent extends VisualNeuron<{ label: string }> {
     });
   }
 
-  protected executeProcessing(): Promise<void> {
-    return Promise.resolve();
+  protected override executeProcessing<_TInput = unknown, TOutput = unknown>(): Promise<TOutput> {
+    return Promise.resolve(undefined as TOutput);
   }
 
-  protected performRender() {
+  protected override performRender() {
     const label = this.receptiveField.label ?? 'Test';
 
     return {
@@ -190,7 +190,7 @@ describe('Experiment - Test Scenario', () => {
       const result = await experiment.run();
 
       expect(result.success).toBe(false);
-      expect(result.hypotheses[0].passed).toBe(false);
+      expect(result.hypotheses[0]!.passed).toBe(false);
 
       await subject.cleanup();
     });

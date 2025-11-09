@@ -153,7 +153,8 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should register selector', () => {
-      const selector = (state: any) => state.firstName + ' ' + state.lastName;
+      const selector = (state: Record<string, unknown>) =>
+        (state['firstName'] as string) + ' ' + (state['lastName'] as string);
       astrocyte.registerSelector('fullName', selector);
 
       astrocyte.setState('firstName', 'John');
@@ -163,7 +164,9 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should memoize selector results', () => {
-      const selectorFn = jest.fn((state: any) => state.a + state.b);
+      const selectorFn = jest.fn(
+        (state: Record<string, unknown>) => (state['a'] as number) + (state['b'] as number),
+      );
       astrocyte.registerSelector('sum', selectorFn);
 
       astrocyte.setState('a', 5);
@@ -180,7 +183,9 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should recompute selector when dependencies change', () => {
-      const selectorFn = jest.fn((state: any) => state.items?.length ?? 0);
+      const selectorFn = jest.fn(
+        (state: Record<string, unknown>) => (state['items'] as unknown[] | undefined)?.length ?? 0,
+      );
       astrocyte.registerSelector('itemCount', selectorFn);
 
       astrocyte.setState('items', [1, 2, 3]);
@@ -192,11 +197,17 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should support selector dependencies', () => {
-      astrocyte.registerSelector('total', (state: any) =>
-        (state.prices ?? []).reduce((sum: number, p: number) => sum + p, 0),
+      astrocyte.registerSelector('total', (state: Record<string, unknown>) =>
+        ((state['prices'] as number[] | undefined) ?? []).reduce(
+          (sum: number, p: number) => sum + p,
+          0,
+        ),
       );
 
-      astrocyte.registerSelector('totalWithTax', (state: any) => astrocyte.select('total') * 1.1);
+      astrocyte.registerSelector(
+        'totalWithTax',
+        (_state: Record<string, unknown>) => (astrocyte.select('total') as number) * 1.1,
+      );
 
       astrocyte.setState('prices', [10, 20, 30]);
       expect(astrocyte.select('totalWithTax')).toBe(66); // 60 * 1.1
@@ -345,7 +356,7 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should apply middleware on state changes', () => {
-      const middleware = jest.fn((path, value, prevValue) => {
+      const middleware = jest.fn((_path: string, value: unknown, _prevValue: unknown) => {
         return value;
       });
 
@@ -356,7 +367,7 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should allow middleware to transform values', () => {
-      const uppercaseMiddleware = (path: string, value: any) => {
+      const uppercaseMiddleware = (_path: string, value: unknown) => {
         if (typeof value === 'string') {
           return value.toUpperCase();
         }
@@ -372,12 +383,12 @@ describe('VisualAstrocyte - UI State Management', () => {
     it('should execute multiple middleware in order', () => {
       const order: string[] = [];
 
-      astrocyte.addMiddleware((path, value) => {
+      astrocyte.addMiddleware((_path: string, value: unknown) => {
         order.push('first');
         return value;
       });
 
-      astrocyte.addMiddleware((path, value) => {
+      astrocyte.addMiddleware((_path: string, value: unknown) => {
         order.push('second');
         return value;
       });
@@ -430,7 +441,7 @@ describe('VisualAstrocyte - UI State Management', () => {
     });
 
     it('should handle circular references in state', () => {
-      const circular: any = { a: 1 };
+      const circular: { a: number; self?: unknown } = { a: 1 };
       circular.self = circular;
 
       expect(() => {

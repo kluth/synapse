@@ -361,7 +361,7 @@ export class Hypothesis {
   /**
    * Assert that async condition becomes true
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public static async toEventually(
     _subject: TestSubject,
     description: string,

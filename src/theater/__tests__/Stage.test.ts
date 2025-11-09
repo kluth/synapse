@@ -241,13 +241,13 @@ describe('Stage - Component Rendering Platform', () => {
       const stage = new Stage({ isolation: 'none' });
       await stage.initialize(container);
 
-      let statsBefore = stage.getStats();
+      const statsBefore = stage.getStats();
       expect(statsBefore.hasMounted).toBe(false);
 
       const element = document.createElement('div');
       await stage.mount(element, 'stats-test');
 
-      let statsAfter = stage.getStats();
+      const statsAfter = stage.getStats();
       expect(statsAfter.hasMounted).toBe(true);
     });
   });

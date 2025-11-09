@@ -240,7 +240,7 @@ export class Router {
   private async executeMiddleware(
     middleware: RouteMiddleware[],
     context: RouteContext,
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+
     handler: () => Promise<unknown> | unknown,
   ): Promise<unknown> {
     let index = 0;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * WebSocketAdapter - WebSocket Protocol Adapter
  *
@@ -181,7 +180,7 @@ export class WebSocketAdapter extends BaseProtocolAdapter {
    */
   public on(
     event: 'message' | 'connected' | 'disconnected' | 'error' | 'message:sent',
-    listener: (...args: any[]) => void,
+    listener: (...args: unknown[]) => void,
   ): void {
     this.emitter.on(event, listener);
   }
@@ -191,7 +190,7 @@ export class WebSocketAdapter extends BaseProtocolAdapter {
    */
   public off(
     event: 'message' | 'connected' | 'disconnected' | 'error' | 'message:sent',
-    listener: (...args: any[]) => void,
+    listener: (...args: unknown[]) => void,
   ): void {
     this.emitter.off(event, listener);
   }

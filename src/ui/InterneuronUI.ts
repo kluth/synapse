@@ -10,13 +10,14 @@ import type { Signal } from '../types';
 interface BubblingSignal {
   data?: {
     bubbles?: boolean;
+    payload?: unknown;
+    target?: string;
   };
   type?: string;
   strength?: number;
   timestamp?: number;
   id?: string;
   sourceId?: string;
-  payload?: unknown;
 }
 
 /**
@@ -135,18 +136,18 @@ export abstract class InterneuronUI<
         sourceId: this.id,
         type: 'excitatory',
         strength: signal.strength ?? 1.0,
-        payload: signal.payload ?? signal,
+        payload: signal.data?.payload ?? signal,
         timestamp: new Date(signal.timestamp ?? Date.now()),
       };
       this.emit(baseSignal);
     } else {
       // Signal has all required fields, cast it
       const fullSignal: Signal = {
-        id: signal.id,
-        sourceId: signal.sourceId,
+        id: signal.id ?? crypto.randomUUID(),
+        sourceId: signal.sourceId ?? this.id,
         type: 'excitatory',
         strength: signal.strength ?? 1.0,
-        payload: signal.payload ?? signal,
+        payload: signal.data?.payload ?? signal,
         timestamp: new Date(signal.timestamp ?? Date.now()),
       };
       this.emit(fullSignal);

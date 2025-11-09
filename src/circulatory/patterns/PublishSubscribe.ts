@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 
 /**
  * Subscriber callback
  */
-type SubscriberCallback = (data: any) => void | Promise<void>;
+type SubscriberCallback<TData = unknown> = (data: TData) => void | Promise<void>;
 
 /**
  * PublishSubscribe - Publish-Subscribe messaging pattern
@@ -26,7 +25,7 @@ export class PublishSubscribe {
   /**
    * Publish a message to a topic
    */
-  public async publish(topic: string, data: any): Promise<void> {
+  public async publish<TData = unknown>(topic: string, data: TData): Promise<void> {
     const cell = new BloodCell(data, {
       type: 'Publish',
       metadata: { topic },
@@ -38,10 +37,13 @@ export class PublishSubscribe {
   /**
    * Subscribe to a topic
    */
-  public subscribe(topic: string, callback: SubscriberCallback): () => void {
+  public subscribe<TData = unknown>(
+    topic: string,
+    callback: SubscriberCallback<TData>,
+  ): () => void {
     return this.heart.subscribe(`pubsub.${topic}`, async (cell) => {
       try {
-        await callback(cell.payload);
+        await callback(cell.payload as TData);
       } catch {
         // Ignore subscriber errors to prevent affecting other subscribers
       }

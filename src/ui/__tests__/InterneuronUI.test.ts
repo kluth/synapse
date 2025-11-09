@@ -5,13 +5,14 @@
 import { InterneuronUI } from '../InterneuronUI';
 import { VisualNeuron } from '../VisualNeuron';
 import type { RenderSignal, VirtualDOMNode } from '../types';
+import type { Input, Signal } from '../../types';
 
 // Simple child component for testing
 class TestChild extends VisualNeuron<{ label: string; value: number }, { count: number }> {
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any,
+  protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
+    input: Input<_TInput>,
   ): Promise<TOutput> {
-    const signal = input.data;
+    const signal = input.data as { type?: string } | undefined;
     if (signal?.type === 'ui:click') {
       this.setState({ count: this.getState().count + 1 });
     }
@@ -86,14 +87,21 @@ class TestContainer extends InterneuronUI<
     };
   }
 
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any,
+  protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
+    input: Input<_TInput>,
   ): Promise<TOutput> {
-    const signal = input.data;
+    const signal = input.data as
+      | { type?: string; data?: { payload?: { action?: string } } }
+      | undefined;
     if (signal?.type === 'ui:click' && signal.data?.payload?.action === 'toggle') {
       this.setState({ expanded: !this.getState().expanded });
     }
     return undefined as TOutput;
+  }
+
+  // Public method for testing protected orchestrateChildren
+  public testOrchestrateChildren(): RenderSignal[] {
+    return this.orchestrateChildren();
   }
 }
 
@@ -144,7 +152,7 @@ describe('InterneuronUI', () => {
       container.addChild(child1);
       const children = container.getChildren();
       expect(children).toHaveLength(1);
-      expect(children[0].id).toBe('child-1');
+      expect(children[0]!.id).toBe('child-1');
     });
 
     it('should add multiple children', () => {
@@ -160,7 +168,7 @@ describe('InterneuronUI', () => {
       container.removeChild('child-1');
       const children = container.getChildren();
       expect(children).toHaveLength(1);
-      expect(children[0].id).toBe('child-2');
+      expect(children[0]!.id).toBe('child-2');
     });
 
     it('should get child by id', () => {
@@ -223,10 +231,10 @@ describe('InterneuronUI', () => {
     });
 
     it('should orchestrate child rendering', () => {
-      const childSignals = container.orchestrateChildren();
+      const childSignals = container.testOrchestrateChildren();
       expect(childSignals).toHaveLength(2);
-      expect(childSignals[0].type).toBe('render');
-      expect(childSignals[1].type).toBe('render');
+      expect(childSignals[0]!.type).toBe('render');
+      expect(childSignals[1]!.type).toBe('render');
     });
 
     it('should include child render outputs in container render', () => {
@@ -235,15 +243,15 @@ describe('InterneuronUI', () => {
 
       // Should have title + 2 child nodes
       expect(children).toHaveLength(3);
-      expect(children[0].tag).toBe('h2');
-      expect(children[1].tag).toBe('span');
-      expect(children[2].tag).toBe('span');
+      expect(children[0]!.tag).toBe('h2');
+      expect(children[1]!.tag).toBe('span');
+      expect(children[2]!.tag).toBe('span');
     });
 
     it('should pass props to children during orchestration', () => {
       child1.updateProps({ label: 'Updated Child' });
-      const childSignals = container.orchestrateChildren();
-      expect(childSignals[0].data.vdom.children).toContain('Updated Child: 0');
+      const childSignals = container.testOrchestrateChildren();
+      expect(childSignals[0]!.data.vdom.children).toContain('Updated Child: 0');
     });
   });
 
@@ -255,15 +263,17 @@ describe('InterneuronUI', () => {
     });
 
     it('should propagate events from parent to children', async () => {
-      const signals: any[] = [];
-      child1.on('signal', (signal) => signals.push(signal));
+      const signals: unknown[] = [];
+      child1.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       await container.propagateToChildren({
         type: 'ui:click',
         data: { payload: {}, target: container.id },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -271,15 +281,17 @@ describe('InterneuronUI', () => {
     });
 
     it('should bubble events from children to parent', async () => {
-      const signals: any[] = [];
-      container.on('signal', (signal) => signals.push(signal));
+      const signals: unknown[] = [];
+      container.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       await child1.receive({
         type: 'ui:click',
         data: { payload: {}, target: child1.id, bubbles: true },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       // Manually trigger bubbling
       container.bubbleFromChild({
@@ -291,13 +303,15 @@ describe('InterneuronUI', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const bubbledEvents = signals.filter((s) => s.type === 'ui:click');
+      const bubbledEvents = signals.filter((s: any) => s.type === 'ui:click');
       expect(bubbledEvents.length).toBeGreaterThan(0);
     });
 
     it('should not bubble events when bubbles is false', async () => {
-      const signals: any[] = [];
-      container.on('signal', (signal) => signals.push(signal));
+      const signals: unknown[] = [];
+      container.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       container.bubbleFromChild({
         type: 'ui:click',
@@ -308,7 +322,7 @@ describe('InterneuronUI', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const bubbledEvents = signals.filter((s) => s.type === 'ui:click');
+      const bubbledEvents = signals.filter((s: any) => s.type === 'ui:click');
       expect(bubbledEvents).toHaveLength(0);
     });
   });
@@ -322,32 +336,32 @@ describe('InterneuronUI', () => {
 
     it('should render with specified layout', () => {
       const renderSignal = container.render();
-      expect(renderSignal.data.styles.flexDirection).toBe('column');
-      expect(renderSignal.data.vdom.props!.className).toContain('column');
+      expect(renderSignal.data.styles['flexDirection']).toBe('column');
+      expect(renderSignal.data.vdom.props!['className']).toContain('column');
     });
 
     it('should update layout when props change', () => {
       container.updateProps({ layout: 'row' });
       const renderSignal = container.render();
-      expect(renderSignal.data.styles.flexDirection).toBe('row');
-      expect(renderSignal.data.vdom.props!.className).toContain('row');
+      expect(renderSignal.data.styles['flexDirection']).toBe('row');
+      expect(renderSignal.data.vdom.props!['className']).toContain('row');
     });
 
     it('should toggle visibility', async () => {
       let renderSignal = container.render();
-      expect(renderSignal.data.styles.display).toBe('flex');
+      expect(renderSignal.data.styles['display']).toBe('flex');
 
       await container.receive({
         type: 'ui:click',
         data: { payload: { action: 'toggle' }, target: container.id },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       renderSignal = container.render();
-      expect(renderSignal.data.styles.display).toBe('none');
+      expect(renderSignal.data.styles['display']).toBe('none');
     });
   });
 
@@ -359,10 +373,10 @@ describe('InterneuronUI', () => {
     });
 
     it('should track child state changes', async () => {
-      const stateChanges: any[] = [];
+      const stateChanges: unknown[] = [];
 
       child1.on('signal', (signal) => {
-        if (signal.type === 'state:update') {
+        if ((signal as { type: string }).type === 'state:update') {
           stateChanges.push(signal);
         }
       });

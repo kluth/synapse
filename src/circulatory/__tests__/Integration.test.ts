@@ -47,7 +47,7 @@ describe('Circulatory System Integration', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(received).toHaveLength(1);
-      expect(received[0].payload).toEqual({ data: 'test' });
+      expect(received[0]!.payload).toEqual({ data: 'test' });
     });
 
     it('should handle backpressure across components', async () => {
@@ -91,7 +91,7 @@ describe('Circulatory System Integration', () => {
       });
 
       vein.onMessage((cell) => {
-        received.push(cell.payload.id);
+        received.push((cell.payload as any).id);
       });
 
       for (let i = 1; i <= 10; i++) {
@@ -119,11 +119,16 @@ describe('Circulatory System Integration', () => {
       const rr = new RequestResponse(heart);
       const pubsub = new PublishSubscribe(heart);
 
-      const notifications: any[] = [];
+      const notifications: unknown[] = [];
 
       // Setup request handler that also publishes event
       rr.onRequest('createUser', async (request) => {
-        const user = { id: 1, ...request.payload };
+        const user = {
+          id: 1,
+          ...(typeof request.payload === 'object' && request.payload !== null
+            ? request.payload
+            : {}),
+        };
         await pubsub.publish('user.created', user);
         return user;
       });
@@ -138,9 +143,9 @@ describe('Circulatory System Integration', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
-      expect(result.name).toBe('John');
+      expect((result as { name: string }).name).toBe('John');
       expect(notifications).toHaveLength(1);
-      expect(notifications[0].name).toBe('John');
+      expect((notifications[0] as { name: string }).name).toBe('John');
     });
 
     it('should combine Saga with Event Sourcing', async () => {
@@ -162,7 +167,7 @@ describe('Circulatory System Integration', () => {
           name: 'processPayment',
           action: async () => {
             await es.append('order-1', 'PaymentProcessed', { amount: 100 });
-            return { paymentId: 1 };
+            return { orderId: 1, paymentId: 1 };
           },
           compensate: async () => {
             await es.append('order-1', 'PaymentRefunded', { amount: 100 });
@@ -176,8 +181,8 @@ describe('Circulatory System Integration', () => {
 
       const events = await es.replay('order-1');
       expect(events).toHaveLength(2);
-      expect(events[0].type).toBe('OrderCreated');
-      expect(events[1].type).toBe('PaymentProcessed');
+      expect(events[0]?.type).toBe('OrderCreated');
+      expect(events[1]?.type).toBe('PaymentProcessed');
     });
   });
 
@@ -259,9 +264,15 @@ describe('Circulatory System Integration', () => {
       const topic2: BloodCell[] = [];
       const topic3: BloodCell[] = [];
 
-      heart.subscribe('topic-1', (cell) => topic1.push(cell));
-      heart.subscribe('topic-2', (cell) => topic2.push(cell));
-      heart.subscribe('topic-3', (cell) => topic3.push(cell));
+      heart.subscribe('topic-1', (cell) => {
+        topic1.push(cell);
+      });
+      heart.subscribe('topic-2', (cell) => {
+        topic2.push(cell);
+      });
+      heart.subscribe('topic-3', (cell) => {
+        topic3.push(cell);
+      });
 
       // Publish to all topics concurrently
       const promises = [];
@@ -328,7 +339,7 @@ describe('Circulatory System Integration', () => {
       let processedCount = 0;
       const processingTimes: number[] = [];
 
-      heart.subscribe('concurrent-processing', async (cell) => {
+      heart.subscribe('concurrent-processing', async (_cell) => {
         const start = Date.now();
         // Simulate some processing
         await new Promise((resolve) => setTimeout(resolve, 10));
@@ -349,7 +360,7 @@ describe('Circulatory System Integration', () => {
     });
 
     it('should maintain message order with concurrent publishers', async () => {
-      const received: any[] = [];
+      const received: unknown[] = [];
 
       heart.subscribe('order-test', (cell) => {
         received.push(cell.payload);
@@ -372,19 +383,23 @@ describe('Circulatory System Integration', () => {
       await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Check that messages from each source are in order
-      const sourceA = received.filter((m) => m.source === 'A');
-      const sourceB = received.filter((m) => m.source === 'B');
+      const sourceA = received.filter((m) => (m as { source: string }).source === 'A');
+      const sourceB = received.filter((m) => (m as { source: string }).source === 'B');
 
       expect(sourceA.length).toBe(10);
       expect(sourceB.length).toBe(10);
 
       // Verify order within each source
       for (let i = 1; i < sourceA.length; i++) {
-        expect(sourceA[i].id).toBeGreaterThan(sourceA[i - 1].id);
+        expect((sourceA[i] as { id: number }).id).toBeGreaterThan(
+          (sourceA[i - 1] as { id: number }).id,
+        );
       }
 
       for (let i = 1; i < sourceB.length; i++) {
-        expect(sourceB[i].id).toBeGreaterThan(sourceB[i - 1].id);
+        expect((sourceB[i] as { id: number }).id).toBeGreaterThan(
+          (sourceB[i - 1] as { id: number }).id,
+        );
       }
     });
   });
@@ -406,7 +421,7 @@ describe('Circulatory System Integration', () => {
 
       // Subscriber that fails sometimes
       heart.subscribe('error-recovery', (cell) => {
-        if (cell.payload.id % 3 === 0) {
+        if ((cell.payload as any).id % 3 === 0) {
           errorCount++;
           throw new Error('Processing error');
         }
@@ -446,7 +461,6 @@ describe('Circulatory System Integration', () => {
     });
 
     it('should handle subscriber crashes gracefully', async () => {
-      const received1: BloodCell[] = [];
       const received2: BloodCell[] = [];
 
       // First subscriber crashes
@@ -475,13 +489,13 @@ describe('Circulatory System Integration', () => {
       await artery.start();
       await vein.start();
 
-      const received: any[] = [];
+      const received: unknown[] = [];
 
       // Setup transformation pipeline
       artery
-        .transform((cell) => new BloodCell({ value: cell.payload.value * 2 }))
-        .transform((cell) => new BloodCell({ value: cell.payload.value + 10 }))
-        .filter((cell) => cell.payload.value > 20);
+        .transform((cell) => new BloodCell({ value: (cell.payload as any).value * 2 }))
+        .transform((cell) => new BloodCell({ value: (cell.payload as any).value + 10 }))
+        .filter((cell) => (cell.payload as any).value > 20);
 
       artery.onData(async (cell) => {
         await heart.publish('transform-topic', cell);
@@ -492,7 +506,7 @@ describe('Circulatory System Integration', () => {
       });
 
       vein.onMessage((cell) => {
-        received.push(cell.payload.value);
+        received.push((cell.payload as any).value);
       });
 
       // Test: (5 * 2) + 10 = 20 (filtered out)
@@ -518,11 +532,11 @@ describe('Circulatory System Integration', () => {
       await artery.start();
       await vein.start();
 
-      const batches: any[] = [];
+      const batches: unknown[] = [];
 
       artery.onBatch(async (cells) => {
         // Batch transform: sum all values
-        const sum = cells.reduce((acc, cell) => acc + cell.payload.value, 0);
+        const sum = cells.reduce((acc, cell) => acc + (cell.payload as any).value, 0);
         await heart.publish('batch-topic', new BloodCell({ sum }));
       });
 
@@ -556,16 +570,27 @@ describe('Circulatory System Integration', () => {
       const es = new EventSourcing(heart);
       const saga = new Saga(heart);
 
-      const orderEvents: any[] = [];
+      const orderEvents: unknown[] = [];
 
       // Subscribe to order events
-      es.onEvent('OrderCreated', (event) => orderEvents.push(event));
-      es.onEvent('PaymentProcessed', (event) => orderEvents.push(event));
-      es.onEvent('OrderShipped', (event) => orderEvents.push(event));
+      es.onEvent('OrderCreated', (event) => {
+        orderEvents.push(event);
+      });
+      es.onEvent('PaymentProcessed', (event) => {
+        orderEvents.push(event);
+      });
+      es.onEvent('OrderShipped', (event) => {
+        orderEvents.push(event);
+      });
 
       // Order creation endpoint
       rr.onRequest('createOrder', async (request) => {
-        const order = { id: Date.now(), ...request.payload };
+        const order = {
+          id: Date.now(),
+          ...(typeof request.payload === 'object' && request.payload !== null
+            ? request.payload
+            : {}),
+        };
 
         // Execute saga for order processing
         const result = await saga.execute([
@@ -582,8 +607,10 @@ describe('Circulatory System Integration', () => {
           {
             name: 'processPayment',
             action: async () => {
-              await es.append(`order-${order.id}`, 'PaymentProcessed', { amount: order.total });
-              return { success: true };
+              await es.append(`order-${order.id}`, 'PaymentProcessed', {
+                amount: (order as unknown as { total: number }).total,
+              });
+              return { id: order.id, success: true };
             },
             compensate: async () => {
               await es.append(`order-${order.id}`, 'PaymentRefunded', {});
@@ -594,7 +621,7 @@ describe('Circulatory System Integration', () => {
             action: async () => {
               await es.append(`order-${order.id}`, 'OrderShipped', {});
               await pubsub.publish('order.completed', order);
-              return { trackingNumber: '12345' };
+              return { id: order.id, trackingNumber: '12345' };
             },
             compensate: async () => {},
           },
@@ -608,7 +635,7 @@ describe('Circulatory System Integration', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 200));
 
-      expect(result.success).toBe(true);
+      expect((result as { success: boolean }).success).toBe(true);
       expect(orderEvents.length).toBeGreaterThanOrEqual(3);
 
       await heart.stop();
@@ -619,9 +646,9 @@ describe('Circulatory System Integration', () => {
       const faf = new FireAndForget(heart);
       const pubsub = new PublishSubscribe(heart);
 
-      const userServiceEvents: any[] = [];
-      const orderServiceEvents: any[] = [];
-      const notificationServiceEvents: any[] = [];
+      const userServiceEvents: unknown[] = [];
+      const orderServiceEvents: unknown[] = [];
+      const notificationServiceEvents: unknown[] = [];
 
       // User Service
       pubsub.subscribe('user.created', (data) => {

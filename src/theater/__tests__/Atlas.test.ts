@@ -165,7 +165,7 @@ describe('Atlas - Documentation Hub', () => {
     it('should search by text', () => {
       const results = atlas.search({ text: 'button' });
       expect(results).toHaveLength(1);
-      expect(results[0].documentation.id).toBe('button');
+      expect(results[0]!.documentation.id).toBe('button');
     });
 
     it('should search by category', () => {
@@ -185,8 +185,8 @@ describe('Atlas - Documentation Hub', () => {
 
     it('should sort search results by name', () => {
       const results = atlas.search({ category: 'ui', sortBy: 'name', sortDirection: 'asc' });
-      expect(results[0].documentation.name).toBe('Button');
-      expect(results[1].documentation.name).toBe('Input');
+      expect(results[0]!.documentation.name).toBe('Button');
+      expect(results[1]!.documentation.name).toBe('Input');
     });
 
     it('should return empty array when no matches', () => {
@@ -228,13 +228,13 @@ describe('Atlas - Documentation Hub', () => {
     it('should get components by category', () => {
       const components = atlas.getByCategory('ui');
       expect(components).toHaveLength(1);
-      expect(components[0].id).toBe('button');
+      expect(components[0]!.id).toBe('button');
     });
 
     it('should get components by tag', () => {
       const components = atlas.getByTag('interactive');
       expect(components).toHaveLength(1);
-      expect(components[0].id).toBe('button');
+      expect(components[0]!.id).toBe('button');
     });
   });
 
@@ -416,8 +416,8 @@ describe('Atlas - Documentation Hub', () => {
     it('should calculate statistics', () => {
       const stats = atlas.getStatistics();
       expect(stats.totalComponents).toBe(3);
-      expect(stats.byCategory.ui).toBe(2);
-      expect(stats.byCategory.glial).toBe(1);
+      expect(stats.byCategory['ui']).toBe(2);
+      expect(stats.byCategory['glial']).toBe(1);
       expect(stats.totalExamples).toBe(3);
     });
   });

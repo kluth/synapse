@@ -1,6 +1,39 @@
 import { PerformanceProfiler } from '../instruments/PerformanceProfiler';
 import { VisualNeuron } from '../../ui/VisualNeuron';
 
+// Test component
+class TestComponent extends VisualNeuron<{ name: string }> {
+  constructor(props: { name: string }) {
+    super({
+      id: 'test-component',
+      type: 'cortical',
+      threshold: 0.5,
+      props,
+      initialState: {},
+    });
+  }
+
+  protected override executeProcessing<_TInput = unknown, TOutput = unknown>(): Promise<TOutput> {
+    return Promise.resolve(undefined as TOutput);
+  }
+
+  protected override performRender() {
+    return {
+      type: 'render' as const,
+      data: {
+        vdom: {
+          tag: 'div',
+          props: { className: 'test-component' },
+          children: [this.receptiveField.name],
+        },
+        styles: {},
+      },
+      strength: 1.0,
+      timestamp: Date.now(),
+    };
+  }
+}
+
 describe('PerformanceProfiler - Performance Monitoring', () => {
   let profiler: PerformanceProfiler;
 
@@ -40,7 +73,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Performance Inspection', () => {
     it('should inspect component performance', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await profiler.inspect(component);
 
       expect(result).toBeDefined();
@@ -49,7 +82,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should return inspection data', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await profiler.inspect(component);
 
       expect(result.data).toBeDefined();
@@ -59,7 +92,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should include performance metrics', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await profiler.inspect(component);
 
       const data = result.data as { metrics: unknown[] };
@@ -69,7 +102,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Render Profiling', () => {
     it('should create render profile', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await profiler.inspect(component);
 
       const profiles = profiler.getAllProfiles();
@@ -77,7 +110,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should track render count', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       await profiler.inspect(component);
       await profiler.inspect(component);
@@ -91,7 +124,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should calculate average render time', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       await profiler.inspect(component);
       await profiler.inspect(component);
@@ -107,7 +140,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Bottleneck Detection', () => {
     it('should detect performance bottlenecks', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await profiler.inspect(component);
 
       const data = result.data as { bottlenecks: unknown[] };
@@ -116,7 +149,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
     it('should detect slow renders', async () => {
       const slowProfiler = new PerformanceProfiler({ slowRenderThreshold: 1 });
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       const result = await slowProfiler.inspect(component);
       const data = result.data as { bottlenecks: unknown[] };
@@ -129,7 +162,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Performance Score', () => {
     it('should calculate performance score', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await profiler.inspect(component);
 
       const data = result.data as { score: number };
@@ -141,7 +174,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Profile Management', () => {
     it('should get all profiles', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await profiler.inspect(component);
 
       const profiles = profiler.getAllProfiles();
@@ -149,7 +182,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should clear profiles and metrics', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await profiler.inspect(component);
 
       profiler.clear();
@@ -164,7 +197,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Metrics Collection', () => {
     it('should collect performance metrics', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await profiler.inspect(component);
 
       const metrics = profiler.getAllMetrics();
@@ -172,7 +205,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should track FPS', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await profiler.inspect(component);
 
       const data = result.data as { stats: { fps: number } };
@@ -189,7 +222,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
     });
 
     it('should render with profiles', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await profiler.inspect(component);
 
       const html = profiler.render();
@@ -200,7 +233,7 @@ describe('PerformanceProfiler - Performance Monitoring', () => {
 
   describe('Cleanup', () => {
     it('should clear all data on cleanup', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await profiler.inspect(component);
 
       await profiler.cleanup();

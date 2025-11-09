@@ -5,12 +5,7 @@
 
 import { VisualNeuron } from '../ui/VisualNeuron';
 import type { RenderSignal } from '../ui/types';
-import type {
-  PieChartProps,
-  PieChartState,
-  PieDataPoint,
-  SVGElement,
-} from './types';
+import type { PieChartProps, PieChartState, PieDataPoint, SVGElement } from './types';
 
 interface SliceAngle {
   dataPoint: PieDataPoint;
@@ -58,6 +53,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
     for (let i = 0; i < data.length; i++) {
       const point = data[i];
       const percentage = percentages[i];
+      if (point === undefined || percentage === undefined) continue;
       const angleSpan = (percentage / 100) * Math.PI * 2;
 
       slices.push({
@@ -77,7 +73,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
    * Calculate radius for the pie chart
    */
   public calculateRadius(): number {
-    const { width, height, innerRadius } = this.receptiveField;
+    const { width, height } = this.receptiveField;
     const size = Math.min(width, height);
     const outerRadius = (size / 2) * 0.8; // 80% of available space
 
@@ -91,7 +87,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
     centerX: number,
     centerY: number,
     radius: number,
-    angleInRadians: number
+    angleInRadians: number,
   ): { x: number; y: number } {
     return {
       x: centerX + radius * Math.cos(angleInRadians - Math.PI / 2),
@@ -105,7 +101,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
   public generateSlicePath(
     slice: SliceAngle,
     outerRadius: number,
-    innerRadius: number = 0
+    innerRadius: number = 0,
   ): string {
     const { width, height } = this.receptiveField;
     const centerX = width / 2;
@@ -138,35 +134,15 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
       }
     }
 
-    const startOuter = this.polarToCartesian(
-      centerX,
-      centerY,
-      outerRadius,
-      startAngle
-    );
-    const endOuter = this.polarToCartesian(
-      centerX,
-      centerY,
-      outerRadius,
-      endAngle
-    );
+    const startOuter = this.polarToCartesian(centerX, centerY, outerRadius, startAngle);
+    const endOuter = this.polarToCartesian(centerX, centerY, outerRadius, endAngle);
 
     const largeArcFlag = endAngle - startAngle > Math.PI ? 1 : 0;
 
     if (innerRadius > 0) {
       // Donut slice
-      const startInner = this.polarToCartesian(
-        centerX,
-        centerY,
-        innerRadius,
-        startAngle
-      );
-      const endInner = this.polarToCartesian(
-        centerX,
-        centerY,
-        innerRadius,
-        endAngle
-      );
+      const startInner = this.polarToCartesian(centerX, centerY, innerRadius, startAngle);
+      const endInner = this.polarToCartesian(centerX, centerY, innerRadius, endAngle);
 
       return `
         M ${startOuter.x} ${startOuter.y}
@@ -189,10 +165,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
   /**
    * Calculate label position for a slice
    */
-  public calculateLabelPosition(
-    slice: SliceAngle,
-    radius: number
-  ): { x: number; y: number } {
+  public calculateLabelPosition(slice: SliceAngle, radius: number): { x: number; y: number } {
     const { width, height } = this.receptiveField;
     const centerX = width / 2;
     const centerY = height / 2;
@@ -216,10 +189,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
     const normalizedAngle = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
 
     for (const slice of slices) {
-      if (
-        normalizedAngle >= slice.startAngle &&
-        normalizedAngle < slice.endAngle
-      ) {
+      if (normalizedAngle >= slice.startAngle && normalizedAngle < slice.endAngle) {
         return slice.dataPoint;
       }
     }
@@ -266,7 +236,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
     return data.map((point, index) => ({
       value: point.value,
       label: point.label,
-      percentage: percentages[index],
+      percentage: percentages[index] || 0,
     }));
   }
 
@@ -274,8 +244,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
    * Render the pie chart
    */
   protected performRender(): RenderSignal {
-    const { width, height, innerRadius, showLabels, showPercentages } =
-      this.receptiveField;
+    const { width, height, innerRadius, showLabels, showPercentages } = this.receptiveField;
 
     const children: Array<SVGElement | string> = [];
     const slices = this.calculateSliceAngles();
@@ -287,11 +256,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
       const isHovered = this.visualState.hoveredSlice === slice.dataPoint;
       const isSelected = this.visualState.selectedSlice === slice.dataPoint;
 
-      const path = this.generateSlicePath(
-        slice,
-        outerRadius,
-        effectiveInnerRadius
-      );
+      const path = this.generateSlicePath(slice, outerRadius, effectiveInnerRadius);
 
       children.push({
         tag: 'path',
@@ -338,6 +303,7 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
       props: {
         width,
         height,
+        viewBox: `0 0 ${width} ${height}`,
         role: 'img',
         'aria-label': `Pie chart with ${this.receptiveField.data.length} slices`,
       },
@@ -375,15 +341,13 @@ export class PieChart extends VisualNeuron<PieChartProps, PieChartState> {
       '#f97316', // orange
     ];
 
-    return colors[index % colors.length];
+    return colors[index % colors.length] || '#000000';
   }
 
   /**
    * Process incoming signals
    */
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any
-  ): Promise<TOutput> {
+  protected override async executeProcessing<TOutput = unknown>(_input: unknown): Promise<TOutput> {
     // Handle chart-specific signals here
     return undefined as TOutput;
   }

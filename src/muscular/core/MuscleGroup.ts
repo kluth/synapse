@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/strict-boolean-expressions */
 import { Muscle } from './Muscle';
 
 /**
  * Conditional branch configuration
  */
-export interface ConditionalBranch<TInput = any, TOutput = any> {
+export interface ConditionalBranch<TInput = unknown, TOutput = unknown> {
   condition: (input: TInput) => boolean;
   muscle: Muscle<TInput, TOutput> | MuscleGroup<TInput, TOutput>;
 }
@@ -19,7 +18,7 @@ export interface ConditionalBranch<TInput = any, TOutput = any> {
  * - Transaction support (all-or-nothing)
  * - Compensation patterns (saga pattern)
  */
-export class MuscleGroup<TInput = any, TOutput = any> {
+export class MuscleGroup<TInput = unknown, TOutput = unknown> {
   private readonly muscles: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>>;
   private readonly executionStrategy:
     | 'sequential'
@@ -27,12 +26,12 @@ export class MuscleGroup<TInput = any, TOutput = any> {
     | 'conditional'
     | 'transaction'
     | 'saga';
-  private readonly options: any;
+  private readonly options: Record<string, unknown>;
 
   private constructor(
     muscles: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>>,
     strategy: 'sequential' | 'parallel' | 'conditional' | 'transaction' | 'saga',
-    options: any = {},
+    options: Record<string, unknown> = {},
   ) {
     this.muscles = muscles;
     this.executionStrategy = strategy;
@@ -42,7 +41,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Create a sequential pipeline of muscles
    */
-  public static sequential<TInput = any, TOutput = any>(
+  public static sequential<TInput = unknown, TOutput = unknown>(
     muscles: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>>,
   ): MuscleGroup<TInput, TOutput> {
     return new MuscleGroup(muscles, 'sequential');
@@ -51,16 +50,16 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Create a parallel group of muscles
    */
-  public static parallel<TInput = any>(
+  public static parallel<TInput = unknown>(
     muscles: Array<Muscle<TInput, unknown> | MuscleGroup<TInput, unknown>>,
-  ): MuscleGroup<TInput, any[]> {
+  ): MuscleGroup<TInput, unknown[]> {
     return new MuscleGroup(muscles, 'parallel');
   }
 
   /**
    * Create a conditional muscle (if-then-else)
    */
-  public static conditional<TInput = any, TOutput = any>(
+  public static conditional<TInput = unknown, TOutput = unknown>(
     condition: (input: TInput) => boolean,
     trueMuscle: Muscle<TInput, TOutput> | MuscleGroup<TInput, TOutput>,
     falseMuscle: Muscle<TInput, TOutput> | MuscleGroup<TInput, TOutput>,
@@ -77,7 +76,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Create a switch statement with multiple branches
    */
-  public static switch<TInput = any, TOutput = any>(
+  public static switch<TInput = unknown, TOutput = unknown>(
     branches: ConditionalBranch<TInput, TOutput>[],
   ): MuscleGroup<TInput, TOutput> {
     return new MuscleGroup(
@@ -90,7 +89,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Create a transactional group with rollback support
    */
-  public static transaction<TInput = any, TOutput = any>(
+  public static transaction<TInput = unknown, TOutput = unknown>(
     muscles: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>>,
   ): MuscleGroup<TInput, TOutput> {
     return new MuscleGroup(muscles, 'transaction');
@@ -99,7 +98,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Create a saga with compensation functions
    */
-  public static saga<TInput = any, TOutput = any>(
+  public static saga<TInput = unknown, TOutput = unknown>(
     muscles: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>>,
   ): MuscleGroup<TInput, TOutput> {
     return new MuscleGroup(muscles, 'saga');
@@ -128,7 +127,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Execute muscles sequentially (pipeline)
    */
-  private async executeSequential(input: any): Promise<any> {
+  private async executeSequential(input: unknown): Promise<unknown> {
     if (this.muscles.length === 0) {
       return input;
     }
@@ -143,7 +142,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Execute muscles in parallel
    */
-  private async executeParallel(input: any): Promise<any[]> {
+  private async executeParallel(input: unknown): Promise<unknown[]> {
     const promises = this.muscles.map((muscle) => this.executeMuscle(muscle, input));
     return Promise.all(promises);
   }
@@ -151,8 +150,8 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Execute muscles conditionally
    */
-  private async executeConditional(input: any): Promise<any> {
-    const branches = this.options.branches as ConditionalBranch[];
+  private async executeConditional(input: unknown): Promise<unknown> {
+    const branches = this.options['branches'] as ConditionalBranch<unknown, unknown>[];
 
     for (const branch of branches) {
       if (branch.condition(input)) {
@@ -166,7 +165,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Execute muscles as a transaction with rollback
    */
-  private async executeTransaction(input: any): Promise<any> {
+  private async executeTransaction(input: unknown): Promise<unknown> {
     const executed: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>> = [];
     let result = input;
 
@@ -198,7 +197,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Execute muscles as a saga with compensation
    */
-  private async executeSaga(input: any): Promise<any> {
+  private async executeSaga(input: unknown): Promise<unknown> {
     const executed: Array<Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>> = [];
     let result = input;
 
@@ -232,8 +231,8 @@ export class MuscleGroup<TInput = any, TOutput = any> {
    */
   private async executeMuscle(
     muscle: Muscle<unknown, unknown> | MuscleGroup<unknown, unknown>,
-    input: any,
-  ): Promise<any> {
+    input: unknown,
+  ): Promise<unknown> {
     if (this.isMuscle(muscle)) {
       // It's a Muscle
       return muscle.executeAsync(input);
@@ -246,7 +245,7 @@ export class MuscleGroup<TInput = any, TOutput = any> {
   /**
    * Type guard to check if something is a Muscle
    */
-  private isMuscle(obj: any): obj is Muscle<unknown, unknown> {
+  private isMuscle(obj: unknown): obj is Muscle<unknown, unknown> {
     return obj instanceof Muscle;
   }
 }

@@ -41,7 +41,7 @@ export class DependencyAuditor {
    */
   async analyzeDependency(
     packageName: string,
-    currentVersion: string
+    currentVersion: string,
   ): Promise<DependencyAnalysis> {
     const analysis: DependencyAnalysis = {
       packageName,
@@ -81,7 +81,7 @@ export class DependencyAuditor {
       if (this.isVersionOutdated(currentVersion, npmInfo.latestVersion)) {
         analysis.isOutdated = true;
         analysis.riskReasons.push(
-          `Outdated version (current: ${currentVersion}, latest: ${npmInfo.latestVersion})`
+          `Outdated version (current: ${currentVersion}, latest: ${npmInfo.latestVersion})`,
         );
       }
 
@@ -93,21 +93,17 @@ export class DependencyAuditor {
       // Calculate maintenance score
       analysis.maintenanceScore = this.calculateMaintenanceScore(
         npmInfo.lastPublishDate,
-        npmInfo.repositoryUrl
+        npmInfo.repositoryUrl,
       );
 
       // Assess risk based on maintenance score
       if (analysis.maintenanceScore < 30 && !analysis.isDeprecated) {
         analysis.riskLevel = 'high';
         analysis.isHealthy = false;
-        analysis.riskReasons.push(
-          `Low maintenance score: ${analysis.maintenanceScore}/100`
-        );
+        analysis.riskReasons.push(`Low maintenance score: ${analysis.maintenanceScore}/100`);
       } else if (analysis.maintenanceScore < 60 && !analysis.isDeprecated) {
         analysis.riskLevel = 'medium';
-        analysis.riskReasons.push(
-          `Moderate maintenance score: ${analysis.maintenanceScore}/100`
-        );
+        analysis.riskReasons.push(`Moderate maintenance score: ${analysis.maintenanceScore}/100`);
       }
 
       // Update health status
@@ -119,7 +115,7 @@ export class DependencyAuditor {
       analysis.isHealthy = false;
       analysis.riskLevel = 'medium';
       analysis.riskReasons.push(
-        `Error analyzing package: ${error instanceof Error ? error.message : 'Unknown error'}`
+        `Error analyzing package: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
     }
 
@@ -129,16 +125,11 @@ export class DependencyAuditor {
   /**
    * Audits all dependencies in a project
    */
-  async auditProject(
-    packageJsonPath: string,
-    options: AuditOptions = {}
-  ): Promise<AuditReport> {
+  async auditProject(packageJsonPath: string, options: AuditOptions = {}): Promise<AuditReport> {
     const { includeDevDependencies = false } = options;
 
     // Read package.json
-    const packageJson = JSON.parse(
-      readFileSync(resolve(packageJsonPath), 'utf-8')
-    );
+    const packageJson = JSON.parse(readFileSync(resolve(packageJsonPath), 'utf-8'));
 
     const prodDeps = packageJson.dependencies || {};
     const devDeps = packageJson.devDependencies || {};
@@ -163,8 +154,7 @@ export class DependencyAuditor {
 
     // Calculate risk distribution
     const riskDistribution = {
-      critical: analyzedPackages.filter((p) => p.riskLevel === 'critical')
-        .length,
+      critical: analyzedPackages.filter((p) => p.riskLevel === 'critical').length,
       high: analyzedPackages.filter((p) => p.riskLevel === 'high').length,
       medium: analyzedPackages.filter((p) => p.riskLevel === 'medium').length,
       low: analyzedPackages.filter((p) => p.riskLevel === 'low').length,
@@ -172,7 +162,7 @@ export class DependencyAuditor {
 
     // Identify packages needing attention
     const needsAttention = analyzedPackages.filter(
-      (p) => p.riskLevel === 'critical' || p.riskLevel === 'high' || !p.isHealthy
+      (p) => p.riskLevel === 'critical' || p.riskLevel === 'high' || !p.isHealthy,
     );
 
     return {
@@ -227,7 +217,7 @@ export class DependencyAuditor {
       for (const pkg of report.needsAttention) {
         const reasons = pkg.riskReasons.join('; ');
         lines.push(
-          `| ${pkg.packageName} | ${pkg.currentVersion} | ${pkg.latestVersion || 'N/A'} | ${pkg.riskLevel} | ${reasons} |`
+          `| ${pkg.packageName} | ${pkg.currentVersion} | ${pkg.latestVersion || 'N/A'} | ${pkg.riskLevel} | ${reasons} |`,
         );
       }
       lines.push('');
@@ -236,17 +226,13 @@ export class DependencyAuditor {
     // All Analyzed Packages
     lines.push('## Analyzed Packages');
     lines.push('');
-    lines.push(
-      '| Package | Current | Latest | Status | Maintenance Score | Risk Level |'
-    );
-    lines.push(
-      '|---------|---------|--------|--------|-------------------|------------|'
-    );
+    lines.push('| Package | Current | Latest | Status | Maintenance Score | Risk Level |');
+    lines.push('|---------|---------|--------|--------|-------------------|------------|');
 
     for (const pkg of report.analyzedPackages) {
       const status = pkg.isHealthy ? '✅ Healthy' : '⚠️ Needs Review';
       lines.push(
-        `| ${pkg.packageName} | ${pkg.currentVersion} | ${pkg.latestVersion || 'N/A'} | ${status} | ${pkg.maintenanceScore}/100 | ${pkg.riskLevel} |`
+        `| ${pkg.packageName} | ${pkg.currentVersion} | ${pkg.latestVersion || 'N/A'} | ${status} | ${pkg.maintenanceScore}/100 | ${pkg.riskLevel} |`,
       );
     }
     lines.push('');
@@ -257,15 +243,13 @@ export class DependencyAuditor {
 
     if (report.needsAttention.length === 0) {
       lines.push(
-        '✅ All dependencies are healthy and well-maintained. No immediate action required.'
+        '✅ All dependencies are healthy and well-maintained. No immediate action required.',
       );
     } else {
       lines.push('### Immediate Actions Required:');
       lines.push('');
 
-      const critical = report.needsAttention.filter(
-        (p) => p.riskLevel === 'critical'
-      );
+      const critical = report.needsAttention.filter((p) => p.riskLevel === 'critical');
       if (critical.length > 0) {
         lines.push('**Critical Priority:**');
         for (const pkg of critical) {
@@ -290,9 +274,7 @@ export class DependencyAuditor {
   /**
    * Gets package information from npm registry
    */
-  private async getNpmPackageInfo(
-    packageName: string
-  ): Promise<{
+  private async getNpmPackageInfo(packageName: string): Promise<{
     latestVersion: string;
     deprecated?: string;
     lastPublishDate?: string;
@@ -302,7 +284,7 @@ export class DependencyAuditor {
       // Get package info using npm view
       const output = execSync(
         `npm view ${packageName} version deprecated time.modified repository.url --json`,
-        { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+        { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
       );
 
       const info = JSON.parse(output);
@@ -322,10 +304,7 @@ export class DependencyAuditor {
   /**
    * Calculates a maintenance score based on last publish date and repository
    */
-  private calculateMaintenanceScore(
-    lastPublishDate?: string,
-    repositoryUrl?: string
-  ): number {
+  private calculateMaintenanceScore(lastPublishDate?: string, repositoryUrl?: string): number {
     let score = 100;
 
     if (!lastPublishDate) {
@@ -335,7 +314,7 @@ export class DependencyAuditor {
     const lastPublish = new Date(lastPublishDate);
     const now = new Date();
     const daysSincePublish = Math.floor(
-      (now.getTime() - lastPublish.getTime()) / (1000 * 60 * 60 * 24)
+      (now.getTime() - lastPublish.getTime()) / (1000 * 60 * 60 * 24),
     );
 
     // Deduct points based on age

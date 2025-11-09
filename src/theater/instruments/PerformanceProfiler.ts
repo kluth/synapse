@@ -196,7 +196,7 @@ export class PerformanceProfiler implements MicroscopeLens {
   /**
    * Initialize profiler
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async initialize(): Promise<void> {
     this.profiles.clear();
     this.metrics = [];
@@ -205,7 +205,7 @@ export class PerformanceProfiler implements MicroscopeLens {
   /**
    * Cleanup profiler
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async cleanup(): Promise<void> {
     this.profiles.clear();
     this.metrics = [];
@@ -313,7 +313,7 @@ export class PerformanceProfiler implements MicroscopeLens {
   /**
    * Profile component render
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   private async profileRender(
     _component: VisualNeuron,
     componentId: string,

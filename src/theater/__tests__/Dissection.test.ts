@@ -1,4 +1,4 @@
-import { Dissection, DissectionBuilder, createDissection } from '../specimens/Dissection';
+import { DissectionBuilder, createDissection } from '../specimens/Dissection';
 
 describe('Dissection - Component Structure Explorer', () => {
   describe('Construction', () => {

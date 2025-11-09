@@ -200,7 +200,7 @@ export class HealthMonitor implements MicroscopeLens {
   /**
    * Initialize monitor
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async initialize(): Promise<void> {
     this.reports.clear();
     this.errors = [];
@@ -214,7 +214,7 @@ export class HealthMonitor implements MicroscopeLens {
   /**
    * Cleanup monitor
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async cleanup(): Promise<void> {
     this.stopHealthChecks();
     this.reports.clear();
@@ -372,7 +372,7 @@ export class HealthMonitor implements MicroscopeLens {
   /**
    * Run health checks on component
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   private async runHealthChecks(component: VisualNeuron): Promise<HealthCheck[]> {
     const checks: HealthCheck[] = [];
     const componentId = this.getComponentId(component);

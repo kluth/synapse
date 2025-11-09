@@ -56,13 +56,8 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     const xRange = bounds.maxX - bounds.minX || 1;
     const yRange = bounds.maxY - bounds.minY || 1;
 
-    const x =
-      effectivePadding.left +
-      ((point.x - bounds.minX) / xRange) * chartWidth;
-    const y =
-      effectivePadding.top +
-      chartHeight -
-      ((point.y - bounds.minY) / yRange) * chartHeight;
+    const x = effectivePadding.left + ((point.x - bounds.minX) / xRange) * chartWidth;
+    const y = effectivePadding.top + chartHeight - ((point.y - bounds.minY) / yRange) * chartHeight;
 
     return { x, y };
   }
@@ -87,13 +82,9 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     const xRange = bounds.maxX - bounds.minX || 1;
     const yRange = bounds.maxY - bounds.minY || 1;
 
-    const x =
-      bounds.minX +
-      ((point.x - effectivePadding.left) / chartWidth) * xRange;
+    const x = bounds.minX + ((point.x - effectivePadding.left) / chartWidth) * xRange;
     const y =
-      bounds.minY +
-      ((chartHeight - (point.y - effectivePadding.top)) / chartHeight) *
-        yRange;
+      bounds.minY + ((chartHeight - (point.y - effectivePadding.top)) / chartHeight) * yRange;
 
     return { x, y };
   }
@@ -108,14 +99,13 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
       return null;
     }
 
-    let nearestPoint = data[0];
+    let nearestPoint: ChartDataPoint | null = data[0] || null;
     let minDistance = Infinity;
 
     for (const point of data) {
       const canvasCoords = this.dataToCanvas(point);
       const distance = Math.sqrt(
-        Math.pow(canvasCoords.x - canvasPoint.x, 2) +
-          Math.pow(canvasCoords.y - canvasPoint.y, 2)
+        Math.pow(canvasCoords.x - canvasPoint.x, 2) + Math.pow(canvasCoords.y - canvasPoint.y, 2),
       );
 
       if (distance < minDistance) {
@@ -143,9 +133,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     const { data } = this.receptiveField;
 
     // Find min and max sizes
-    const sizes = data
-      .map((d) => (d.metadata?.[sizeField] as number) || 0)
-      .filter((s) => s > 0);
+    const sizes = data.map((d) => (d.metadata?.[sizeField] as number) || 0).filter((s) => s > 0);
 
     if (sizes.length === 0) {
       return pointRadius || 5;
@@ -160,9 +148,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     const maxRadius = 20;
     const radiusRange = maxRadius - minRadius;
 
-    return (
-      minRadius + ((sizeValue - minSize) / sizeRange) * radiusRange
-    );
+    return minRadius + ((sizeValue - minSize) / sizeRange) * radiusRange;
   }
 
   /**
@@ -193,7 +179,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
   /**
    * Get data as accessible table
    */
-  public getDataAsTable(): Array<{ x: number; y: number; label?: string }> {
+  public getDataAsTable(): Array<{ x: number; y: number; label: string | undefined }> {
     const { data } = this.receptiveField;
     return data.map((d) => ({ x: d.x, y: d.y, label: d.label }));
   }
@@ -225,9 +211,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
           continue;
         }
 
-        const distance = Math.sqrt(
-          Math.pow(point.x - other.x, 2) + Math.pow(point.y - other.y, 2)
-        );
+        const distance = Math.sqrt(Math.pow(point.x - other.x, 2) + Math.pow(point.y - other.y, 2));
 
         if (distance <= distanceThreshold) {
           cluster.push(other);
@@ -254,8 +238,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     let count = 0;
     for (const dataPoint of data) {
       const distance = Math.sqrt(
-        Math.pow(point.x - dataPoint.x, 2) +
-          Math.pow(point.y - dataPoint.y, 2)
+        Math.pow(point.x - dataPoint.x, 2) + Math.pow(point.y - dataPoint.y, 2),
       );
 
       if (distance <= radius) {
@@ -274,7 +257,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     canvasPos: CanvasPoint,
     radius: number,
     isHovered: boolean,
-    isSelected: boolean
+    isSelected: boolean,
   ): SVGElement {
     const { color } = this.receptiveField;
 
@@ -300,7 +283,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     canvasPos: CanvasPoint,
     size: number,
     isHovered: boolean,
-    isSelected: boolean
+    isSelected: boolean,
   ): SVGElement {
     const { color } = this.receptiveField;
     const halfSize = size;
@@ -328,7 +311,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
     canvasPos: CanvasPoint,
     size: number,
     isHovered: boolean,
-    isSelected: boolean
+    isSelected: boolean,
   ): SVGElement {
     const { color } = this.receptiveField;
     const height = size * 1.5;
@@ -371,31 +354,13 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
 
       switch (pointShape) {
         case 'square':
-          element = this.renderSquarePoint(
-            point,
-            canvasPos,
-            size,
-            isHovered,
-            isSelected
-          );
+          element = this.renderSquarePoint(point, canvasPos, size, isHovered, isSelected);
           break;
         case 'triangle':
-          element = this.renderTrianglePoint(
-            point,
-            canvasPos,
-            size,
-            isHovered,
-            isSelected
-          );
+          element = this.renderTrianglePoint(point, canvasPos, size, isHovered, isSelected);
           break;
         default:
-          element = this.renderCirclePoint(
-            point,
-            canvasPos,
-            size,
-            isHovered,
-            isSelected
-          );
+          element = this.renderCirclePoint(point, canvasPos, size, isHovered, isSelected);
       }
 
       children.push(element);
@@ -406,6 +371,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
       props: {
         width,
         height,
+        viewBox: `0 0 ${width} ${height}`,
         role: 'img',
         'aria-label': `Scatter plot with ${data.length} data points`,
       },
@@ -431,9 +397,7 @@ export class ScatterPlot extends VisualNeuron<ScatterPlotProps, BaseChartState> 
   /**
    * Process incoming signals
    */
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any
-  ): Promise<TOutput> {
+  protected override async executeProcessing<TOutput = unknown>(_input: unknown): Promise<TOutput> {
     // Handle chart-specific signals here
     return undefined as TOutput;
   }

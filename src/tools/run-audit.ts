@@ -18,10 +18,7 @@ async function main() {
 
   // Generate markdown report for production dependencies
   const prodMarkdown = auditor.generateMarkdownReport(prodReport);
-  const prodReportPath = resolve(
-    process.cwd(),
-    'docs/dependency-audit-production.md'
-  );
+  const prodReportPath = resolve(process.cwd(), 'docs/dependency-audit-production.md');
   writeFileSync(prodReportPath, prodMarkdown);
   console.log(`📄 Production report saved to: ${prodReportPath}\n`);
 

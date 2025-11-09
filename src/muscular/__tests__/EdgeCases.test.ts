@@ -14,12 +14,12 @@ import {
 describe('Edge Cases and Error Handling', () => {
   describe('Muscle Edge Cases', () => {
     it('should handle null input', () => {
-      const muscle = new Muscle('identity', (x: any) => x);
+      const muscle = new Muscle('identity', (...args: unknown[]) => args[0]);
       expect(muscle.execute(null)).toBe(null);
     });
 
     it('should handle undefined input', () => {
-      const muscle = new Muscle('identity', (x: any) => x);
+      const muscle = new Muscle('identity', (...args: unknown[]) => args[0]);
       expect(muscle.execute(undefined)).toBe(undefined);
     });
 
@@ -77,7 +77,10 @@ describe('Edge Cases and Error Handling', () => {
     });
 
     it('should handle single muscle in pipeline', async () => {
-      const double = new Muscle('double', (x: number) => x * 2);
+      const double = new Muscle('double', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
       const pipeline = MuscleGroup.sequential([double]);
       expect(await pipeline.execute(5)).toBe(10);
     });
@@ -89,21 +92,50 @@ describe('Edge Cases and Error Handling', () => {
 
     it('should handle nested pipelines', async () => {
       const inner = MuscleGroup.sequential([
-        new Muscle('add1', (x: number) => x + 1),
-        new Muscle('double', (x: number) => x * 2),
+        new Muscle('add1', (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x + 1;
+        }),
+        new Muscle('double', (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x * 2;
+        }),
       ]);
 
-      const outer = MuscleGroup.sequential([inner, new Muscle('subtract5', (x: number) => x - 5)]);
+      const outer = MuscleGroup.sequential([
+        inner,
+        new Muscle('subtract5', (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x - 5;
+        }),
+      ]);
 
       // (5 + 1) * 2 - 5 = 7
       expect(await outer.execute(5)).toBe(7);
     });
 
     it('should handle deeply nested groups', async () => {
-      const level3 = MuscleGroup.sequential([new Muscle('add1', (x: number) => x + 1)]);
+      const level3 = MuscleGroup.sequential([
+        new Muscle('add1', (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x + 1;
+        }),
+      ]);
 
-      const level2 = MuscleGroup.sequential([level3, new Muscle('double', (x: number) => x * 2)]);
-      const level1 = MuscleGroup.sequential([level2, new Muscle('add10', (x: number) => x + 10)]);
+      const level2 = MuscleGroup.sequential([
+        level3,
+        new Muscle('double', (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x * 2;
+        }),
+      ]);
+      const level1 = MuscleGroup.sequential([
+        level2,
+        new Muscle('add10', (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x + 10;
+        }),
+      ]);
 
       // (5 + 1) * 2 + 10 = 22
       expect(await level1.execute(5)).toBe(22);
@@ -211,7 +243,7 @@ describe('Edge Cases and Error Handling', () => {
 
       it('should handle JSON stringify of circular reference', () => {
         const stringify = TransformMuscle.stringifyJSON();
-        const circular: any = { a: 1 };
+        const circular: { a: number; self?: unknown } = { a: 1 };
         circular.self = circular;
         expect(() => stringify.execute(circular)).toThrow();
       });
@@ -301,12 +333,15 @@ describe('Edge Cases and Error Handling', () => {
 
     describe('MapMuscle', () => {
       it('should handle map on empty array', () => {
-        const double = MapMuscle.create((x: number) => x * 2);
+        const double = MapMuscle.create((...args: unknown[]) => {
+          const x = args[0] as number;
+          return x * 2;
+        });
         expect(double.execute([])).toEqual([]);
       });
 
       it('should handle property extraction with missing property', () => {
-        const getProp = MapMuscle.property<any>('nonexistent');
+        const getProp = MapMuscle.property<Record<string, unknown>>('nonexistent');
         const result = getProp.execute([{ a: 1 }, { b: 2 }]);
         expect(result).toEqual([undefined, undefined]);
       });
@@ -314,7 +349,11 @@ describe('Edge Cases and Error Handling', () => {
 
     describe('ReduceMuscle', () => {
       it('should handle reduce on empty array', () => {
-        const sum = ReduceMuscle.create((acc: number, val: number) => acc + val, 0);
+        const sum = ReduceMuscle.create((...args: unknown[]) => {
+          const acc = args[0] as number;
+          const val = args[1] as number;
+          return acc + val;
+        }, 0);
         expect(sum.execute([])).toBe(0);
       });
 

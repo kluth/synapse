@@ -274,7 +274,7 @@ describe('TouchReceptor', () => {
 
   describe('Cleanup', () => {
     it('should cleanup on disconnect', () => {
-      const spy = jest.spyOn(receptor as any, 'cleanup');
+      const spy = jest.spyOn(receptor as unknown as { cleanup: () => void }, 'cleanup');
 
       receptor.remove();
 

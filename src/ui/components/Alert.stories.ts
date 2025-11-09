@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/html';
 import { Alert, type AlertProps } from './Alert';
 
-const meta: Meta = {
+const meta: Meta<AlertProps> = {
   title: 'Components/Alert',
   tags: ['autodocs'],
-  render: (args: AlertProps) => {
+  render: (args) => {
     const container = document.createElement('div');
     container.style.padding = '20px';
 
     const alert = new Alert({
       id: `alert-${crypto.randomUUID()}`,
-      config: {
-        initialProps: args,
-        initialState: {
-          visible: true,
-          hovered: false,
-        },
+      type: 'reflex',
+      threshold: 0.5,
+      props: args,
+      initialState: {
+        visible: true,
+        hovered: false,
       },
     });
 
@@ -26,54 +26,58 @@ const meta: Meta = {
 
     const alertElement = document.createElement(vdom.tag);
 
-    Object.entries(vdom.props).forEach(([key, value]) => {
-      if (value === undefined) return;
-      if (key === 'className') {
-        alertElement.className = value as string;
-      } else {
-        alertElement.setAttribute(key, String(value));
-      }
-    });
+    if (vdom.props) {
+      Object.entries(vdom.props).forEach(([key, value]) => {
+        if (value === undefined) return;
+        if (key === 'className') {
+          alertElement.className = value as string;
+        } else {
+          alertElement.setAttribute(key, String(value));
+        }
+      });
+    }
 
     Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-      alertElement.style[key as never] = value;
+      alertElement.style[key as any] = String(value);
     });
 
-    vdom.children.forEach((child) => {
-      if (typeof child === 'string') {
-        alertElement.appendChild(document.createTextNode(child));
-      } else if (typeof child === 'object' && 'tag' in child) {
-        const element = document.createElement(child.tag);
+    if (vdom.children) {
+      vdom.children.forEach((child) => {
+        if (typeof child === 'string') {
+          alertElement.appendChild(document.createTextNode(child));
+        } else if (typeof child === 'object' && 'tag' in child) {
+          const element = document.createElement(child.tag);
 
-        if (child.props !== undefined) {
-          Object.entries(child.props).forEach(([key, value]) => {
-            if (key === 'className') {
-              element.className = value as string;
-            } else if (key === 'style') {
-              element.setAttribute('style', value as string);
-            } else {
-              element.setAttribute(key, String(value));
-            }
-          });
+          if (child.props !== undefined) {
+            Object.entries(child.props).forEach(([key, value]) => {
+              if (key === 'className') {
+                element.className = value as string;
+              } else if (key === 'style') {
+                element.setAttribute('style', value as string);
+              } else {
+                element.setAttribute(key, String(value));
+              }
+            });
+          }
+
+          if (child.children !== undefined) {
+            element.textContent = child.children.join('');
+          }
+
+          if (child.tag === 'button') {
+            element.addEventListener('click', () => {
+              alert.setState({ visible: false });
+              alertElement.style.display = 'none';
+              if (args.onDismiss !== undefined) {
+                args.onDismiss();
+              }
+            });
+          }
+
+          alertElement.appendChild(element);
         }
-
-        if (child.children !== undefined) {
-          element.textContent = child.children.join('');
-        }
-
-        if (child.tag === 'button') {
-          element.addEventListener('click', () => {
-            alert.setState({ visible: false });
-            alertElement.style.display = 'none';
-            if (args.onDismiss !== undefined) {
-              args.onDismiss();
-            }
-          });
-        }
-
-        alertElement.appendChild(element);
-      }
-    });
+      });
+    }
 
     container.appendChild(alertElement);
     return container;
@@ -166,17 +170,17 @@ export const AllVariants: Story = {
     alerts.forEach((alertData) => {
       const alert = new Alert({
         id: `alert-${alertData.variant}-${crypto.randomUUID()}`,
-        config: {
-          initialProps: {
-            title: alertData.title,
-            message: alertData.message,
-            variant: alertData.variant,
-            dismissible: true,
-          },
-          initialState: {
-            visible: true,
-            hovered: false,
-          },
+        type: 'reflex',
+        threshold: 0.5,
+        props: {
+          title: alertData.title,
+          message: alertData.message,
+          variant: alertData.variant!,
+          dismissible: true,
+        },
+        initialState: {
+          visible: true,
+          hovered: false,
         },
       });
 
@@ -187,51 +191,55 @@ export const AllVariants: Story = {
 
       const alertElement = document.createElement(vdom.tag);
 
-      Object.entries(vdom.props).forEach(([key, value]) => {
-        if (value === undefined) return;
-        if (key === 'className') {
-          alertElement.className = value as string;
-        } else {
-          alertElement.setAttribute(key, String(value));
-        }
-      });
+      if (vdom.props) {
+        Object.entries(vdom.props).forEach(([key, value]) => {
+          if (value === undefined) return;
+          if (key === 'className') {
+            alertElement.className = value as string;
+          } else {
+            alertElement.setAttribute(key, String(value));
+          }
+        });
+      }
 
       Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-        alertElement.style[key as never] = value;
+        alertElement.style[key as any] = String(value);
       });
 
-      vdom.children.forEach((child) => {
-        if (typeof child === 'string') {
-          alertElement.appendChild(document.createTextNode(child));
-        } else if (typeof child === 'object' && 'tag' in child) {
-          const element = document.createElement(child.tag);
+      if (vdom.children) {
+        vdom.children.forEach((child) => {
+          if (typeof child === 'string') {
+            alertElement.appendChild(document.createTextNode(child));
+          } else if (typeof child === 'object' && 'tag' in child) {
+            const element = document.createElement(child.tag);
 
-          if (child.props !== undefined) {
-            Object.entries(child.props).forEach(([key, value]) => {
-              if (key === 'className') {
-                element.className = value as string;
-              } else if (key === 'style') {
-                element.setAttribute('style', value as string);
-              } else {
-                element.setAttribute(key, String(value));
-              }
-            });
+            if (child.props !== undefined) {
+              Object.entries(child.props).forEach(([key, value]) => {
+                if (key === 'className') {
+                  element.className = value as string;
+                } else if (key === 'style') {
+                  element.setAttribute('style', value as string);
+                } else {
+                  element.setAttribute(key, String(value));
+                }
+              });
+            }
+
+            if (child.children !== undefined) {
+              element.textContent = child.children.join('');
+            }
+
+            if (child.tag === 'button') {
+              element.addEventListener('click', () => {
+                alert.setState({ visible: false });
+                alertElement.style.display = 'none';
+              });
+            }
+
+            alertElement.appendChild(element);
           }
-
-          if (child.children !== undefined) {
-            element.textContent = child.children.join('');
-          }
-
-          if (child.tag === 'button') {
-            element.addEventListener('click', () => {
-              alert.setState({ visible: false });
-              alertElement.style.display = 'none';
-            });
-          }
-
-          alertElement.appendChild(element);
-        }
-      });
+        });
+      }
 
       container.appendChild(alertElement);
     });

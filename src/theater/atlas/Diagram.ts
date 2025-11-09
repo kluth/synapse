@@ -191,7 +191,6 @@ export class Diagram {
     // Group by category
     const byCategory: Record<string, ComponentDocumentation[]> = {};
     components.forEach((comp) => {
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       if (byCategory[comp.category] === undefined) {
         byCategory[comp.category] = [];
       }
@@ -238,7 +237,6 @@ export class Diagram {
     // Group by category
     const byCategory: Record<string, ComponentDocumentation[]> = {};
     components.forEach((comp) => {
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       if (byCategory[comp.category] === undefined) {
         byCategory[comp.category] = [];
       }
@@ -575,7 +573,7 @@ export class Diagram {
   /**
    * Convert to SVG (requires external renderer)
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async renderToSVG(_diagram: string, _format: 'mermaid' | 'graphviz'): Promise<string> {
     // This would integrate with Mermaid.js or GraphViz CLI
     // For now, return placeholder
@@ -585,7 +583,7 @@ export class Diagram {
   /**
    * Convert to PNG (requires external renderer)
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async renderToPNG(_diagram: string, _format: 'mermaid' | 'graphviz'): Promise<Buffer> {
     // This would integrate with Mermaid.js or GraphViz CLI
     // For now, return placeholder

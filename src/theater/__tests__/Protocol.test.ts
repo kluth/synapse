@@ -3,12 +3,7 @@
  */
 
 import { Protocol } from '../atlas/Protocol';
-import type {
-  ProtocolGuideline,
-  ProtocolExample,
-  ComponentProtocol,
-  ChecklistItem,
-} from '../atlas/Protocol';
+import type { ProtocolGuideline, ProtocolExample, ComponentProtocol } from '../atlas/Protocol';
 
 describe('Protocol - Usage Guidelines and Best Practices', () => {
   let protocol: Protocol;
@@ -131,25 +126,25 @@ describe('Protocol - Usage Guidelines and Best Practices', () => {
     it('should search by type', () => {
       const results = protocol.search({ type: 'accessibility' });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('accessibility-1');
+      expect(results[0]!.id).toBe('accessibility-1');
     });
 
     it('should search by severity', () => {
       const results = protocol.search({ severity: 'critical' });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('usage-1');
+      expect(results[0]!.id).toBe('usage-1');
     });
 
     it('should search by tags', () => {
       const results = protocol.search({ tags: ['button'] });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('usage-1');
+      expect(results[0]!.id).toBe('usage-1');
     });
 
     it('should search by text', () => {
       const results = protocol.search({ text: 'accessibility' });
       expect(results).toHaveLength(1);
-      expect(results[0].type).toBe('accessibility');
+      expect(results[0]!.type).toBe('accessibility');
     });
 
     it('should combine multiple filters', () => {
@@ -158,7 +153,7 @@ describe('Protocol - Usage Guidelines and Best Practices', () => {
         severity: 'critical',
       });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('usage-1');
+      expect(results[0]!.id).toBe('usage-1');
     });
   });
 
@@ -185,7 +180,7 @@ describe('Protocol - Usage Guidelines and Best Practices', () => {
     it('should get guidelines by severity', () => {
       const results = protocol.getBySeverity('critical');
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('test-1');
+      expect(results[0]!.id).toBe('test-1');
     });
   });
 

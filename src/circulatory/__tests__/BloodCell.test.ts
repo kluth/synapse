@@ -60,8 +60,8 @@ describe('BloodCell', () => {
           },
         },
       );
-      expect(cell.metadata.userId).toBe('user-123');
-      expect(cell.metadata.tenantId).toBe('tenant-456');
+      expect(cell.metadata['userId']).toBe('user-123');
+      expect(cell.metadata['tenantId']).toBe('tenant-456');
     });
 
     it('should track message type', () => {
@@ -108,10 +108,10 @@ describe('BloodCell', () => {
       const cell = new BloodCell({ message: 'hello' }, { source: 'service-a' });
       const json = cell.toJSON();
 
-      expect(json.id).toBe(cell.id);
-      expect(json.payload).toEqual({ message: 'hello' });
-      expect(json.source).toBe('service-a');
-      expect(json.timestamp).toBe(cell.timestamp);
+      expect(json['id']).toBe(cell.id);
+      expect(json['payload']).toEqual({ message: 'hello' });
+      expect(json['source']).toBe('service-a');
+      expect(json['timestamp']).toBe(cell.timestamp);
     });
 
     it('should deserialize from JSON', () => {

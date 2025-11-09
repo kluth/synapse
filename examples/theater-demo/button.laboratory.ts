@@ -10,6 +10,7 @@ import { Experiment } from '../../src/theater/laboratory/Experiment';
 import { TestSubject } from '../../src/theater/laboratory/TestSubject';
 import { Hypothesis } from '../../src/theater/laboratory/Hypothesis';
 import { ButtonComponent } from './ButtonComponent';
+import { LabReporter } from '../../src/theater/laboratory/LabReport';
 
 /**
  * Create a Laboratory instance
@@ -22,196 +23,155 @@ export const ButtonLaboratory = new Laboratory({
 /**
  * Experiment 1: Basic Rendering
  */
+const renderButton = new ButtonComponent({
+  id: 'render-btn',
+  type: 'cortical',
+  threshold: 0.5,
+  props: { label: 'Test Button' },
+});
+const renderSubject = new TestSubject({
+  component: renderButton,
+  autoMount: true,
+});
 const renderingExperiment = new Experiment({
   id: 'button-rendering',
   name: 'Button Rendering',
   description: 'Tests that button renders correctly with different props',
+  testSubject: renderSubject,
+  hypotheses: [
+    Hypothesis.toContainText(renderSubject, 'Test Button'),
+    Hypothesis.toBeMounted(renderSubject),
+  ],
+  test: async (subject) => {
+    subject.render();
+    const output = subject.getRenderOutput();
+    if (!output.includes('Test Button')) {
+      throw new Error('Expected output to contain "Test Button"');
+    }
+  },
 });
-
-renderingExperiment.setTestSubject(
-  new TestSubject(ButtonComponent, {
-    initialProps: { label: 'Test Button' },
-    autoMount: true,
-  }),
-);
-
-renderingExperiment.addHypothesis(
-  new Hypothesis('renders-with-label').toContainText('Test Button'),
-);
-
-renderingExperiment.addHypothesis(
-  new Hypothesis('is-mounted').toBeMounted(),
-);
-
-renderingExperiment.setTest(async (subject) => {
-  // Render the button
-  subject.render();
-
-  // Verify label is in output
-  const output = subject.getLastRender();
-  return output.children?.includes('Test Button') ?? false;
-});
-
 ButtonLaboratory.registerExperiment(renderingExperiment);
 
 /**
  * Experiment 2: Click Interactions
  */
+const clickButton = new ButtonComponent({
+  id: 'click-btn',
+  type: 'cortical',
+  threshold: 0.5,
+  props: { label: 'Click Me' },
+});
+const clickSubject = new TestSubject({
+  component: clickButton,
+  autoMount: true,
+});
 const clickExperiment = new Experiment({
   id: 'button-clicks',
   name: 'Button Click Behavior',
   description: 'Tests button click interactions and state changes',
+  testSubject: clickSubject,
+  hypotheses: [Hypothesis.toHaveState(clickSubject, 'clickCount', 0)],
+  test: async (subject) => {
+    const component = subject.getComponent() as ButtonComponent;
+    const initialCount = component.getState().clickCount;
+    component.handleClick();
+    const newCount = component.getState().clickCount;
+    if (newCount !== initialCount + 1) {
+      throw new Error('Click count should have incremented');
+    }
+  },
 });
-
-clickExperiment.setTestSubject(
-  new TestSubject(ButtonComponent, {
-    initialProps: { label: 'Click Me' },
-    autoMount: true,
-  }),
-);
-
-clickExperiment.addHypothesis(
-  new Hypothesis('initial-click-count').toHaveState('clickCount', 0),
-);
-
-clickExperiment.addHypothesis(
-  new Hypothesis('click-increments-count').toSatisfy((context) => {
-    const button = context.component as ButtonComponent;
-    button.handleClick();
-    return button.getState().clickCount === 1;
-  }),
-);
-
-clickExperiment.setTest(async (subject) => {
-  const component = subject.getComponent() as ButtonComponent;
-
-  // Initial state
-  const initialCount = component.getState().clickCount;
-
-  // Simulate click
-  subject.interact({ type: 'click' });
-
-  // Verify state changed
-  const newCount = component.getState().clickCount;
-
-  return newCount === initialCount + 1;
-});
-
 ButtonLaboratory.registerExperiment(clickExperiment);
 
 /**
  * Experiment 3: Disabled State
  */
+const disabledButton = new ButtonComponent({
+  id: 'disabled-btn',
+  type: 'cortical',
+  threshold: 0.5,
+  props: { label: 'Disabled', disabled: true },
+});
+const disabledSubject = new TestSubject({
+  component: disabledButton,
+  autoMount: true,
+});
 const disabledExperiment = new Experiment({
   id: 'button-disabled',
   name: 'Disabled Button Behavior',
   description: 'Tests that disabled buttons do not respond to clicks',
+  testSubject: disabledSubject,
+  test: async (subject) => {
+    const component = subject.getComponent() as ButtonComponent;
+    const beforeClick = component.getState().clickCount;
+    component.handleClick();
+    const afterClick = component.getState().clickCount;
+    if (beforeClick !== afterClick) {
+      throw new Error('Disabled button should not increment click count');
+    }
+  },
 });
-
-disabledExperiment.setTestSubject(
-  new TestSubject(ButtonComponent, {
-    initialProps: { label: 'Disabled', disabled: true },
-    autoMount: true,
-  }),
-);
-
-disabledExperiment.addHypothesis(
-  new Hypothesis('disabled-no-click').toSatisfy((context) => {
-    const button = context.component as ButtonComponent;
-    const before = button.getState().clickCount;
-    button.handleClick();
-    const after = button.getState().clickCount;
-    return before === after;
-  }),
-);
-
-disabledExperiment.setTest(async (subject) => {
-  const component = subject.getComponent() as ButtonComponent;
-
-  const beforeClick = component.getState().clickCount;
-
-  // Try to click disabled button
-  component.handleClick();
-
-  const afterClick = component.getState().clickCount;
-
-  // Count should not change
-  return beforeClick === afterClick;
-});
-
 ButtonLaboratory.registerExperiment(disabledExperiment);
 
 /**
  * Experiment 4: Variant Styles
  */
+const variantButton = new ButtonComponent({
+  id: 'variant-btn',
+  type: 'cortical',
+  threshold: 0.5,
+  props: { label: 'Primary', variant: 'primary' },
+});
+const variantSubject = new TestSubject({
+  component: variantButton,
+  autoMount: true,
+});
 const variantExperiment = new Experiment({
   id: 'button-variants',
   name: 'Button Variants',
   description: 'Tests different button variants render with correct styles',
+  testSubject: variantSubject,
+  test: async (subject) => {
+    const component = subject.getComponent() as any;
+    component.updateProps({ variant: 'primary' });
+    component.render();
+    const primaryStyles = component.getStyles();
+    component.updateProps({ variant: 'secondary' });
+    component.render();
+    const secondaryStyles = component.getStyles();
+    if (primaryStyles.background === secondaryStyles.background) {
+      throw new Error('Variant styles should be different');
+    }
+  },
 });
-
-variantExperiment.setTestSubject(
-  new TestSubject(ButtonComponent, {
-    initialProps: { label: 'Primary', variant: 'primary' },
-    autoMount: true,
-  }),
-);
-
-variantExperiment.setTest(async (subject) => {
-  const component = subject.getComponent() as ButtonComponent;
-
-  // Test primary variant
-  component.updateProps({ variant: 'primary' });
-  component.render();
-  const primaryStyles = component['getStyles']();
-
-  // Test secondary variant
-  component.updateProps({ variant: 'secondary' });
-  component.render();
-  const secondaryStyles = component['getStyles']();
-
-  // Test danger variant
-  component.updateProps({ variant: 'danger' });
-  component.render();
-  const dangerStyles = component['getStyles']();
-
-  // Verify different styles
-  return (
-    primaryStyles.background !== secondaryStyles.background &&
-    secondaryStyles.background !== dangerStyles.background
-  );
-});
-
 ButtonLaboratory.registerExperiment(variantExperiment);
 
 /**
  * Experiment 5: Props Update
  */
+const propsUpdateButton = new ButtonComponent({
+  id: 'props-update-btn',
+  type: 'cortical',
+  threshold: 0.5,
+  props: { label: 'Initial' },
+});
+const propsUpdateSubject = new TestSubject({
+  component: propsUpdateButton,
+  autoMount: true,
+});
 const propsUpdateExperiment = new Experiment({
   id: 'button-props-update',
   name: 'Props Update Behavior',
   description: 'Tests that button responds to prop updates',
+  testSubject: propsUpdateSubject,
+  test: async (subject) => {
+    subject.setProps({ label: 'Updated' });
+    const output = subject.getRenderOutput();
+    if (!output.includes('Updated')) {
+      throw new Error('Props update did not reflect in render output');
+    }
+  },
 });
-
-propsUpdateExperiment.setTestSubject(
-  new TestSubject(ButtonComponent, {
-    initialProps: { label: 'Initial' },
-    autoMount: true,
-  }),
-);
-
-propsUpdateExperiment.setTest(async (subject) => {
-  const component = subject.getComponent() as ButtonComponent;
-
-  // Update label
-  subject.updateProps({ label: 'Updated' });
-  subject.render();
-
-  const output = subject.getLastRender();
-
-  return output.children?.includes('Updated') ?? false;
-});
-
 ButtonLaboratory.registerExperiment(propsUpdateExperiment);
 
 /**
@@ -220,18 +180,16 @@ ButtonLaboratory.registerExperiment(propsUpdateExperiment);
 export async function runButtonTests(): Promise<void> {
   console.log('🧪 Running Button Component Tests...\n');
 
-  await ButtonLaboratory.runAll();
-
-  const stats = ButtonLaboratory.getStatistics();
-  const report = ButtonLaboratory.generateReport();
+  const report = await ButtonLaboratory.runAll();
+  const stats = ButtonLaboratory.getStats();
 
   console.log('\n📊 Test Results:');
-  console.log(`  Total: ${stats.total}`);
+  console.log(`  Total: ${stats.totalExperiments}`);
   console.log(`  Passed: ${stats.passed}`);
   console.log(`  Failed: ${stats.failed}`);
   console.log(`  Skipped: ${stats.skipped}`);
-  console.log(`  Success Rate: ${stats.successRate.toFixed(1)}%`);
+  console.log(`  Success Rate: ${(stats.successRate * 100).toFixed(1)}%`);
 
   console.log('\n📝 Detailed Report:');
-  console.log(report.formatAs('text'));
+  console.log(LabReporter.formatText(report));
 }

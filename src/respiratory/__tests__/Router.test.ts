@@ -30,7 +30,7 @@ describe('Router', () => {
     });
 
     it('should add global middleware', () => {
-      const middleware = async (ctx: unknown, next: () => Promise<unknown>): Promise<unknown> =>
+      const middleware = async (_ctx: unknown, next: () => Promise<unknown>): Promise<unknown> =>
         next();
       router.use(middleware);
 
@@ -62,7 +62,7 @@ describe('Router', () => {
       router.route(
         Route.post('/users', async (ctx) => ({
           id: 1,
-          ...ctx.body,
+          ...(typeof ctx.body === 'object' && ctx.body !== null ? ctx.body : {}),
         })),
       );
 
@@ -79,7 +79,7 @@ describe('Router', () => {
     it('should handle path parameters', async () => {
       router.route(
         Route.get('/users/:id', async (ctx) => ({
-          id: ctx.params.id,
+          id: (ctx.params as { id: string }).id,
         })),
       );
 
@@ -127,7 +127,7 @@ describe('Router', () => {
     it('should match paths with parameters', async () => {
       router.route(
         Route.get('/users/:id', async (ctx) => ({
-          id: ctx.params.id,
+          id: (ctx.params as { id: string }).id,
         })),
       );
 
@@ -143,8 +143,8 @@ describe('Router', () => {
     it('should match paths with multiple parameters', async () => {
       router.route(
         Route.get('/users/:userId/posts/:postId', async (ctx) => ({
-          userId: ctx.params.userId,
-          postId: ctx.params.postId,
+          userId: (ctx.params as { userId: string }).userId,
+          postId: (ctx.params as { postId: string }).postId,
         })),
       );
 
@@ -187,7 +187,7 @@ describe('Router', () => {
   describe('Validation', () => {
     it('should validate required path parameters', async () => {
       router.route(
-        Route.get('/users/:id', async (ctx) => ({ id: ctx.params.id }), {
+        Route.get('/users/:id', async (ctx) => ({ id: (ctx.params as { id: string }).id }), {
           parameters: [
             {
               name: 'id',
@@ -213,12 +213,19 @@ describe('Router', () => {
       });
 
       router.route(
-        Route.post('/users', async (ctx) => ({ id: 1, ...ctx.body }), {
-          requestBody: {
-            required: true,
-            schema: userSchema,
+        Route.post(
+          '/users',
+          async (ctx) => ({
+            id: 1,
+            ...(typeof ctx.body === 'object' && ctx.body !== null ? ctx.body : {}),
+          }),
+          {
+            requestBody: {
+              required: true,
+              schema: userSchema,
+            },
           },
-        }),
+        ),
       );
 
       const response = await router.handle({
@@ -236,12 +243,19 @@ describe('Router', () => {
       });
 
       router.route(
-        Route.post('/users', async (ctx) => ({ id: 1, ...ctx.body }), {
-          requestBody: {
-            required: true,
-            schema: userSchema,
+        Route.post(
+          '/users',
+          async (ctx) => ({
+            id: 1,
+            ...(typeof ctx.body === 'object' && ctx.body !== null ? ctx.body : {}),
+          }),
+          {
+            requestBody: {
+              required: true,
+              schema: userSchema,
+            },
           },
-        }),
+        ),
       );
 
       const response = await router.handle({
@@ -260,12 +274,19 @@ describe('Router', () => {
       });
 
       router.route(
-        Route.post('/users', async (ctx) => ({ id: 1, ...ctx.body }), {
-          requestBody: {
-            required: true,
-            schema: userSchema,
+        Route.post(
+          '/users',
+          async (ctx) => ({
+            id: 1,
+            ...(typeof ctx.body === 'object' && ctx.body !== null ? ctx.body : {}),
+          }),
+          {
+            requestBody: {
+              required: true,
+              schema: userSchema,
+            },
           },
-        }),
+        ),
       );
 
       const response = await router.handle({
@@ -283,7 +304,7 @@ describe('Router', () => {
     it('should execute route middleware', async () => {
       const calls: string[] = [];
 
-      const middleware = async (ctx: unknown, next: () => Promise<unknown>): Promise<unknown> => {
+      const middleware = async (_ctx: unknown, next: () => Promise<unknown>): Promise<unknown> => {
         calls.push('middleware');
         return next();
       };
@@ -313,7 +334,7 @@ describe('Router', () => {
       const calls: string[] = [];
 
       const globalMiddleware = async (
-        ctx: unknown,
+        _ctx: unknown,
         next: () => Promise<unknown>,
       ): Promise<unknown> => {
         calls.push('global');
@@ -321,7 +342,7 @@ describe('Router', () => {
       };
 
       const routeMiddleware = async (
-        ctx: unknown,
+        _ctx: unknown,
         next: () => Promise<unknown>,
       ): Promise<unknown> => {
         calls.push('route');
@@ -355,8 +376,7 @@ describe('Router', () => {
         ctx: unknown,
         next: () => Promise<unknown>,
       ): Promise<unknown> => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (ctx as any).metadata.user = { id: 1, role: 'admin' };
+        (ctx as { metadata: Record<string, unknown> }).metadata['user'] = { id: 1, role: 'admin' };
         return next();
       };
 
@@ -364,7 +384,7 @@ describe('Router', () => {
         Route.get(
           '/profile',
           async (ctx) => ({
-            user: ctx.metadata.user,
+            user: (ctx.metadata as Record<string, unknown>)['user'],
           }),
           {
             middleware: [authMiddleware],

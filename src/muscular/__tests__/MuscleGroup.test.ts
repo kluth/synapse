@@ -4,9 +4,18 @@ import { Muscle } from '../core/Muscle';
 describe('MuscleGroup', () => {
   describe('Sequential Execution (Pipeline)', () => {
     it('should execute muscles sequentially', async () => {
-      const addOne = new Muscle('addOne', (x: number) => x + 1);
-      const double = new Muscle('double', (x: number) => x * 2);
-      const subtract5 = new Muscle('subtract5', (x: number) => x - 5);
+      const addOne = new Muscle('addOne', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x + 1;
+      });
+      const double = new Muscle('double', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
+      const subtract5 = new Muscle('subtract5', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x - 5;
+      });
 
       const pipeline = MuscleGroup.sequential([addOne, double, subtract5]);
 
@@ -16,8 +25,14 @@ describe('MuscleGroup', () => {
     });
 
     it('should pass output of one muscle to next', async () => {
-      const toString = new Muscle('toString', (x: number) => String(x));
-      const addExclamation = new Muscle('addExclamation', (x: string) => x + '!');
+      const toString = new Muscle('toString', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return String(x);
+      });
+      const addExclamation = new Muscle('addExclamation', (...args: unknown[]) => {
+        const x = args[0] as string;
+        return x + '!';
+      });
 
       const pipeline = MuscleGroup.sequential([toString, addExclamation]);
 
@@ -58,9 +73,18 @@ describe('MuscleGroup', () => {
     });
 
     it('should collect all results', async () => {
-      const double = new Muscle('double', (x: number) => x * 2);
-      const triple = new Muscle('triple', (x: number) => x * 3);
-      const quadruple = new Muscle('quadruple', (x: number) => x * 4);
+      const double = new Muscle('double', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
+      const triple = new Muscle('triple', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 3;
+      });
+      const quadruple = new Muscle('quadruple', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 4;
+      });
 
       const parallel = MuscleGroup.parallel([double, triple, quadruple]);
       const result = await parallel.execute(5);
@@ -92,23 +116,57 @@ describe('MuscleGroup', () => {
 
   describe('Conditional Execution (Branching)', () => {
     it('should execute muscle based on condition', async () => {
-      const double = new Muscle('double', (x: number) => x * 2);
-      const triple = new Muscle('triple', (x: number) => x * 3);
+      const double = new Muscle('double', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
+      const triple = new Muscle('triple', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 3;
+      });
 
-      const conditional = MuscleGroup.conditional((x: number) => x > 10, double, triple);
+      const conditional = MuscleGroup.conditional(
+        (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x > 10;
+        },
+        double,
+        triple,
+      );
 
       expect(await conditional.execute(15)).toBe(30); // 15 * 2
       expect(await conditional.execute(5)).toBe(15); // 5 * 3
     });
 
     it('should support multiple branches', async () => {
-      const small = new Muscle('small', (x: number) => `small: ${x}`);
-      const medium = new Muscle('medium', (x: number) => `medium: ${x}`);
-      const large = new Muscle('large', (x: number) => `large: ${x}`);
+      const small = new Muscle('small', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return `small: ${x}`;
+      });
+      const medium = new Muscle('medium', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return `medium: ${x}`;
+      });
+      const large = new Muscle('large', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return `large: ${x}`;
+      });
 
       const conditional = MuscleGroup.switch<number, string>([
-        { condition: (x) => x < 10, muscle: small },
-        { condition: (x) => x < 100, muscle: medium },
+        {
+          condition: (...args: unknown[]) => {
+            const x = args[0] as number;
+            return x < 10;
+          },
+          muscle: small,
+        },
+        {
+          condition: (...args: unknown[]) => {
+            const x = args[0] as number;
+            return x < 100;
+          },
+          muscle: medium,
+        },
         { condition: () => true, muscle: large },
       ]);
 
@@ -127,7 +185,8 @@ describe('MuscleGroup', () => {
         return state.count;
       });
 
-      const addValue = new Muscle('addValue', async (val: number) => {
+      const addValue = new Muscle('addValue', async (...args: unknown[]) => {
+        const val = args[0] as number;
         state.values.push(val);
         return val;
       });
@@ -165,7 +224,8 @@ describe('MuscleGroup', () => {
 
       const addValue = new Muscle(
         'addValue',
-        async (val: number) => {
+        async (...args: unknown[]) => {
+          const val = args[0] as number;
           state.values.push(val);
           return val;
         },
@@ -258,9 +318,18 @@ describe('MuscleGroup', () => {
 
   describe('Composition', () => {
     it('should compose muscle groups together', async () => {
-      const addOne = new Muscle('addOne', (x: number) => x + 1);
-      const double = new Muscle('double', (x: number) => x * 2);
-      const subtract5 = new Muscle('subtract5', (x: number) => x - 5);
+      const addOne = new Muscle('addOne', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x + 1;
+      });
+      const double = new Muscle('double', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
+      const subtract5 = new Muscle('subtract5', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x - 5;
+      });
 
       const firstPipeline = MuscleGroup.sequential([addOne, double]);
       const secondPipeline = MuscleGroup.sequential([firstPipeline, subtract5]);

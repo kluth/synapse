@@ -5,49 +5,54 @@
  * The Anatomy Theater's capabilities.
  */
 
+import type { VisualNeuronConfig } from '../../src/ui/VisualNeuron';
 import { VisualNeuron } from '../../src/ui/VisualNeuron';
+import type { RenderSignal } from '../../src/ui/types';
 
-export interface ButtonProps {
+export interface ButtonComponentProps {
   label: string;
   variant?: 'primary' | 'secondary' | 'danger';
   disabled?: boolean;
   onClick?: () => void;
 }
 
-export interface ButtonState {
+export interface ButtonComponentState {
   pressed: boolean;
   clickCount: number;
 }
 
-export class ButtonComponent extends VisualNeuron<ButtonProps, ButtonState> {
-  constructor(props: ButtonProps) {
-    super(props, {
-      pressed: false,
-      clickCount: 0,
+export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonComponentState> {
+  constructor(config: VisualNeuronConfig<ButtonComponentProps>) {
+    super({
+      ...config,
+      initialState: {
+        pressed: false,
+        clickCount: 0,
+      },
     });
   }
 
-  protected shouldUpdate(oldProps: ButtonProps, newProps: ButtonProps): boolean {
+  protected override shouldUpdate(nextProps: ButtonComponentProps): boolean {
     return (
-      oldProps.label !== newProps.label ||
-      oldProps.variant !== newProps.variant ||
-      oldProps.disabled !== newProps.disabled
+      this.receptiveField.label !== nextProps.label ||
+      this.receptiveField.variant !== nextProps.variant ||
+      this.receptiveField.disabled !== nextProps.disabled
     );
   }
 
   protected getStyles(): Record<string, unknown> {
-    const { variant = 'primary', disabled } = this.props;
-    const { pressed } = this.state;
+    const { variant = 'primary', disabled } = this.receptiveField;
+    const { pressed } = this.visualState;
 
     const baseStyles = {
       padding: '8px 16px',
       borderRadius: '4px',
       border: 'none',
-      cursor: disabled ? 'not-allowed' : 'pointer',
+      cursor: disabled === true ? 'not-allowed' : 'pointer',
       fontSize: '14px',
       fontWeight: '500',
       transition: 'all 0.2s',
-      opacity: disabled ? 0.5 : 1,
+      opacity: disabled === true ? 0.5 : 1,
     };
 
     const variantStyles = {
@@ -72,13 +77,13 @@ export class ButtonComponent extends VisualNeuron<ButtonProps, ButtonState> {
   }
 
   public handleClick(): void {
-    if (this.props.disabled) {
+    if (this.receptiveField.disabled === true) {
       return;
     }
 
     this.setState({
       pressed: true,
-      clickCount: this.state.clickCount + 1,
+      clickCount: this.visualState.clickCount + 1,
     });
 
     // Reset pressed state after a short delay
@@ -87,26 +92,46 @@ export class ButtonComponent extends VisualNeuron<ButtonProps, ButtonState> {
     }, 100);
 
     // Call onClick handler if provided
-    this.props.onClick?.();
+    this.receptiveField.onClick?.();
 
     // Emit neural signal
-    this.emit('clicked', {
-      clickCount: this.state.clickCount + 1,
+    this.emitUIEvent({
+      type: 'ui:click',
+      data: {
+        payload: {
+          clickCount: this.visualState.clickCount + 1,
+        },
+        target: this.id,
+      },
+      strength: 1.0,
       timestamp: Date.now(),
     });
   }
 
-  protected render(): Record<string, unknown> {
-    const { label } = this.props;
+  protected override performRender(): RenderSignal {
+    const { label } = this.receptiveField;
     const styles = this.getStyles();
 
     return {
-      type: 'button',
-      props: {
-        style: styles,
-        onClick: () => this.handleClick(),
+      type: 'render',
+      data: {
+        vdom: {
+          tag: 'button',
+          props: {
+            style: styles,
+            onClick: () => this.handleClick(),
+          },
+          children: [label],
+        },
+        styles: {},
+        metadata: {
+          componentId: this.id,
+          renderCount: this.getRenderCount(),
+          lastRenderTime: this.getLastRenderTime(),
+        },
       },
-      children: [label],
+      strength: 1.0,
+      timestamp: Date.now(),
     };
   }
 }

@@ -211,7 +211,7 @@ describe('Bone', () => {
 
       if (result.valid) {
         // TypeScript should infer the correct type
-        const user: User = result.data;
+        const user: User = result.data!;
         expect(user.username).toBe('john');
       }
     });

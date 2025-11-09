@@ -16,19 +16,16 @@ describe('Neuroplasticity - Self-Healing and Optimization', () => {
     neuronA = new CorticalNeuron({
       id: 'neuron-a',
       threshold: 0.5,
-      maxMemorySize: 10,
     });
 
     neuronB = new CorticalNeuron({
       id: 'neuron-b',
       threshold: 0.5,
-      maxMemorySize: 10,
     });
 
     neuronC = new CorticalNeuron({
       id: 'neuron-c',
       threshold: 0.5,
-      maxMemorySize: 10,
     });
 
     circuit.addNeuron(neuronA);
@@ -158,8 +155,8 @@ describe('Neuroplasticity - Self-Healing and Optimization', () => {
       const freshCircuit = new NeuralCircuit({ id: 'fresh' });
       const freshPlasticity = new Neuroplasticity({ circuit: freshCircuit });
 
-      const nA = new CorticalNeuron({ id: 'na', threshold: 0.5, maxMemorySize: 10 });
-      const nB = new CorticalNeuron({ id: 'nb', threshold: 0.5, maxMemorySize: 10 });
+      const nA = new CorticalNeuron({ id: 'na', threshold: 0.5 });
+      const nB = new CorticalNeuron({ id: 'nb', threshold: 0.5 });
       freshCircuit.addNeuron(nA);
       freshCircuit.addNeuron(nB);
 

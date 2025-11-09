@@ -87,12 +87,12 @@ describe('Antibody - Threat Detection System', () => {
     });
 
     it('should detect UNION-based SQL injection', () => {
-      const input = "SELECT * FROM users WHERE id = 1 UNION SELECT password FROM admin";
+      const input = 'SELECT * FROM users WHERE id = 1 UNION SELECT password FROM admin';
 
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'sql-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'sql-injection')).toBe(true);
     });
 
     it('should detect OR 1=1 SQL injection', () => {
@@ -101,24 +101,24 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'sql-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'sql-injection')).toBe(true);
     });
 
     it('should detect SQL comment injection', () => {
-      const input = "SELECT * FROM users WHERE id = 1 -- DROP TABLE users";
+      const input = 'SELECT * FROM users WHERE id = 1 -- DROP TABLE users';
 
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'sql-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'sql-injection')).toBe(true);
     });
 
     it('should not detect clean SQL', () => {
-      const input = "SELECT id, name FROM users WHERE active = true";
+      const input = 'SELECT id, name FROM users WHERE active = true';
 
       const threats = antibody.scan(input);
 
-      const sqlThreats = threats.filter(t => t.type === 'sql-injection');
+      const sqlThreats = threats.filter((t) => t.type === 'sql-injection');
       expect(sqlThreats.length).toBe(0);
     });
   });
@@ -136,8 +136,8 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'xss')).toBe(true);
-      expect(threats.some(t => t.severity === 'critical')).toBe(true);
+      expect(threats.some((t) => t.type === 'xss')).toBe(true);
+      expect(threats.some((t) => t.severity === 'critical')).toBe(true);
     });
 
     it('should detect event handler injection', () => {
@@ -146,7 +146,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'xss')).toBe(true);
+      expect(threats.some((t) => t.type === 'xss')).toBe(true);
     });
 
     it('should detect javascript protocol', () => {
@@ -155,7 +155,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'xss')).toBe(true);
+      expect(threats.some((t) => t.type === 'xss')).toBe(true);
     });
 
     it('should not detect clean HTML', () => {
@@ -163,7 +163,7 @@ describe('Antibody - Threat Detection System', () => {
 
       const threats = antibody.scan(input);
 
-      const xssThreats = threats.filter(t => t.type === 'xss');
+      const xssThreats = threats.filter((t) => t.type === 'xss');
       expect(xssThreats.length).toBe(0);
     });
   });
@@ -181,7 +181,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'path-traversal')).toBe(true);
+      expect(threats.some((t) => t.type === 'path-traversal')).toBe(true);
     });
 
     it('should detect encoded directory traversal', () => {
@@ -190,7 +190,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'path-traversal')).toBe(true);
+      expect(threats.some((t) => t.type === 'path-traversal')).toBe(true);
     });
 
     it('should not detect clean paths', () => {
@@ -198,7 +198,7 @@ describe('Antibody - Threat Detection System', () => {
 
       const threats = antibody.scan(input);
 
-      const pathThreats = threats.filter(t => t.type === 'path-traversal');
+      const pathThreats = threats.filter((t) => t.type === 'path-traversal');
       expect(pathThreats.length).toBe(0);
     });
   });
@@ -216,7 +216,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'command-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'command-injection')).toBe(true);
     });
 
     it('should detect semicolon command injection', () => {
@@ -225,7 +225,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'command-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'command-injection')).toBe(true);
     });
 
     it('should detect backtick command injection', () => {
@@ -234,7 +234,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'command-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'command-injection')).toBe(true);
     });
   });
 
@@ -251,7 +251,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'ldap-injection')).toBe(true);
+      expect(threats.some((t) => t.type === 'ldap-injection')).toBe(true);
     });
   });
 
@@ -268,8 +268,8 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'xxe')).toBe(true);
-      expect(threats.some(t => t.severity === 'critical')).toBe(true);
+      expect(threats.some((t) => t.type === 'xxe')).toBe(true);
+      expect(threats.some((t) => t.severity === 'critical')).toBe(true);
     });
   });
 
@@ -303,7 +303,7 @@ describe('Antibody - Threat Detection System', () => {
 
     it('should get threats by type', () => {
       antibody.scan('<script>alert(1)</script>');
-      antibody.scan("SELECT * FROM users WHERE id = 1 OR 1=1");
+      antibody.scan('SELECT * FROM users WHERE id = 1 OR 1=1');
 
       const xssThreats = antibody.getThreatsByType('xss');
       const sqlThreats = antibody.getThreatsByType('sql-injection');
@@ -322,12 +322,12 @@ describe('Antibody - Threat Detection System', () => {
 
     it('should get threats by source', () => {
       antibody.scan('<script>alert(1)</script>', '192.168.1.1');
-      antibody.scan("SELECT * FROM users", '192.168.1.2');
+      antibody.scan('SELECT * FROM users', '192.168.1.2');
 
       const threats = antibody.getThreatsBySource('192.168.1.1');
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.every(t => t.source === '192.168.1.1')).toBe(true);
+      expect(threats.every((t) => t.source === '192.168.1.1')).toBe(true);
     });
 
     it('should clear threat history', () => {
@@ -349,7 +349,7 @@ describe('Antibody - Threat Detection System', () => {
 
     it('should track threat statistics', () => {
       antibody.scan('<script>alert(1)</script>');
-      antibody.scan("SELECT * FROM users WHERE id = 1 OR 1=1");
+      antibody.scan('SELECT * FROM users WHERE id = 1 OR 1=1');
       antibody.scan('../../../etc/passwd');
 
       const stats = antibody.getStatistics();
@@ -484,7 +484,7 @@ describe('Antibody - Threat Detection System', () => {
       const threats = antibody.scan('password = "secret123"');
 
       expect(threats.length).toBeGreaterThan(0);
-      expect(threats.some(t => t.type === 'data-leak')).toBe(true);
+      expect(threats.some((t) => t.type === 'data-leak')).toBe(true);
     });
   });
 
@@ -515,7 +515,7 @@ describe('Antibody - Threat Detection System', () => {
       const antibody = new Antibody({ verbose: false, minScoreToReport: 0 });
 
       antibody.scan('<script>alert(1)</script>');
-      antibody.scan("SELECT * FROM users");
+      antibody.scan('SELECT * FROM users');
 
       antibody.reset();
 
@@ -532,13 +532,13 @@ describe('Antibody - Threat Detection System', () => {
       const antibody = new Antibody({ verbose: false });
 
       // Multiple SQL injection patterns
-      const input = "SELECT * FROM users WHERE id = 1 OR 1=1 UNION SELECT password FROM admin";
+      const input = 'SELECT * FROM users WHERE id = 1 OR 1=1 UNION SELECT password FROM admin';
 
       const threats = antibody.scan(input);
 
       expect(threats.length).toBeGreaterThan(0);
       // Score should be higher due to multiple matches
-      const highScoreThreats = threats.filter(t => t.score >= 85);
+      const highScoreThreats = threats.filter((t) => t.score >= 85);
       expect(highScoreThreats.length).toBeGreaterThan(0);
     });
   });

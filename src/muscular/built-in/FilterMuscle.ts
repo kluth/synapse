@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**
@@ -6,7 +5,14 @@ import { Muscle } from '../core/Muscle';
  */
 export class FilterMuscle {
   static create<T>(predicate: (item: T) => boolean): Muscle<T[], T[]> {
-    return new Muscle('filter', (arr: T[]) => arr.filter(predicate), { deterministic: true });
+    return new Muscle(
+      'filter',
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
+        return arr.filter(predicate);
+      },
+      { deterministic: true },
+    );
   }
 
   static greaterThan(value: number): Muscle<number[], number[]> {
@@ -26,6 +32,13 @@ export class FilterMuscle {
   }
 
   static unique<T>(): Muscle<T[], T[]> {
-    return new Muscle('unique', (arr: T[]) => Array.from(new Set(arr)), { deterministic: true });
+    return new Muscle(
+      'unique',
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
+        return Array.from(new Set(arr));
+      },
+      { deterministic: true },
+    );
   }
 }

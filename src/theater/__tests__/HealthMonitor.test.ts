@@ -1,6 +1,39 @@
 import { HealthMonitor } from '../instruments/HealthMonitor';
 import { VisualNeuron } from '../../ui/VisualNeuron';
 
+// Test component
+class TestComponent extends VisualNeuron<{ name: string }> {
+  constructor(props: { name: string }) {
+    super({
+      id: 'test-component',
+      type: 'cortical',
+      threshold: 0.5,
+      props,
+      initialState: {},
+    });
+  }
+
+  protected override executeProcessing<_TInput = unknown, TOutput = unknown>(): Promise<TOutput> {
+    return Promise.resolve(undefined as TOutput);
+  }
+
+  protected override performRender() {
+    return {
+      type: 'render' as const,
+      data: {
+        vdom: {
+          tag: 'div',
+          props: { className: 'test-component' },
+          children: [this.receptiveField.name],
+        },
+        styles: {},
+      },
+      strength: 1.0,
+      timestamp: Date.now(),
+    };
+  }
+}
+
 describe('HealthMonitor - Component Health Monitoring', () => {
   let monitor: HealthMonitor;
 
@@ -40,7 +73,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
 
   describe('Health Inspection', () => {
     it('should inspect component health', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       expect(result).toBeDefined();
@@ -49,7 +82,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should return inspection data', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       expect(result.data).toBeDefined();
@@ -59,7 +92,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should create health report', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await monitor.inspect(component);
 
       const reports = monitor.getAllReports();
@@ -67,7 +100,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should include health checks in report', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { checks: unknown[] } };
@@ -78,7 +111,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
 
   describe('Health Status', () => {
     it('should determine health status', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { status: string } };
@@ -87,7 +120,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should calculate health score', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { healthScore: number } };
@@ -111,7 +144,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
       const error = new Error('Test error');
       monitor.recordError(error, 'test-component');
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { stats: { totalErrors: number } };
@@ -171,7 +204,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
       // Wait a bit
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { uptime: number } };
@@ -181,7 +214,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
 
   describe('Health Reports', () => {
     it('should get all health reports', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await monitor.inspect(component);
 
       const reports = monitor.getAllReports();
@@ -192,7 +225,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
       monitor.recordError(new Error('Test'), 'test-component');
       monitor.recordWarning('Test', 'test-component');
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { errorCount: number; warningCount: number } };
@@ -203,7 +236,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
 
   describe('Health Checks', () => {
     it('should run health checks', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { checks: unknown[] } };
@@ -211,7 +244,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should include error check', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { checks: Array<{ name: string }> } };
@@ -221,7 +254,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should include uptime check', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await monitor.inspect(component);
 
       const data = result.data as { report: { checks: Array<{ name: string }> } };
@@ -240,7 +273,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
     });
 
     it('should render with reports', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await monitor.inspect(component);
 
       const html = monitor.render();
@@ -260,7 +293,7 @@ describe('HealthMonitor - Component Health Monitoring', () => {
 
   describe('Cleanup', () => {
     it('should clear all data on cleanup', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       monitor.recordError(new Error('Test'), 'test-component');
 
       await monitor.inspect(component);

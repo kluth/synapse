@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**
@@ -6,25 +5,47 @@ import { Muscle } from '../core/Muscle';
  */
 export class SortMuscle {
   static ascending(): Muscle<number[], number[]> {
-    return new Muscle('sortAscending', (arr: number[]) => [...arr].sort((a, b) => a - b), {
-      deterministic: true,
-    });
+    return new Muscle(
+      'sortAscending',
+      (...args: unknown[]) => {
+        const arr = args[0] as number[];
+        return [...arr].sort((a, b) => a - b);
+      },
+      {
+        deterministic: true,
+      },
+    );
   }
 
   static descending(): Muscle<number[], number[]> {
-    return new Muscle('sortDescending', (arr: number[]) => [...arr].sort((a, b) => b - a), {
-      deterministic: true,
-    });
+    return new Muscle(
+      'sortDescending',
+      (...args: unknown[]) => {
+        const arr = args[0] as number[];
+        return [...arr].sort((a, b) => b - a);
+      },
+      {
+        deterministic: true,
+      },
+    );
   }
 
   static by<T>(comparator: (a: T, b: T) => number): Muscle<T[], T[]> {
-    return new Muscle('sortBy', (arr: T[]) => [...arr].sort(comparator), { deterministic: true });
+    return new Muscle(
+      'sortBy',
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
+        return [...arr].sort(comparator);
+      },
+      { deterministic: true },
+    );
   }
 
   static byProperty<T>(property: keyof T): Muscle<T[], T[]> {
     return new Muscle(
       'sortByProperty',
-      (arr: T[]) => {
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
         return [...arr].sort((a, b) => {
           const aVal = a[property];
           const bVal = b[property];

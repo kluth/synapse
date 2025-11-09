@@ -148,7 +148,12 @@ export abstract class SkinCell extends HTMLElement {
    * Get nested state value by path (e.g., "user.email")
    */
   protected getStateValue(path: string): unknown {
-    return path.split('.').reduce((obj: any, key) => obj?.[key], this.state);
+    return path.split('.').reduce((obj: Record<string, unknown> | unknown, key) => {
+      if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+        return (obj as Record<string, unknown>)[key];
+      }
+      return undefined;
+    }, this.state as unknown);
   }
 
   /**

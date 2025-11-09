@@ -81,11 +81,9 @@ describe('DependencyAuditor', () => {
       expect(report.needsAttention).toBeInstanceOf(Array);
       // Packages with risk level > low should be in needsAttention
       const highRiskPackages = report.analyzedPackages.filter(
-        (pkg) => pkg.riskLevel === 'critical' || pkg.riskLevel === 'high'
+        (pkg) => pkg.riskLevel === 'critical' || pkg.riskLevel === 'high',
       );
-      expect(report.needsAttention.length).toBeGreaterThanOrEqual(
-        highRiskPackages.length
-      );
+      expect(report.needsAttention.length).toBeGreaterThanOrEqual(highRiskPackages.length);
     });
   });
 

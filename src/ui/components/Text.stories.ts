@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/html';
 import { Text, type TextProps } from './Text';
 
-const meta: Meta = {
+const meta: Meta<TextProps> = {
   title: 'Components/Text',
   tags: ['autodocs'],
-  render: (args: TextProps) => {
+  render: (args) => {
     const container = document.createElement('div');
     container.style.padding = '20px';
 
     const text = new Text({
       id: `text-${crypto.randomUUID()}`,
-      config: {
-        initialProps: args,
-        initialState: {
-          hovered: false,
-        },
+      type: 'reflex',
+      threshold: 0.5,
+      props: args,
+      initialState: {
+        hovered: false,
       },
     });
 
@@ -24,18 +24,22 @@ const meta: Meta = {
     const vdom = renderSignal.data.vdom;
 
     const element = document.createElement(vdom.tag);
-    element.textContent = vdom.children[0] as string;
+    if (vdom.children) {
+      element.textContent = vdom.children?.[0] as string;
+    }
 
-    Object.entries(vdom.props).forEach(([key, value]) => {
-      if (key === 'className') {
-        element.className = value as string;
-      } else {
-        element.setAttribute(key, String(value));
-      }
-    });
+    if (vdom.props) {
+      Object.entries(vdom.props).forEach(([key, value]) => {
+        if (key === 'className') {
+          element.className = value as string;
+        } else {
+          element.setAttribute(key, String(value));
+        }
+      });
+    }
 
     Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-      element.style[key as never] = value;
+      element.style[key as any] = String(value);
     });
 
     container.appendChild(element);
@@ -147,15 +151,15 @@ export const ColorVariants: Story = {
     colors.forEach((color) => {
       const text = new Text({
         id: `text-${color}-${crypto.randomUUID()}`,
-        config: {
-          initialProps: {
-            children: `${color?.charAt(0).toUpperCase()}${color?.slice(1)} text color`,
-            color,
-            variant: 'body',
-          },
-          initialState: {
-            hovered: false,
-          },
+        type: 'reflex',
+        threshold: 0.5,
+        props: {
+          children: `${color?.charAt(0).toUpperCase()}${color?.slice(1)} text color`,
+          color: color!,
+          variant: 'body',
+        },
+        initialState: {
+          hovered: false,
         },
       });
 
@@ -165,18 +169,22 @@ export const ColorVariants: Story = {
       const vdom = renderSignal.data.vdom;
 
       const element = document.createElement(vdom.tag);
-      element.textContent = vdom.children[0] as string;
+      if (vdom.children) {
+        element.textContent = vdom.children?.[0] as string;
+      }
 
-      Object.entries(vdom.props).forEach(([key, value]) => {
-        if (key === 'className') {
-          element.className = value as string;
-        } else {
-          element.setAttribute(key, String(value));
-        }
-      });
+      if (vdom.props) {
+        Object.entries(vdom.props).forEach(([key, value]) => {
+          if (key === 'className') {
+            element.className = value as string;
+          } else {
+            element.setAttribute(key, String(value));
+          }
+        });
+      }
 
       Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-        element.style[key as never] = value;
+        element.style[key as any] = String(value);
       });
 
       container.appendChild(element);
@@ -199,15 +207,15 @@ export const WeightVariants: Story = {
     weights.forEach((weight) => {
       const text = new Text({
         id: `text-${weight}-${crypto.randomUUID()}`,
-        config: {
-          initialProps: {
-            children: `${weight?.charAt(0).toUpperCase()}${weight?.slice(1)} font weight`,
-            weight,
-            variant: 'body',
-          },
-          initialState: {
-            hovered: false,
-          },
+        type: 'reflex',
+        threshold: 0.5,
+        props: {
+          children: `${weight?.charAt(0).toUpperCase()}${weight?.slice(1)} font weight`,
+          weight: weight!,
+          variant: 'body',
+        },
+        initialState: {
+          hovered: false,
         },
       });
 
@@ -217,18 +225,22 @@ export const WeightVariants: Story = {
       const vdom = renderSignal.data.vdom;
 
       const element = document.createElement(vdom.tag);
-      element.textContent = vdom.children[0] as string;
+      if (vdom.children) {
+        element.textContent = vdom.children?.[0] as string;
+      }
 
-      Object.entries(vdom.props).forEach(([key, value]) => {
-        if (key === 'className') {
-          element.className = value as string;
-        } else {
-          element.setAttribute(key, String(value));
-        }
-      });
+      if (vdom.props) {
+        Object.entries(vdom.props).forEach(([key, value]) => {
+          if (key === 'className') {
+            element.className = value as string;
+          } else {
+            element.setAttribute(key, String(value));
+          }
+        });
+      }
 
       Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-        element.style[key as never] = value;
+        element.style[key as any] = String(value);
       });
 
       container.appendChild(element);
@@ -263,15 +275,15 @@ export const NoWrap: Story = {
 
     const text = new Text({
       id: `text-nowrap-${crypto.randomUUID()}`,
-      config: {
-        initialProps: {
-          children: 'This is a very long text that should not wrap to the next line',
-          variant: 'body',
-          noWrap: true,
-        },
-        initialState: {
-          hovered: false,
-        },
+      type: 'reflex',
+      threshold: 0.5,
+      props: {
+        children: 'This is a very long text that should not wrap to the next line',
+        variant: 'body',
+        noWrap: true,
+      },
+      initialState: {
+        hovered: false,
       },
     });
 
@@ -281,18 +293,22 @@ export const NoWrap: Story = {
     const vdom = renderSignal.data.vdom;
 
     const element = document.createElement(vdom.tag);
-    element.textContent = vdom.children[0] as string;
+    if (vdom.children) {
+      element.textContent = vdom.children?.[0] as string;
+    }
 
-    Object.entries(vdom.props).forEach(([key, value]) => {
-      if (key === 'className') {
-        element.className = value as string;
-      } else {
-        element.setAttribute(key, String(value));
-      }
-    });
+    if (vdom.props) {
+      Object.entries(vdom.props).forEach(([key, value]) => {
+        if (key === 'className') {
+          element.className = value as string;
+        } else {
+          element.setAttribute(key, String(value));
+        }
+      });
+    }
 
     Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-      element.style[key as never] = value;
+      element.style[key as any] = String(value);
     });
 
     container.appendChild(element);

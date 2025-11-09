@@ -115,7 +115,7 @@ describe('PieChart', () => {
       expect(slices.length).toBe(mockData.length);
 
       // First slice should start at 0
-      expect(slices[0].startAngle).toBeCloseTo(0, 2);
+      expect(slices[0]!.startAngle).toBeCloseTo(0, 2);
 
       // Angles should be in radians
       slices.forEach((slice) => {
@@ -127,7 +127,7 @@ describe('PieChart', () => {
 
     it('should calculate correct angle spans', () => {
       const slices = chart.calculateSliceAngles();
-      const firstSliceSpan = slices[0].endAngle - slices[0].startAngle;
+      const firstSliceSpan = slices[0]!.endAngle - slices[0]!.startAngle;
 
       // 30% of 360 degrees = 108 degrees = 1.885 radians
       expect(firstSliceSpan).toBeCloseTo((30 / 100) * Math.PI * 2, 2);
@@ -136,13 +136,13 @@ describe('PieChart', () => {
     it('should have continuous angles (no gaps)', () => {
       const slices = chart.calculateSliceAngles();
       for (let i = 0; i < slices.length - 1; i++) {
-        expect(slices[i].endAngle).toBeCloseTo(slices[i + 1].startAngle, 5);
+        expect(slices[i]!.endAngle).toBeCloseTo(slices[i + 1]!.startAngle, 5);
       }
     });
 
     it('should complete full circle', () => {
       const slices = chart.calculateSliceAngles();
-      const lastSlice = slices[slices.length - 1];
+      const lastSlice = slices[slices.length - 1]!;
       expect(lastSlice.endAngle).toBeCloseTo(Math.PI * 2, 2);
     });
   });
@@ -154,7 +154,7 @@ describe('PieChart', () => {
 
     it('should generate SVG path for pie slice', () => {
       const slices = chart.calculateSliceAngles();
-      const path = chart.generateSlicePath(slices[0], 100, 0);
+      const path = chart.generateSlicePath(slices[0]!, 100, 0);
 
       expect(typeof path).toBe('string');
       expect(path).toContain('M'); // Move to center
@@ -166,7 +166,7 @@ describe('PieChart', () => {
     it('should generate donut slice path with inner radius', () => {
       chart.updateProps({ innerRadius: 50 });
       const slices = chart.calculateSliceAngles();
-      const path = chart.generateSlicePath(slices[0], 100, 50);
+      const path = chart.generateSlicePath(slices[0]!, 100, 50);
 
       expect(path).toContain('M'); // Move to
       expect(path).toContain('A'); // Multiple arc commands for donut
@@ -175,7 +175,7 @@ describe('PieChart', () => {
     it('should handle full circle slice', () => {
       chart.updateProps({ data: [{ value: 100, label: 'Full' }] });
       const slices = chart.calculateSliceAngles();
-      const path = chart.generateSlicePath(slices[0], 100, 0);
+      const path = chart.generateSlicePath(slices[0]!, 100, 0);
 
       expect(path).toBeDefined();
       expect(typeof path).toBe('string');
@@ -202,19 +202,19 @@ describe('PieChart', () => {
 
     it('should render correct number of slices', () => {
       const renderSignal = chart.render();
-      const paths = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'path'
+      const paths = renderSignal.data.vdom!.children!.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'path',
       );
       expect(paths.length).toBe(mockData.length);
     });
 
     it('should apply colors to slices', () => {
       const renderSignal = chart.render();
-      const paths = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'path'
-      );
-      expect(paths[0].props.fill).toBe('#3b82f6');
-      expect(paths[1].props.fill).toBe('#10b981');
+      const paths = renderSignal.data.vdom!.children!.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'path',
+      ) as unknown as Array<{ props: { fill: string } }>;
+      expect(paths[0]!.props.fill).toBe('#3b82f6');
+      expect(paths[1]!.props.fill).toBe('#10b981');
     });
 
     it('should handle empty data without crashing', () => {
@@ -238,8 +238,8 @@ describe('PieChart', () => {
     it('should show labels when enabled', () => {
       chart.updateProps({ showLabels: true });
       const renderSignal = chart.render();
-      const texts = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'text'
+      const texts = renderSignal.data.vdom!.children!.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'text',
       );
       expect(texts.length).toBeGreaterThan(0);
     });
@@ -247,15 +247,15 @@ describe('PieChart', () => {
     it('should show percentages when enabled', () => {
       chart.updateProps({ showPercentages: true });
       const renderSignal = chart.render();
-      const texts = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'text'
+      const texts = renderSignal.data.vdom!.children!.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'text',
       );
       expect(texts.length).toBeGreaterThan(0);
     });
 
     it('should calculate label positions correctly', () => {
       const slices = chart.calculateSliceAngles();
-      const labelPos = chart.calculateLabelPosition(slices[0], 100);
+      const labelPos = chart.calculateLabelPosition(slices[0]!, 100);
 
       expect(labelPos).toHaveProperty('x');
       expect(labelPos).toHaveProperty('y');
@@ -266,8 +266,8 @@ describe('PieChart', () => {
     it('should not show labels when disabled', () => {
       chart.updateProps({ showLabels: false });
       const renderSignal = chart.render();
-      const texts = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'text'
+      const texts = renderSignal.data.vdom!.children!.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'text',
       );
       expect(texts.length).toBe(0);
     });
@@ -285,39 +285,39 @@ describe('PieChart', () => {
     });
 
     it('should update state when hovering over slice', () => {
-      const slice = mockData[1];
+      const slice = mockData[1]!;
       chart.onSliceHover(slice);
       const state = chart.getState();
       expect(state.hoveredSlice).toEqual(slice);
     });
 
     it('should update state when clicking on slice', () => {
-      const slice = mockData[2];
+      const slice = mockData[2]!;
       chart.onSliceClick(slice);
       const state = chart.getState();
       expect(state.selectedSlice).toEqual(slice);
     });
 
     it('should emit UI event on slice click', async () => {
-      const events: any[] = [];
+      const events: unknown[] = [];
       chart.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
+        if ((signal as { type?: string }).type === 'ui:click') {
           events.push(signal);
         }
       });
 
-      const slice = mockData[0];
+      const slice = mockData[0]!;
       chart.onSliceClick(slice);
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(events.length).toBeGreaterThan(0);
-      expect(events[0].data.payload).toEqual(slice);
+      expect((events[0] as { data: { payload: unknown } }).data['payload']).toEqual(slice);
     });
 
     it('should highlight hovered slice', () => {
-      chart.onSliceHover(mockData[1]);
-      const renderSignal = chart.render();
+      chart.onSliceHover(mockData[1]!);
+      chart.render();
 
       expect(chart.getState().hoveredSlice).toEqual(mockData[1]);
     });
@@ -333,8 +333,8 @@ describe('PieChart', () => {
       const renderSignal = chart.render();
 
       expect(renderSignal.type).toBe('render');
-      const paths = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'path'
+      const paths = renderSignal.data.vdom!.children!.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'path',
       );
       expect(paths.length).toBe(mockData.length);
     });
@@ -353,9 +353,9 @@ describe('PieChart', () => {
 
     it('should include ARIA labels', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.role).toBe('img');
-      expect(renderSignal.data.vdom.props['aria-label']).toBeDefined();
-      expect(renderSignal.data.vdom.props['aria-label']).toContain('Pie chart');
+      expect(renderSignal.data.vdom?.props?.['role']).toBe('img');
+      expect(renderSignal.data.vdom?.props?.['aria-label']).toBeDefined();
+      expect(renderSignal.data.vdom?.props?.['aria-label']).toContain('Pie chart');
     });
 
     it('should provide data table alternative', () => {
@@ -383,7 +383,7 @@ describe('PieChart', () => {
     });
 
     it('should trigger re-render when props change', () => {
-      const spy = jest.spyOn(chart as any, 'requestRender');
+      const spy = jest.spyOn(chart as unknown as { requestRender: () => void }, 'requestRender');
       chart.updateProps({ showLabels: true });
       expect(spy).toHaveBeenCalled();
     });

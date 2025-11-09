@@ -15,20 +15,27 @@ describe('Muscular System Integration Tests', () => {
       }>();
 
       // Transform - filter active users, extract names, convert to uppercase
-      const filterActive = FilterMuscle.create(
-        (u: { name: string; age: number; active: boolean }) => u.active,
-      );
+      const filterActive = FilterMuscle.create((...args: unknown[]) => {
+        const u = args[0] as { name: string; age: number; active: boolean };
+        return u.active;
+      });
       const extractNames = MapMuscle.property<{ name: string; age: number; active: boolean }>(
         'name',
       );
-      const toUpper = MapMuscle.create((name: string) => name.toUpperCase());
+      const toUpper = MapMuscle.create((...args: unknown[]) => {
+        const name = args[0] as string;
+        return name.toUpperCase();
+      });
 
       // Load - join into comma-separated string
       const load = TransformMuscle.join(', ');
 
       const pipeline = MuscleGroup.sequential([
         extract,
-        new Muscle('getUsers', (data: any) => data.users),
+        new Muscle('getUsers', (...args: unknown[]) => {
+          const data = args[0] as { users: unknown };
+          return data.users;
+        }),
         filterActive,
         extractNames,
         toUpper,
@@ -50,9 +57,18 @@ describe('Muscular System Integration Tests', () => {
     it('should process numerical data through multiple transformations', async () => {
       const pipeline = MuscleGroup.sequential([
         FilterMuscle.greaterThan(0), // Remove negatives
-        MapMuscle.create((x: number) => x * 2), // Double
-        FilterMuscle.create((x: number) => x % 2 === 0), // Keep even
-        new Muscle('sort', (arr: number[]) => [...arr].sort((a, b) => a - b)), // Sort
+        MapMuscle.create((...args: unknown[]) => {
+          const x = args[0] as number;
+          return x * 2;
+        }), // Double
+        FilterMuscle.create((...args: unknown[]) => {
+          const x = args[0] as number;
+          return x % 2 === 0;
+        }), // Keep even
+        new Muscle('sort', (...args: unknown[]) => {
+          const arr = args[0] as number[];
+          return [...arr].sort((a, b) => a - b);
+        }), // Sort
         AggregateMuscle.sum(), // Sum
       ]);
 
@@ -71,7 +87,8 @@ describe('Muscular System Integration Tests', () => {
       let callCount = 0;
       const expensiveComputation = new Muscle(
         'fibonacci',
-        (n: number): number => {
+        (...args: unknown[]): number => {
+          const n = args[0] as number;
           callCount++;
           if (n <= 1) return n;
           // Simplified version - in reality this would recurse
@@ -119,7 +136,8 @@ describe('Muscular System Integration Tests', () => {
 
       const registerUser = new Muscle(
         'registerUser',
-        (data: { email: string; age: number; name: string }) => {
+        (...args: unknown[]) => {
+          const data = args[0] as { email: string; age: number; name: string };
           return { ...data, id: Date.now(), createdAt: new Date() };
         },
         { inputSchema: userSchema },
@@ -141,9 +159,16 @@ describe('Muscular System Integration Tests', () => {
         }),
       );
 
-      const registerUser = new Muscle('registerUser', (data: any) => data, {
-        inputSchema: userSchema,
-      });
+      const registerUser = new Muscle(
+        'registerUser',
+        (...args: unknown[]) => {
+          const data = args[0] as Record<string, unknown>;
+          return data;
+        },
+        {
+          inputSchema: userSchema,
+        },
+      );
 
       expect(() => registerUser.execute({ email: 'test@example.com', age: 'invalid' })).toThrow();
     });
@@ -173,11 +198,17 @@ describe('Muscular System Integration Tests', () => {
     });
 
     it('should handle errors in pipeline gracefully', async () => {
-      const step1 = new Muscle('step1', (x: number) => x + 1);
+      const step1 = new Muscle('step1', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x + 1;
+      });
       const failingStep = new Muscle('failing', () => {
         throw new Error('Something went wrong');
       });
-      const step3 = new Muscle('step3', (x: number) => x * 2);
+      const step3 = new Muscle('step3', (...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
 
       const pipeline = MuscleGroup.sequential([step1, failingStep, step3]);
 
@@ -218,16 +249,34 @@ describe('Muscular System Integration Tests', () => {
 
   describe('Conditional Logic', () => {
     it('should route processing based on data type', async () => {
-      const processNumber = new Muscle('processNumber', (x: number) => x * 2);
-      const processString = new Muscle('processString', (x: string) => x.toUpperCase());
+      const processNumber = new Muscle<unknown, number | string>(
+        'processNumber',
+        (...args: unknown[]) => {
+          const x = args[0] as number;
+          return x * 2;
+        },
+      );
+      const processString = new Muscle<unknown, number | string>(
+        'processString',
+        (...args: unknown[]) => {
+          const x = args[0] as string;
+          return x.toUpperCase();
+        },
+      );
 
-      const conditional = MuscleGroup.switch([
+      const conditional = MuscleGroup.switch<unknown, number | string>([
         {
-          condition: (x: any) => typeof x === 'number',
+          condition: (...args: unknown[]) => {
+            const x = args[0];
+            return typeof x === 'number';
+          },
           muscle: processNumber,
         },
         {
-          condition: (x: any) => typeof x === 'string',
+          condition: (...args: unknown[]) => {
+            const x = args[0];
+            return typeof x === 'string';
+          },
           muscle: processString,
         },
       ]);
@@ -243,7 +292,8 @@ describe('Muscular System Integration Tests', () => {
 
       const debit = new Muscle(
         'debit',
-        async (amount: number) => {
+        async (...args: unknown[]) => {
+          const amount = args[0] as number;
           state.balance -= amount;
           return state.balance;
         },
@@ -272,7 +322,8 @@ describe('Muscular System Integration Tests', () => {
       const cache = new MuscleMemory<number>();
       let callCount = 0;
 
-      const expensiveCalc = new Muscle('calc', (x: number) => {
+      const expensiveCalc = new Muscle('calc', (...args: unknown[]) => {
+        const x = args[0] as number;
         callCount++;
         return x * x;
       });
@@ -298,7 +349,8 @@ describe('Muscular System Integration Tests', () => {
         discount: number;
       }
 
-      const calculateTotal = new Muscle('calculateTotal', (order: Order) => {
+      const calculateTotal = new Muscle('calculateTotal', (...args: unknown[]) => {
+        const order = args[0] as Order;
         const subtotal = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
         return subtotal * (1 - order.discount);
       });
@@ -321,8 +373,14 @@ describe('Muscular System Integration Tests', () => {
       const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
       // Get even numbers, square them, sum
-      const filterEven = FilterMuscle.create((x: number) => x % 2 === 0);
-      const square = MapMuscle.create((x: number) => x * x);
+      const filterEven = FilterMuscle.create((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x % 2 === 0;
+      });
+      const square = MapMuscle.create((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * x;
+      });
       const sum = AggregateMuscle.sum();
 
       const result1 = filterEven.execute(numbers); // [2, 4, 6, 8, 10]

@@ -390,7 +390,7 @@ describe('Macrophage - Input Sanitization System', () => {
     it('should throw error for non-existent custom rule', () => {
       expect(() => {
         macrophage.sanitizeCustom('input', 'non-existent');
-      }).toThrow('Custom rule \'non-existent\' not found');
+      }).toThrow("Custom rule 'non-existent' not found");
     });
 
     it('should emit rule:removed event', () => {

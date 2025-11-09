@@ -51,7 +51,7 @@ export type ReportFormat = 'text' | 'json' | 'html' | 'markdown';
 /**
  * LabReporter - Report generator
  */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+
 export class LabReporter {
   /**
    * Format report as text

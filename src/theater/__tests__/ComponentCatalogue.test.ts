@@ -121,13 +121,13 @@ describe('ComponentCatalogue - Component Inventory', () => {
     it('should filter by minimum popularity', () => {
       const results = catalogue.filter({ minPopularity: 75 });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('button');
+      expect(results[0]!.id).toBe('button');
     });
 
     it('should filter by text search', () => {
       const results = catalogue.filter({ search: 'button' });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('button');
+      expect(results[0]!.id).toBe('button');
     });
 
     it('should filter by tags', () => {
@@ -137,7 +137,7 @@ describe('ComponentCatalogue - Component Inventory', () => {
 
       const results = catalogue.filter({ tags: ['form'] });
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('tagged');
+      expect(results[0]!.id).toBe('tagged');
     });
   });
 
@@ -231,8 +231,8 @@ describe('ComponentCatalogue - Component Inventory', () => {
 
       expect(graph.nodes).toHaveLength(2);
       expect(graph.edges).toHaveLength(1);
-      expect(graph.edges[0].from).toBe('button');
-      expect(graph.edges[0].to).toBe('icon');
+      expect(graph.edges[0]!.from).toBe('button');
+      expect(graph.edges[0]!.to).toBe('icon');
     });
   });
 
@@ -375,27 +375,27 @@ describe('ComponentCatalogue - Component Inventory', () => {
       const stats = catalogue.getStatistics();
 
       expect(stats.total).toBe(3);
-      expect(stats.byStability.stable).toBe(2);
-      expect(stats.byStability.beta).toBe(1);
-      expect(stats.byCategory.ui).toBe(2);
-      expect(stats.byCategory.glial).toBe(1);
-      expect(stats.maintenanceStatus.maintained).toBe(2);
-      expect(stats.maintenanceStatus.unmaintained).toBe(1);
+      expect(stats.byStability['stable']).toBe(2);
+      expect(stats.byStability['beta']).toBe(1);
+      expect(stats.byCategory['ui']).toBe(2);
+      expect(stats.byCategory['glial']).toBe(1);
+      expect(stats.maintenanceStatus['maintained']).toBe(2);
+      expect(stats.maintenanceStatus['unmaintained']).toBe(1);
       expect(stats.averagePopularity).toBe(75);
     });
 
     it('should list most popular components', () => {
       const stats = catalogue.getStatistics();
 
-      expect(stats.mostPopular[0].id).toBe('button');
-      expect(stats.mostPopular[0].popularity).toBe(100);
+      expect(stats.mostPopular[0]!.id).toBe('button');
+      expect(stats.mostPopular[0]!.popularity).toBe(100);
     });
 
     it('should list components with most dependencies', () => {
       const stats = catalogue.getStatistics();
 
-      expect(stats.mostDependencies[0].id).toBe('button');
-      expect(stats.mostDependencies[0].count).toBe(2);
+      expect(stats.mostDependencies[0]!.id).toBe('button');
+      expect(stats.mostDependencies[0]!.count).toBe(2);
     });
   });
 

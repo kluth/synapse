@@ -3,15 +3,15 @@
  */
 
 import { VisualNeuron } from '../VisualNeuron';
-import type { RenderSignal, UIEventSignal } from '../types';
-import { ComponentProps, ComponentState } from '../types';
+import type { RenderSignal } from '../types';
+import type { Input, Signal } from '../../types';
 
 // Test implementation of VisualNeuron
 class TestVisualNeuron extends VisualNeuron<{ label: string; value: number }, { count: number }> {
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any,
+  protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
+    input: Input<_TInput>,
   ): Promise<TOutput> {
-    const signal = input.data;
+    const signal = input.data as { type?: string; payload?: { type?: string } } | undefined;
     if (signal?.type === 'ui:click' || signal?.payload?.type === 'ui:click') {
       this.setState({ count: this.getState().count + 1 });
     }
@@ -88,7 +88,10 @@ describe('VisualNeuron', () => {
     });
 
     it('should trigger shouldUpdate when props change', () => {
-      const spy = jest.spyOn(neuron as any, 'shouldUpdate');
+      const spy = jest.spyOn(
+        neuron as unknown as { shouldUpdate: (props: unknown) => boolean },
+        'shouldUpdate',
+      );
       neuron.updateProps({ value: 5 });
       expect(spy).toHaveBeenCalled();
     });
@@ -110,15 +113,17 @@ describe('VisualNeuron', () => {
     });
 
     it('should emit state:update signal when state changes', async () => {
-      const signals: any[] = [];
-      neuron.on('signal', (signal) => signals.push(signal));
+      const signals: unknown[] = [];
+      neuron.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       neuron.setState({ count: 3 });
 
       // Wait for async emission
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const stateSignals = signals.filter((s) => s.type === 'state:update');
+      const stateSignals = signals.filter((s: any) => s.type === 'state:update');
       expect(stateSignals.length).toBeGreaterThan(0);
     });
   });
@@ -165,13 +170,17 @@ describe('VisualNeuron', () => {
 
   describe('shouldUpdate', () => {
     it('should return true by default when props change', () => {
-      const result = (neuron as any).shouldUpdate({ label: 'New', value: 1 });
+      const result = (
+        neuron as unknown as { shouldUpdate: (props: unknown) => boolean }
+      ).shouldUpdate({ label: 'New', value: 1 });
       expect(result).toBe(true);
     });
 
     it('should return false if props are identical', () => {
       const currentProps = neuron.getProps();
-      const result = (neuron as any).shouldUpdate(currentProps);
+      const result = (
+        neuron as unknown as { shouldUpdate: (props: unknown) => boolean }
+      ).shouldUpdate(currentProps);
       expect(result).toBe(false);
     });
   });
@@ -182,14 +191,14 @@ describe('VisualNeuron', () => {
     });
 
     it('should emit UI events', async () => {
-      const events: UIEventSignal[] = [];
+      const events: unknown[] = [];
       neuron.on('signal', (signal) => {
-        if (signal.type.startsWith('ui:')) {
-          events.push(signal as UIEventSignal);
+        if ((signal as { type: string }).type.startsWith('ui:')) {
+          events.push(signal);
         }
       });
 
-      neuron.emitUIEvent<{ test: string }>({
+      (neuron as unknown as { emitUIEvent: (event: unknown) => void }).emitUIEvent({
         type: 'ui:click',
         data: {
           payload: { test: 'data' },
@@ -202,8 +211,10 @@ describe('VisualNeuron', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(events.length).toBeGreaterThan(0);
-      expect(events[0].type).toBe('ui:click');
-      expect(events[0].data.payload).toEqual({ test: 'data' });
+      expect((events[0] as { type: string }).type).toBe('ui:click');
+      expect((events[0] as { data: { payload: unknown } }).data['payload']).toEqual({
+        test: 'data',
+      });
     });
   });
 
@@ -220,14 +231,14 @@ describe('VisualNeuron', () => {
     });
 
     it('should call onMount hook when activated', async () => {
-      const spy = jest.spyOn(neuron as any, 'onMount');
+      const spy = jest.spyOn(neuron as unknown as { onMount: () => void }, 'onMount');
       await neuron.activate();
       expect(spy).toHaveBeenCalled();
     });
 
     it('should call onUnmount hook when deactivated', async () => {
       await neuron.activate();
-      const spy = jest.spyOn(neuron as any, 'onUnmount');
+      const spy = jest.spyOn(neuron as unknown as { onUnmount: () => void }, 'onUnmount');
       await neuron.deactivate();
       expect(spy).toHaveBeenCalled();
     });
@@ -246,7 +257,7 @@ describe('VisualNeuron', () => {
         data: {},
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       // Wait for processing
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -271,7 +282,7 @@ describe('VisualNeuron', () => {
         data: {},
         strength: 0.5,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
       expect(highThresholdNeuron.getState().count).toBe(0);
@@ -282,12 +293,14 @@ describe('VisualNeuron', () => {
 
   describe('Refractory Period', () => {
     it('should have default refractory period', () => {
-      expect((neuron as any).getRefractoryPeriod()).toBeGreaterThanOrEqual(0);
+      expect(
+        (neuron as unknown as { getRefractoryPeriod: () => number }).getRefractoryPeriod(),
+      ).toBeGreaterThanOrEqual(0);
     });
 
     it('should prevent rapid sequential processing during refractory period', async () => {
       class RefractoryNeuron extends TestVisualNeuron {
-        protected getRefractoryPeriod(): number {
+        protected override getRefractoryPeriod(): number {
           return 100; // 100ms refractory period
         }
       }
@@ -308,7 +321,7 @@ describe('VisualNeuron', () => {
         data: {},
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 20));
 
@@ -318,7 +331,7 @@ describe('VisualNeuron', () => {
         data: {},
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 20));
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 /**
  * VisualOligodendrocyte - Rendering Optimization & Myelination
  * Virtual DOM diffing, component memoization, lazy loading
@@ -72,7 +71,11 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
   /**
    * Memoize component render result
    */
-  public memoizeRender(componentId: string, vdom: VirtualDOMNode, props: any): void {
+  public memoizeRender(
+    componentId: string,
+    vdom: VirtualDOMNode,
+    props: Record<string, unknown>,
+  ): void {
     const propsHash = this.hashProps(props);
 
     if (this.renderCache.size >= this.maxCacheSize) {
@@ -87,7 +90,10 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
   /**
    * Get cached render if props match
    */
-  public getCachedRender(componentId: string, props: any): VirtualDOMNode | null {
+  public getCachedRender(
+    componentId: string,
+    props: Record<string, unknown>,
+  ): VirtualDOMNode | null {
     const cached = this.renderCache.get(componentId);
     if (!cached) return null;
 
@@ -155,7 +161,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
     }
 
     // Props changed
-    if (this.propsChanged(oldElement.props, newElement.props)) {
+    if (this.propsChanged(oldElement.props ?? {}, newElement.props ?? {})) {
       patches.push({
         type: 'UPDATE',
         nodeId,
@@ -206,7 +212,10 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
   /**
    * Check if props changed
    */
-  private propsChanged(oldProps: any, newProps: any): boolean {
+  private propsChanged(
+    oldProps: Record<string, unknown>,
+    newProps: Record<string, unknown>,
+  ): boolean {
     const hasOldProps = oldProps !== undefined && oldProps !== null;
     const hasNewProps = newProps !== undefined && newProps !== null;
 
@@ -345,7 +354,7 @@ export class VisualOligodendrocyte extends Oligodendrocyte {
   /**
    * Hash props for memoization
    */
-  private hashProps(props: any): string {
+  private hashProps(props: Record<string, unknown>): string {
     try {
       return JSON.stringify(props);
     } catch {

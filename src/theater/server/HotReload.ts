@@ -136,7 +136,7 @@ export class HotReload extends EventEmitter {
   /**
    * Start watching files
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async start(): Promise<void> {
     if (this.watching) {
       throw new Error('Hot reload is already watching');
@@ -161,7 +161,7 @@ export class HotReload extends EventEmitter {
   /**
    * Stop watching files
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async stop(): Promise<void> {
     if (!this.watching) {
       return;
@@ -302,7 +302,6 @@ export class HotReload extends EventEmitter {
    * Log message
    */
   private log(message: string): void {
-    // eslint-disable-next-line no-console
     console.log(`[HotReload] ${message}`);
   }
 

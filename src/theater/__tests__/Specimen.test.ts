@@ -14,7 +14,7 @@ describe('Specimen - Component Showcase Wrapper', () => {
         () => document.createElement('button'),
       );
 
-      expect(specimen.metadata.id).toBe('button-1');
+      expect(specimen.metadata['id']).toBe('button-1');
       expect(specimen.metadata.name).toBe('Button');
       expect(specimen.metadata.category).toBe('Buttons');
       expect(specimen.metadata.tags).toEqual(['ui', 'interactive']);
@@ -330,7 +330,7 @@ describe('Specimen - Component Showcase Wrapper', () => {
         description: 'New description',
       });
 
-      expect(specimen.metadata.id).toBe('button');
+      expect(specimen.metadata['id']).toBe('button');
       expect(specimen.metadata.name).toBe('Button');
       expect(specimen.metadata.tags).toEqual(['ui']);
     });
@@ -380,7 +380,7 @@ describe('Specimen - Component Showcase Wrapper', () => {
         name: 'Button Clone',
       });
 
-      expect(cloned.metadata.id).toBe('button-2');
+      expect(cloned.metadata['id']).toBe('button-2');
       expect(cloned.metadata.name).toBe('Button Clone');
       expect(cloned.metadata.category).toBe('Buttons'); // Preserved
       expect(cloned.hasVariation('primary')).toBe(true);
@@ -407,7 +407,7 @@ describe('Specimen - Component Showcase Wrapper', () => {
 
       const exported = specimen.export();
 
-      expect(exported.metadata.id).toBe('button');
+      expect(exported.metadata['id']).toBe('button');
       expect(exported.defaultContext.backgroundColor).toBe('#f0f0f0');
       expect(exported.variations['primary']).toBeDefined();
       expect(exported.variations['secondary']).toBeDefined();

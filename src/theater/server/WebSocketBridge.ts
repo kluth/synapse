@@ -160,7 +160,7 @@ export class WebSocketBridge extends EventEmitter {
   /**
    * Start the WebSocket bridge
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async start(): Promise<void> {
     if (this.running) {
       throw new Error('WebSocket bridge is already running');
@@ -185,7 +185,7 @@ export class WebSocketBridge extends EventEmitter {
   /**
    * Stop the WebSocket bridge
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async stop(): Promise<void> {
     if (!this.running) {
       return;
@@ -466,7 +466,6 @@ export class WebSocketBridge extends EventEmitter {
    * Log message
    */
   private log(message: string): void {
-    // eslint-disable-next-line no-console
     console.log(`[WebSocketBridge] ${message}`);
   }
 

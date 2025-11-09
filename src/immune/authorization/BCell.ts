@@ -589,7 +589,7 @@ export class BCell extends EventEmitter {
   public revokeDirectPermission(subjectId: string, permissionId: string): boolean {
     const subject = this.subjects.get(subjectId);
 
-    if (subject === undefined || subject.directPermissions === undefined) {
+    if (subject?.directPermissions === undefined) {
       return false;
     }
 
@@ -808,7 +808,7 @@ export class BCell extends EventEmitter {
       allRoles.add(roleId);
 
       const role = this.roles.get(roleId);
-      if (role !== undefined && role.inheritsFrom !== undefined) {
+      if (role?.inheritsFrom !== undefined) {
         for (const parentId of role.inheritsFrom) {
           processRole(parentId);
         }

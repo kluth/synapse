@@ -165,7 +165,10 @@ describe('Built-in Muscles', () => {
 
   describe('FilterMuscle', () => {
     it('should filter by predicate', () => {
-      const filterEven = FilterMuscle.create((x: number) => x % 2 === 0);
+      const filterEven = FilterMuscle.create((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x % 2 === 0;
+      });
       expect(filterEven.execute([1, 2, 3, 4, 5, 6])).toEqual([2, 4, 6]);
     });
 
@@ -228,7 +231,10 @@ describe('Built-in Muscles', () => {
 
   describe('MapMuscle', () => {
     it('should map with function', () => {
-      const double = MapMuscle.create((x: number) => x * 2);
+      const double = MapMuscle.create((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
       expect(double.execute([1, 2, 3, 4])).toEqual([2, 4, 6, 8]);
     });
 
@@ -242,19 +248,31 @@ describe('Built-in Muscles', () => {
     });
 
     it('should map with index', () => {
-      const withIndex = MapMuscle.withIndex((x: string, i: number) => `${i}: ${x}`);
+      const withIndex = MapMuscle.withIndex((...args: unknown[]) => {
+        const x = args[0] as string;
+        const i = args[1] as number;
+        return `${i}: ${x}`;
+      });
       expect(withIndex.execute(['a', 'b', 'c'])).toEqual(['0: a', '1: b', '2: c']);
     });
   });
 
   describe('ReduceMuscle', () => {
     it('should reduce with accumulator', () => {
-      const sum = ReduceMuscle.create((acc: number, val: number) => acc + val, 0);
+      const sum = ReduceMuscle.create((...args: unknown[]) => {
+        const acc = args[0] as number;
+        const val = args[1] as number;
+        return acc + val;
+      }, 0);
       expect(sum.execute([1, 2, 3, 4])).toBe(10);
     });
 
     it('should concatenate strings', () => {
-      const concat = ReduceMuscle.create((acc: string, val: string) => acc + val, '');
+      const concat = ReduceMuscle.create((...args: unknown[]) => {
+        const acc = args[0] as string;
+        const val = args[1] as string;
+        return acc + val;
+      }, '');
       expect(concat.execute(['Hello', ' ', 'World'])).toBe('Hello World');
     });
 
@@ -278,8 +296,14 @@ describe('Built-in Muscles', () => {
   describe('Integration', () => {
     it('should compose multiple built-in muscles', () => {
       // Filter even numbers, double them, then sum
-      const filterEven = FilterMuscle.create((x: number) => x % 2 === 0);
-      const double = MapMuscle.create((x: number) => x * 2);
+      const filterEven = FilterMuscle.create((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x % 2 === 0;
+      });
+      const double = MapMuscle.create((...args: unknown[]) => {
+        const x = args[0] as number;
+        return x * 2;
+      });
       const sum = AggregateMuscle.sum();
 
       const numbers = [1, 2, 3, 4, 5, 6];

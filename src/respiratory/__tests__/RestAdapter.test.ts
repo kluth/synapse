@@ -162,7 +162,7 @@ describe('RestAdapter', () => {
           headers: expect.any(Object),
         },
       );
-      expect(result.data.name).toBe('Updated User');
+      expect((result.data as { name: string }).name).toBe('Updated User');
     });
   });
 
@@ -187,7 +187,7 @@ describe('RestAdapter', () => {
           headers: expect.any(Object),
         },
       );
-      expect(result.data.email).toBe('new@example.com');
+      expect((result.data as { email: string }).email).toBe('new@example.com');
     });
   });
 

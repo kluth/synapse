@@ -18,10 +18,16 @@ class MockCacheClient implements CacheClient {
 
   async set(key: string, value: unknown, ttl?: number): Promise<void> {
     if (!this.isOpen) throw new Error('Client closed');
-    this.store.set(key, {
-      value,
-      expiry: ttl !== undefined ? Date.now() + ttl * 1000 : undefined,
-    });
+    if (ttl !== undefined) {
+      this.store.set(key, {
+        value,
+        expiry: Date.now() + ttl * 1000,
+      });
+    } else {
+      this.store.set(key, {
+        value,
+      });
+    }
   }
 
   async delete(key: string): Promise<boolean> {

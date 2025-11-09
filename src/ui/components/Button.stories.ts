@@ -2,22 +2,22 @@ import type { Meta, StoryObj } from '@storybook/html';
 import { within, userEvent, expect } from '@storybook/test';
 import { Button, type ButtonProps } from './Button';
 
-const meta: Meta = {
+const meta: Meta<ButtonProps> = {
   title: 'Components/Button',
   tags: ['autodocs'],
-  render: (args: ButtonProps) => {
+  render: (args) => {
     const container = document.createElement('div');
     container.style.padding = '20px';
 
     const button = new Button({
       id: `button-${crypto.randomUUID()}`,
-      config: {
-        initialProps: args,
-        initialState: {
-          pressed: false,
-          hovered: false,
-          disabled: args.disabled ?? false,
-        },
+      type: 'reflex',
+      threshold: 0.5,
+      props: args,
+      initialState: {
+        pressed: false,
+        hovered: false,
+        disabled: args.disabled ?? false,
       },
     });
 
@@ -27,18 +27,20 @@ const meta: Meta = {
     const vdom = renderSignal.data.vdom;
 
     const buttonElement = document.createElement(vdom.tag);
-    buttonElement.textContent = vdom.children[0] as string;
+    buttonElement.textContent = vdom.children?.[0] as string;
 
-    Object.entries(vdom.props).forEach(([key, value]) => {
-      if (key === 'className') {
-        buttonElement.className = value as string;
-      } else {
-        buttonElement.setAttribute(key, String(value));
-      }
-    });
+    if (vdom.props) {
+      Object.entries(vdom.props).forEach(([key, value]) => {
+        if (key === 'className') {
+          buttonElement.className = value as string;
+        } else {
+          buttonElement.setAttribute(key, String(value));
+        }
+      });
+    }
 
     Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-      buttonElement.style[key as never] = value;
+      buttonElement.style[key as any] = String(value);
     });
 
     buttonElement.addEventListener('click', (e) => {
@@ -235,17 +237,17 @@ export const AllVariants: Story = {
     variants.forEach((variant) => {
       const button = new Button({
         id: `button-${variant}-${crypto.randomUUID()}`,
-        config: {
-          initialProps: {
-            label: `${variant?.charAt(0).toUpperCase()}${variant?.slice(1)}`,
-            variant,
-            size: 'medium',
-          },
-          initialState: {
-            pressed: false,
-            hovered: false,
-            disabled: false,
-          },
+        type: 'reflex',
+        threshold: 0.5,
+        props: {
+          label: `${variant?.charAt(0).toUpperCase()}${variant?.slice(1)}`,
+          variant: variant!,
+          size: 'medium',
+        },
+        initialState: {
+          pressed: false,
+          hovered: false,
+          disabled: false,
         },
       });
 
@@ -255,18 +257,20 @@ export const AllVariants: Story = {
       const vdom = renderSignal.data.vdom;
 
       const buttonElement = document.createElement(vdom.tag);
-      buttonElement.textContent = vdom.children[0] as string;
+      buttonElement.textContent = vdom.children?.[0] as string;
 
-      Object.entries(vdom.props).forEach(([key, value]) => {
-        if (key === 'className') {
-          buttonElement.className = value as string;
-        } else {
-          buttonElement.setAttribute(key, String(value));
-        }
-      });
+      if (vdom.props) {
+        Object.entries(vdom.props).forEach(([key, value]) => {
+          if (key === 'className') {
+            buttonElement.className = value as string;
+          } else {
+            buttonElement.setAttribute(key, String(value));
+          }
+        });
+      }
 
       Object.entries(renderSignal.data.styles).forEach(([key, value]) => {
-        buttonElement.style[key as never] = value;
+        buttonElement.style[key as any] = String(value);
       });
 
       container.appendChild(buttonElement);

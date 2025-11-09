@@ -1,5 +1,4 @@
 import { Heart } from '../core/Heart';
-import { BloodCell } from '../core/BloodCell';
 import { RequestResponse, PublishSubscribe, FireAndForget, Saga, EventSourcing } from '../patterns';
 
 describe('Message Patterns', () => {
@@ -30,7 +29,7 @@ describe('Message Patterns', () => {
 
     it('should handle multiple concurrent requests', async () => {
       rr.onRequest('multiply', async (request) => {
-        return { result: request.payload.value * 2 };
+        return { result: (request.payload as any).value * 2 };
       });
 
       const results = await Promise.all([
@@ -91,11 +90,15 @@ describe('Message Patterns', () => {
     });
 
     it('should publish to all subscribers', async () => {
-      const received1: any[] = [];
-      const received2: any[] = [];
+      const received1: unknown[] = [];
+      const received2: unknown[] = [];
 
-      pubsub.subscribe('news', (data) => received1.push(data));
-      pubsub.subscribe('news', (data) => received2.push(data));
+      pubsub.subscribe('news', (data) => {
+        received1.push(data);
+      });
+      pubsub.subscribe('news', (data) => {
+        received2.push(data);
+      });
 
       await pubsub.publish('news', { title: 'Breaking News' });
 
@@ -107,9 +110,11 @@ describe('Message Patterns', () => {
     });
 
     it('should support topic wildcards', async () => {
-      const received: any[] = [];
+      const received: unknown[] = [];
 
-      pubsub.subscribe('user.*', (data) => received.push(data));
+      pubsub.subscribe('user.*', (data) => {
+        received.push(data);
+      });
 
       await pubsub.publish('user.created', { id: 1 });
       await pubsub.publish('user.updated', { id: 2 });
@@ -121,7 +126,7 @@ describe('Message Patterns', () => {
     });
 
     it('should support unsubscribe', async () => {
-      const received: any[] = [];
+      const received: unknown[] = [];
 
       const unsubscribe = pubsub.subscribe('news', (data) => {
         received.push(data);
@@ -139,7 +144,7 @@ describe('Message Patterns', () => {
     });
 
     it('should handle subscriber errors gracefully', async () => {
-      const received: any[] = [];
+      const received: unknown[] = [];
 
       pubsub.subscribe('test', () => {
         throw new Error('Subscriber error');
@@ -172,7 +177,7 @@ describe('Message Patterns', () => {
     });
 
     it('should send message without waiting for response', async () => {
-      const received: any[] = [];
+      const received: unknown[] = [];
 
       faf.onMessage('notify', (data) => {
         received.push(data);
@@ -205,7 +210,7 @@ describe('Message Patterns', () => {
       const received: number[] = [];
 
       faf.onMessage('priority-test', (data) => {
-        received.push(data.id);
+        received.push((data as { id: number }).id);
       });
 
       await faf.send('priority-test', { id: 1 }, { priority: 0 });
@@ -250,7 +255,7 @@ describe('Message Patterns', () => {
           name: 'step2',
           action: async () => {
             executed.push('step2');
-            return { step2: 'done' };
+            return { step1: 'done', step2: 'done' };
           },
           compensate: async () => {
             executed.push('compensate2');
@@ -290,7 +295,7 @@ describe('Message Patterns', () => {
           name: 'step3',
           action: async () => {
             executed.push('step3');
-            return { step3: 'done' };
+            return { step1: 'done', step3: 'done' };
           },
           compensate: async () => {
             executed.push('compensate3');
@@ -347,9 +352,9 @@ describe('Message Patterns', () => {
       const events = await es.replay('user-1');
 
       expect(events).toHaveLength(3);
-      expect(events[0].type).toBe('UserCreated');
-      expect(events[1].type).toBe('UserUpdated');
-      expect(events[2].type).toBe('UserUpdated');
+      expect(events[0]?.type).toBe('UserCreated');
+      expect(events[1]?.type).toBe('UserUpdated');
+      expect(events[2]?.type).toBe('UserUpdated');
     });
 
     it('should rebuild state from events', async () => {
@@ -357,18 +362,24 @@ describe('Message Patterns', () => {
       await es.append('account-1', 'MoneyDeposited', { amount: 100 });
       await es.append('account-1', 'MoneyWithdrawn', { amount: 30 });
 
-      const state = await es.rebuildState('account-1', (state: any, event: any) => {
-        switch (event.type) {
-          case 'AccountCreated':
-            return { balance: event.payload.balance };
-          case 'MoneyDeposited':
-            return { balance: state.balance + event.payload.amount };
-          case 'MoneyWithdrawn':
-            return { balance: state.balance - event.payload.amount };
-          default:
-            return state;
-        }
-      });
+      const state = await es.rebuildState(
+        'account-1',
+        (
+          state: { balance: number },
+          event: { type: string; payload: { balance?: number; amount?: number } },
+        ) => {
+          switch (event.type) {
+            case 'AccountCreated':
+              return { balance: event.payload.balance ?? 0 };
+            case 'MoneyDeposited':
+              return { balance: state.balance + (event.payload.amount ?? 0) };
+            case 'MoneyWithdrawn':
+              return { balance: state.balance - (event.payload.amount ?? 0) };
+            default:
+              return state;
+          }
+        },
+      );
 
       expect(state.balance).toBe(70);
     });
@@ -394,7 +405,7 @@ describe('Message Patterns', () => {
     });
 
     it('should support event projections', async () => {
-      const projection: any = {
+      const projection: { totalUsers: number; totalOrders: number } = {
         totalUsers: 0,
         totalOrders: 0,
       };

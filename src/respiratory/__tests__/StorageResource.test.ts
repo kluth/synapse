@@ -21,7 +21,7 @@ class MockStorageClient implements StorageClient {
     if (data instanceof Buffer) {
       buffer = data;
     } else {
-      buffer = await this.streamToBuffer(data);
+      buffer = await this.streamToBuffer(data as never);
     }
 
     this.store.set(key, {
@@ -41,9 +41,10 @@ class MockStorageClient implements StorageClient {
       key,
       body: entry.data,
       contentLength: entry.data.length,
-      contentType: (entry.metadata.contentType as string | undefined) ?? 'application/octet-stream',
-      metadata: entry.metadata.metadata as Record<string, string> | undefined,
-    };
+      contentType:
+        (entry.metadata['contentType'] as string | undefined) ?? 'application/octet-stream',
+      metadata: entry.metadata['metadata'] as Record<string, string> | undefined,
+    } as never;
   }
 
   async delete(key: string): Promise<void> {

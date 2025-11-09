@@ -138,7 +138,7 @@ export class TheaterServer extends EventEmitter {
   /**
    * Start the server
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async start(): Promise<void> {
     if (this.state !== 'stopped') {
       throw new Error(`Cannot start server in ${this.state} state`);
@@ -176,7 +176,7 @@ export class TheaterServer extends EventEmitter {
   /**
    * Stop the server
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async stop(): Promise<void> {
     if (this.state !== 'running') {
       throw new Error(`Cannot stop server in ${this.state} state`);
@@ -326,7 +326,6 @@ export class TheaterServer extends EventEmitter {
    * Log message
    */
   private log(message: string): void {
-    // eslint-disable-next-line no-console
     console.log(`[TheaterServer] ${message}`);
   }
 

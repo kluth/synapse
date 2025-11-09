@@ -161,15 +161,18 @@ describe('ScatterPlot', () => {
 
     it('should include chart dimensions in render output', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.width).toBe(800);
-      expect(renderSignal.data.vdom.props.height).toBe(400);
+      expect(renderSignal.data.vdom?.props?.['width']).toBe(800);
+      expect(renderSignal.data.vdom?.props?.['height']).toBe(400);
     });
 
     it('should render correct number of points', () => {
       const renderSignal = chart.render();
-      const points = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'circle' || child.tag === 'rect'
-      );
+      const points =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) =>
+            (child as { tag?: string }).tag === 'circle' ||
+            (child as { tag?: string }).tag === 'rect',
+        ) ?? [];
       expect(points.length).toBe(mockData.length);
     });
 
@@ -193,37 +196,40 @@ describe('ScatterPlot', () => {
 
     it('should render circles by default', () => {
       const renderSignal = chart.render();
-      const circles = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'circle'
-      );
+      const circles =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) => (child as { tag?: string }).tag === 'circle',
+        ) ?? [];
       expect(circles.length).toBe(mockData.length);
     });
 
     it('should render squares when specified', () => {
       chart.updateProps({ pointShape: 'square' });
       const renderSignal = chart.render();
-      const squares = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'rect'
-      );
+      const squares =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) => (child as { tag?: string }).tag === 'rect',
+        ) ?? [];
       expect(squares.length).toBe(mockData.length);
     });
 
     it('should render triangles when specified', () => {
       chart.updateProps({ pointShape: 'triangle' });
       const renderSignal = chart.render();
-      const triangles = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'polygon'
-      );
+      const triangles =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) => (child as { tag?: string }).tag === 'polygon',
+        ) ?? [];
       expect(triangles.length).toBe(mockData.length);
     });
 
     it('should apply correct radius to circles', () => {
       chart.updateProps({ pointRadius: 10 });
       const renderSignal = chart.render();
-      const circles = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'circle'
-      );
-      expect(circles[0].props.r).toBe(10);
+      const circles = (renderSignal.data.vdom?.children?.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'circle',
+      ) ?? []) as unknown as Array<{ props: { r: number } }>;
+      expect(circles[0]!.props.r).toBe(10);
     });
   });
 
@@ -235,35 +241,35 @@ describe('ScatterPlot', () => {
     it('should apply custom color to points', () => {
       chart.updateProps({ color: '#ff0000' });
       const renderSignal = chart.render();
-      const points = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'circle'
-      );
-      expect(points[0].props.fill).toBe('#ff0000');
+      const points = (renderSignal.data.vdom?.children?.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'circle',
+      ) ?? []) as unknown as Array<{ props: { fill: string } }>;
+      expect(points[0]!.props.fill).toBe('#ff0000');
     });
 
     it('should support per-point colors', () => {
-      const coloredData = mockData.map((d, i) => ({
+      const coloredData: ChartDataPoint[] = mockData.map((d, i) => ({
         ...d,
-        color: i === 0 ? '#ff0000' : i === 1 ? '#00ff00' : undefined,
+        color: i === 0 ? '#ff0000' : i === 1 ? '#00ff00' : '#0000ff',
       }));
       chart.updateProps({ data: coloredData });
       const renderSignal = chart.render();
-      const points = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'circle'
-      );
-      expect(points[0].props.fill).toBe('#ff0000');
-      expect(points[1].props.fill).toBe('#00ff00');
+      const points = (renderSignal.data.vdom?.children?.filter(
+        (child: unknown) => (child as { tag?: string }).tag === 'circle',
+      ) ?? []) as unknown as Array<{ props: { fill: string } }>;
+      expect(points[0]!.props.fill).toBe('#ff0000');
+      expect(points[1]!.props.fill).toBe('#00ff00');
     });
 
     it('should highlight hovered point', () => {
-      chart.onPointHover(mockData[1]);
-      const renderSignal = chart.render();
+      chart.onPointHover(mockData[1]!);
+      chart.render();
       expect(chart.getState().hoveredPoint).toEqual(mockData[1]);
     });
 
     it('should highlight selected point', () => {
-      chart.onPointClick(mockData[2]);
-      const renderSignal = chart.render();
+      chart.onPointClick(mockData[2]!);
+      chart.render();
       expect(chart.getState().selectedPoint).toEqual(mockData[2]);
     });
   });
@@ -281,24 +287,25 @@ describe('ScatterPlot', () => {
     });
 
     it('should support variable point sizes', () => {
-      const size = chart.getPointSize(bubbleData[0]);
+      const size = chart.getPointSize(bubbleData[0]!);
       expect(size).toBeDefined();
       expect(typeof size).toBe('number');
     });
 
     it('should scale point sizes correctly', () => {
-      const smallSize = chart.getPointSize(bubbleData[0]);
-      const largeSize = chart.getPointSize(bubbleData[2]);
+      const smallSize = chart.getPointSize(bubbleData[0]!);
+      const largeSize = chart.getPointSize(bubbleData[2]!);
       expect(largeSize).toBeGreaterThan(smallSize);
     });
 
     it('should render bubbles with different sizes', () => {
       const renderSignal = chart.render();
-      const circles = renderSignal.data.vdom.children.filter(
-        (child: any) => child.tag === 'circle'
-      );
+      const circles =
+        renderSignal.data.vdom?.children?.filter(
+          (child: unknown) => (child as { tag?: string }).tag === 'circle',
+        ) ?? [];
 
-      const radii = circles.map((c: any) => c.props.r);
+      const radii = circles.map((c: unknown) => (c as unknown as { props: { r: number } }).props.r);
       expect(Math.max(...radii)).toBeGreaterThan(Math.min(...radii));
     });
   });
@@ -317,37 +324,37 @@ describe('ScatterPlot', () => {
 
     it('should update state when hovering over point', () => {
       const point = mockData[1];
-      chart.onPointHover(point);
+      chart.onPointHover(point ?? null);
       const state = chart.getState();
       expect(state.hoveredPoint).toEqual(point);
     });
 
     it('should update state when clicking on point', () => {
-      const point = mockData[2];
+      const point = mockData[2]!;
       chart.onPointClick(point);
       const state = chart.getState();
       expect(state.selectedPoint).toEqual(point);
     });
 
     it('should emit UI event on point click', async () => {
-      const events: any[] = [];
+      const events: unknown[] = [];
       chart.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
+        if ((signal as { type?: string }).type === 'ui:click') {
           events.push(signal);
         }
       });
 
-      const point = mockData[0];
+      const point = mockData[0]!;
       chart.onPointClick(point);
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(events.length).toBeGreaterThan(0);
-      expect(events[0].data.payload).toEqual(point);
+      expect((events[0] as { data: { payload: unknown } }).data['payload']).toEqual(point);
     });
 
     it('should clear hover state', () => {
-      chart.onPointHover(mockData[0]);
+      chart.onPointHover(mockData[0]!);
       expect(chart.getState().hoveredPoint).toBeDefined();
 
       chart.onPointHover(null);
@@ -370,16 +377,16 @@ describe('ScatterPlot', () => {
     });
 
     it('should trigger re-render when props change', () => {
-      const spy = jest.spyOn(chart as any, 'requestRender');
+      const _spy = jest.spyOn(chart as unknown as { requestRender: () => void }, 'requestRender');
       chart.updateProps({ color: '#00ff00' });
-      expect(spy).toHaveBeenCalled();
+      expect(_spy).toHaveBeenCalled();
     });
 
     it('should not trigger re-render when props are identical', () => {
-      const spy = jest.spyOn(chart as any, 'requestRender');
+      const _spy = jest.spyOn(chart as unknown as { requestRender: () => void }, 'requestRender');
       const currentProps = chart.getProps();
       chart.updateProps(currentProps);
-      expect(spy).not.toHaveBeenCalled();
+      expect(_spy).not.toHaveBeenCalled();
     });
   });
 
@@ -389,7 +396,7 @@ describe('ScatterPlot', () => {
     });
 
     it('should handle large datasets efficiently', () => {
-      const largeData: ChartDataPoint[] = Array.from({ length: 1000 }, (_, i) => ({
+      const largeData: ChartDataPoint[] = Array.from({ length: 1000 }, (_item, _i) => ({
         x: Math.random() * 100,
         y: Math.random() * 100,
       }));
@@ -416,8 +423,8 @@ describe('ScatterPlot', () => {
 
     it('should include ARIA labels', () => {
       const renderSignal = chart.render();
-      expect(renderSignal.data.vdom.props.role).toBe('img');
-      expect(renderSignal.data.vdom.props['aria-label']).toBeDefined();
+      expect(renderSignal.data.vdom?.props?.['role']).toBe('img');
+      expect(renderSignal.data.vdom?.props?.['aria-label']).toBeDefined();
     });
 
     it('should provide data table alternative', () => {

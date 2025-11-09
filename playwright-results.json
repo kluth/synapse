@@ -1,0 +1,4266 @@
+{
+  "config": {
+    "configFile": "/home/matthias/projects/synapse/playwright.config.ts",
+    "rootDir": "/home/matthias/projects/synapse/e2e/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 10
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/matthias/projects/synapse/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 10
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/matthias/projects/synapse/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 10,
+    "webServer": {
+      "command": "npm run dev:e2e",
+      "url": "http://localhost:5173",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "barchart.spec.ts",
+      "file": "barchart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "BarChart Visualization Tests",
+          "file": "barchart.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "VIS-BC-1: BarChart renders SVG element",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1416,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.775Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-7e604e748e48822df236",
+              "file": "barchart.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-2: BarChart renders rectangle elements for bars",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1496,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.763Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-9b234795064a0ca40c74",
+              "file": "barchart.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-3: BarChart has correct dimensions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1410,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.809Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-5fea1ae8c4045e204277",
+              "file": "barchart.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-4: BarChart uses correct color",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1444,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.836Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-d5ee619f0765b27affcb",
+              "file": "barchart.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-5: BarChart ID is correct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1556,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.757Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-5669920624d799cf2877",
+              "file": "barchart.spec.ts",
+              "line": 63,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-6: BarChart render count is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1602,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.769Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-71ed61c8e98da1604866",
+              "file": "barchart.spec.ts",
+              "line": 73,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-7: BarChart renders without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1891,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.762Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-a641ae50ae131cc7498a",
+              "file": "barchart.spec.ts",
+              "line": 83,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-8: BarChart is accessible globally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1409,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.789Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-c30baecc88864c0a849c",
+              "file": "barchart.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-9: BarChart currentChart is set",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 1339,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/barchart.spec.ts:121:24",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/barchart.spec.ts",
+                          "column": 24,
+                          "line": 121
+                        },
+                        "snippet": "  119 |       return chart?.constructor.name === 'BarChart';\n  120 |     });\n> 121 |     expect(isBarChart).toBe(true);\n      |                        ^\n  122 |   });\n  123 |\n  124 |   test('VIS-BC-10: BarChart SVG has viewBox attribute', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/barchart.spec.ts",
+                            "column": 24,
+                            "line": 121
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  119 |       return chart?.constructor.name === 'BarChart';\n  120 |     });\n> 121 |     expect(isBarChart).toBe(true);\n      |                        ^\n  122 |   });\n  123 |\n  124 |   test('VIS-BC-10: BarChart SVG has viewBox attribute', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/barchart.spec.ts:121:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.818Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/barchart-BarChart-Visualiz-19c15-arChart-currentChart-is-set-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/barchart-BarChart-Visualiz-19c15-arChart-currentChart-is-set-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/barchart-BarChart-Visualiz-19c15-arChart-currentChart-is-set-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/barchart.spec.ts",
+                        "column": 24,
+                        "line": 121
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-4a77691f4020ca309d53",
+              "file": "barchart.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-10: BarChart SVG has viewBox attribute",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 9,
+                      "status": "failed",
+                      "duration": 1577,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/barchart.spec.ts:132:21",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/barchart.spec.ts",
+                          "column": 21,
+                          "line": 132
+                        },
+                        "snippet": "  130 |     const svg = page.locator('#chart-container svg');\n  131 |     const viewBox = await svg.getAttribute('viewBox');\n> 132 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  133 |   });\n  134 |\n  135 |   test('VIS-BC-11: BarChart bars have non-zero height', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/barchart.spec.ts",
+                            "column": 21,
+                            "line": 132
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n\n  130 |     const svg = page.locator('#chart-container svg');\n  131 |     const viewBox = await svg.getAttribute('viewBox');\n> 132 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  133 |   });\n  134 |\n  135 |   test('VIS-BC-11: BarChart bars have non-zero height', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/barchart.spec.ts:132:21"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:37.738Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/barchart-BarChart-Visualiz-e0193-t-SVG-has-viewBox-attribute-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/barchart-BarChart-Visualiz-e0193-t-SVG-has-viewBox-attribute-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/barchart-BarChart-Visualiz-e0193-t-SVG-has-viewBox-attribute-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/barchart.spec.ts",
+                        "column": 21,
+                        "line": 132
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-1685b4ff17005b3d99ad",
+              "file": "barchart.spec.ts",
+              "line": 124,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-11: BarChart bars have non-zero height",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1125,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.470Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-5da7016ae6156a25dc09",
+              "file": "barchart.spec.ts",
+              "line": 135,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-12: BarChart has accessibility role",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1166,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.473Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-8641731bd97db8b3129a",
+              "file": "barchart.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-13: BarChart has aria-label",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1163,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.502Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-3eda1a4f875158ec4f70",
+              "file": "barchart.spec.ts",
+              "line": 157,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-14: Switching from BarChart to another chart works",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1185,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.506Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-8a7688ba46a441923f80",
+              "file": "barchart.spec.ts",
+              "line": 168,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-15: BarChart container is cleared before rendering",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1165,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.510Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-8dd77eabca2f3020d433",
+              "file": "barchart.spec.ts",
+              "line": 180,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-16: BarChart bars are positioned correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1176,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.530Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-817e6f4b7e4b6022808f",
+              "file": "barchart.spec.ts",
+              "line": 192,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-17: BarChart supports vertical orientation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 1403,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.733Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-c6b819e42748fd2bbc8e",
+              "file": "barchart.spec.ts",
+              "line": 205,
+              "column": 7
+            },
+            {
+              "title": "VIS-BC-18: BarChart deactivates previous chart before rendering",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1118,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.572Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8b3d9eb8329a8ea5be14-e6635ef90f4c6550cd92",
+              "file": "barchart.spec.ts",
+              "line": 216,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "integration.spec.ts",
+      "file": "integration.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Integration Tests",
+          "file": "integration.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "INT-1: Complete application initializes successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1407,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.770Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-2a1c3199c191a8846e75",
+              "file": "integration.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "INT-2: Component lifecycle and chart rendering work together",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1011,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:39.851Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-3d9f90e8d5d7b7439c23",
+              "file": "integration.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "INT-3: Switching between multiple charts works correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1598,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.653Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-42ac2eb0dc12f3c3bf25",
+              "file": "integration.spec.ts",
+              "line": 44,
+              "column": 7
+            },
+            {
+              "title": "INT-4: All chart types render without errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 2166,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.682Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-87e1552a9e90139cf8da",
+              "file": "integration.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "INT-5: Component lifecycle through full activation-deactivation cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1462,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.721Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-dc4ed9a92acd0fa985b1",
+              "file": "integration.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "INT-6: Charts and signal propagation can coexist",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1541,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.730Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-8ab837aad4454e369679",
+              "file": "integration.spec.ts",
+              "line": 95,
+              "column": 7
+            },
+            {
+              "title": "INT-7: Framework globals are accessible throughout app lifecycle",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 1501,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/integration.spec.ts:120:31",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/integration.spec.ts",
+                          "column": 31,
+                          "line": 120
+                        },
+                        "snippet": "  118 |       return syn?.VisualNeuron && syn.LineChart && syn.BarChart && syn.PieChart && syn.ScatterPlot;\n  119 |     });\n> 120 |     expect(allGlobalsPresent).toBe(true);\n      |                               ^\n  121 |   });\n  122 |\n  123 |   test('INT-8: Multiple operations complete without memory leaks or errors', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/integration.spec.ts",
+                            "column": 31,
+                            "line": 120
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  118 |       return syn?.VisualNeuron && syn.LineChart && syn.BarChart && syn.PieChart && syn.ScatterPlot;\n  119 |     });\n> 120 |     expect(allGlobalsPresent).toBe(true);\n      |                               ^\n  121 |   });\n  122 |\n  123 |   test('INT-8: Multiple operations complete without memory leaks or errors', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/integration.spec.ts:120:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.738Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/integration-Integration-Te-fede8-le-throughout-app-lifecycle-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/integration-Integration-Te-fede8-le-throughout-app-lifecycle-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/integration-Integration-Te-fede8-le-throughout-app-lifecycle-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/integration.spec.ts",
+                        "column": 31,
+                        "line": 120
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-41ad9f842d1aedfd9243",
+              "file": "integration.spec.ts",
+              "line": 109,
+              "column": 7
+            },
+            {
+              "title": "INT-8: Multiple operations complete without memory leaks or errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1990,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.753Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4c8f7e420cc033ba00ea-5e6d94648106a73ef8c5",
+              "file": "integration.spec.ts",
+              "line": 123,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "lifecycle.spec.ts",
+      "file": "lifecycle.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Component Lifecycle Tests",
+          "file": "lifecycle.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "LC-1: VisualNeuron activation changes state to active",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1389,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.773Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-7ec99e8b2fe30715649e",
+              "file": "lifecycle.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "LC-2: VisualNeuron deactivation changes state to inactive",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1393,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:40.899Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-60fc45e568b352138fef",
+              "file": "lifecycle.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "LC-3: Component activation updates status class",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1168,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.213Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-91078af25e3d7af26048",
+              "file": "lifecycle.spec.ts",
+              "line": 43,
+              "column": 7
+            },
+            {
+              "title": "LC-4: Component deactivation updates status class",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1154,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.254Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-ef0bcf9d0acc56507ade",
+              "file": "lifecycle.spec.ts",
+              "line": 55,
+              "column": 7
+            },
+            {
+              "title": "LC-5: Created component starts with inactive status",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1126,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.309Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-f5bc127bd24fe5859b18",
+              "file": "lifecycle.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "LC-6: Activation increments render count",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 1170,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts:87:42",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts",
+                          "column": 42,
+                          "line": 87
+                        },
+                        "snippet": "  85 |     // THEN: The render count is greater than 0\n  86 |     const renderCount = await page.locator('#render-count').textContent();\n> 87 |     expect(parseInt(renderCount || '0')).toBeGreaterThan(0);\n     |                                          ^\n  88 |   });\n  89 |\n  90 |   test('LC-7: Activate button is disabled after activation', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts",
+                            "column": 42,
+                            "line": 87
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  85 |     // THEN: The render count is greater than 0\n  86 |     const renderCount = await page.locator('#render-count').textContent();\n> 87 |     expect(parseInt(renderCount || '0')).toBeGreaterThan(0);\n     |                                          ^\n  88 |   });\n  89 |\n  90 |   test('LC-7: Activate button is disabled after activation', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts:87:42"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.322Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/lifecycle-Component-Lifecy-61de3-ion-increments-render-count-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/lifecycle-Component-Lifecy-61de3-ion-increments-render-count-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/lifecycle-Component-Lifecy-61de3-ion-increments-render-count-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts",
+                        "column": 42,
+                        "line": 87
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1f1785dee40219527314-ff9912274afee13043f4",
+              "file": "lifecycle.spec.ts",
+              "line": 78,
+              "column": 7
+            },
+            {
+              "title": "LC-7: Activate button is disabled after activation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1220,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.330Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-7a2c4f566e72fc292ca4",
+              "file": "lifecycle.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "LC-8: Deactivate button is enabled after activation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 1226,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.376Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-6141e84f1a5f0b8d2c44",
+              "file": "lifecycle.spec.ts",
+              "line": 102,
+              "column": 7
+            },
+            {
+              "title": "LC-9: Deactivate button is disabled after deactivation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1248,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:44.048Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-def969a12d679e7e707e",
+              "file": "lifecycle.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "LC-10: Activate button is re-enabled after deactivation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1336,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.419Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-9479667eb5a2e86b2eb0",
+              "file": "lifecycle.spec.ts",
+              "line": 127,
+              "column": 7
+            },
+            {
+              "title": "LC-11: Create button is disabled after creation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1090,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.787Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-50e6abb811b75cb597e6",
+              "file": "lifecycle.spec.ts",
+              "line": 140,
+              "column": 7
+            },
+            {
+              "title": "LC-12: Framework exposes VisualNeuron class globally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1015,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:42.879Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-5c225c789bab1c722b09",
+              "file": "lifecycle.spec.ts",
+              "line": 150,
+              "column": 7
+            },
+            {
+              "title": "LC-13: Component ID is accessible via framework",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 1141,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"test-neuron\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"test-neuron\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts:173:22",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts",
+                          "column": 22,
+                          "line": 173
+                        },
+                        "snippet": "  171 |\n  172 |     // THEN: The neuron ID is 'test-neuron'\n> 173 |     expect(neuronId).toBe('test-neuron');\n      |                      ^\n  174 |   });\n  175 |\n  176 |   test('LC-14: Component getRenderCount method works correctly', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts",
+                            "column": 22,
+                            "line": 173
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"test-neuron\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m\n\n  171 |\n  172 |     // THEN: The neuron ID is 'test-neuron'\n> 173 |     expect(neuronId).toBe('test-neuron');\n      |                      ^\n  174 |   });\n  175 |\n  176 |   test('LC-14: Component getRenderCount method works correctly', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts:173:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.455Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/lifecycle-Component-Lifecy-10532-is-accessible-via-framework-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/lifecycle-Component-Lifecy-10532-is-accessible-via-framework-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/lifecycle-Component-Lifecy-10532-is-accessible-via-framework-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/lifecycle.spec.ts",
+                        "column": 22,
+                        "line": 173
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1f1785dee40219527314-f3f190695d1feab6c0fc",
+              "file": "lifecycle.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "LC-14: Component getRenderCount method works correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1157,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.465Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-022c3b638d9e00a76e2b",
+              "file": "lifecycle.spec.ts",
+              "line": 176,
+              "column": 7
+            },
+            {
+              "title": "LC-15: Component lifecycle completes without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1149,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.468Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1f1785dee40219527314-b0b7743f789f45b5471b",
+              "file": "lifecycle.spec.ts",
+              "line": 192,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "linechart.spec.ts",
+      "file": "linechart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "LineChart Visualization Tests",
+          "file": "linechart.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "VIS-LC-1: LineChart renders SVG element",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1198,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.595Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-d221fad43b5fba60eb7f",
+              "file": "linechart.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-2: LineChart path element is present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1127,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:45.304Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-e4b45fef40a11efb0615",
+              "file": "linechart.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-3: LineChart has correct dimensions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 1254,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.666Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-a06823565fb3c9646125",
+              "file": "linechart.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-4: LineChart uses smooth curves when enabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1203,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.823Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-2fc86ac694071bfa085f",
+              "file": "linechart.spec.ts",
+              "line": 51,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-5: LineChart has correct color",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1115,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.920Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-f1cdc5005e3bdeed6e71",
+              "file": "linechart.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-6: LineChart ID is correct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1115,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:43.952Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-59a03e8d086875e7b60c",
+              "file": "linechart.spec.ts",
+              "line": 73,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-7: LineChart render count is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1121,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:44.661Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-92b4fe395cffe7002b5e",
+              "file": "linechart.spec.ts",
+              "line": 83,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-8: LineChart renders without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1633,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:44.664Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-25afb651420e00fbb25c",
+              "file": "linechart.spec.ts",
+              "line": 93,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-9: LineChart is accessible globally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1259,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.422Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-ef55e3ba2d96bb43e0f2",
+              "file": "linechart.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-10: LineChart currentChart is set",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "failed",
+                      "duration": 1123,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:132:29",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                          "column": 29,
+                          "line": 132
+                        },
+                        "snippet": "  130 |       return (window as any).Synapse.currentChart !== null;\n  131 |     });\n> 132 |     expect(hasCurrentChart).toBe(true);\n      |                             ^\n  133 |   });\n  134 |\n  135 |   test('VIS-LC-11: LineChart SVG has viewBox attribute', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                            "column": 29,
+                            "line": 132
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  130 |       return (window as any).Synapse.currentChart !== null;\n  131 |     });\n> 132 |     expect(hasCurrentChart).toBe(true);\n      |                             ^\n  133 |   });\n  134 |\n  135 |   test('VIS-LC-11: LineChart SVG has viewBox attribute', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:132:29"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:44.865Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-0d73c-neChart-currentChart-is-set-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-0d73c-neChart-currentChart-is-set-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-0d73c-neChart-currentChart-is-set-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                        "column": 29,
+                        "line": 132
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-0d5cc481c8316e6b8eed",
+              "file": "linechart.spec.ts",
+              "line": 123,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-11: LineChart SVG has viewBox attribute",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 1223,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:143:21",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                          "column": 21,
+                          "line": 143
+                        },
+                        "snippet": "  141 |     const svg = page.locator('#chart-container svg');\n  142 |     const viewBox = await svg.getAttribute('viewBox');\n> 143 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  144 |   });\n  145 |\n  146 |   test('VIS-LC-12: LineChart path has fill attribute', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                            "column": 21,
+                            "line": 143
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n\n  141 |     const svg = page.locator('#chart-container svg');\n  142 |     const viewBox = await svg.getAttribute('viewBox');\n> 143 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  144 |   });\n  145 |\n  146 |   test('VIS-LC-12: LineChart path has fill attribute', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:143:21"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:44.981Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-df3c0-t-SVG-has-viewBox-attribute-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-df3c0-t-SVG-has-viewBox-attribute-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-df3c0-t-SVG-has-viewBox-attribute-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                        "column": 21,
+                        "line": 143
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-23211246b85005be91db",
+              "file": "linechart.spec.ts",
+              "line": 135,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-12: LineChart path has fill attribute",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1163,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:45.073Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-57966e06cdd6a8948dee",
+              "file": "linechart.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-13: LineChart path has stroke-width",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 9,
+                      "status": "failed",
+                      "duration": 1199,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:165:25",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                          "column": 25,
+                          "line": 165
+                        },
+                        "snippet": "  163 |     const path = page.locator('#chart-container svg path').first();\n  164 |     const strokeWidth = await path.getAttribute('stroke-width');\n> 165 |     expect(strokeWidth).toBeTruthy();\n      |                         ^\n  166 |   });\n  167 |\n  168 |   test('VIS-LC-14: LineChart renders data points as circles when enabled', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                            "column": 25,
+                            "line": 165
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n\n  163 |     const path = page.locator('#chart-container svg path').first();\n  164 |     const strokeWidth = await path.getAttribute('stroke-width');\n> 165 |     expect(strokeWidth).toBeTruthy();\n      |                         ^\n  166 |   });\n  167 |\n  168 |   test('VIS-LC-14: LineChart renders data points as circles when enabled', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:165:25"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:45.079Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-e0e82-Chart-path-has-stroke-width-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-e0e82-Chart-path-has-stroke-width-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-e0e82-Chart-path-has-stroke-width-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                        "column": 25,
+                        "line": 165
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-b5ae1a38d06c0a460f08",
+              "file": "linechart.spec.ts",
+              "line": 157,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-14: LineChart renders data points as circles when enabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1181,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:45.102Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-63dd1ed2b56b4910661e",
+              "file": "linechart.spec.ts",
+              "line": 168,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-15: Switching from LineChart to another chart works",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1036,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:45.522Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-cf9e738d89f3a8259350",
+              "file": "linechart.spec.ts",
+              "line": 179,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-16: LineChart container is cleared before rendering",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1052,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:45.813Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-e90d873d0c104970e10d",
+              "file": "linechart.spec.ts",
+              "line": 191,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-17: LineChart has accessibility role",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1203,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.461Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-24ab9e98a479aa25e64e",
+              "file": "linechart.spec.ts",
+              "line": 203,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-18: LineChart has aria-label",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 970,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.268Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-5d95596bdce3922fc658",
+              "file": "linechart.spec.ts",
+              "line": 214,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-19: LineChart activation changes currentChart reference",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 8,
+                      "status": "failed",
+                      "duration": 1468,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:235:25",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                          "column": 25,
+                          "line": 235
+                        },
+                        "snippet": "  233 |       return chart?.constructor.name === 'LineChart';\n  234 |     });\n> 235 |     expect(isLineChart).toBe(true);\n      |                         ^\n  236 |   });\n  237 |\n  238 |   test('VIS-LC-20: Multiple LineChart renders increment render count', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                            "column": 25,
+                            "line": 235
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  233 |       return chart?.constructor.name === 'LineChart';\n  234 |     });\n> 235 |     expect(isLineChart).toBe(true);\n      |                         ^\n  236 |   });\n  237 |\n  238 |   test('VIS-LC-20: Multiple LineChart renders increment render count', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/linechart.spec.ts:235:25"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.600Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-4bfb8-nges-currentChart-reference-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-4bfb8-nges-currentChart-reference-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/linechart-LineChart-Visual-4bfb8-nges-currentChart-reference-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/linechart.spec.ts",
+                        "column": 25,
+                        "line": 235
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-ecab224c24510608f42d",
+              "file": "linechart.spec.ts",
+              "line": 225,
+              "column": 7
+            },
+            {
+              "title": "VIS-LC-20: Multiple LineChart renders increment render count",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1045,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.322Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e3f535424855c77c87c0-f37066d9b5a3edf222e5",
+              "file": "linechart.spec.ts",
+              "line": 238,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "piechart.spec.ts",
+      "file": "piechart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PieChart Visualization Tests",
+          "file": "piechart.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "VIS-PC-1: PieChart renders SVG element",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1018,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.339Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-6abc6fb213c561a4fc52",
+              "file": "piechart.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-2: PieChart renders path elements for slices",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1364,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.807Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-06702fba9cc5f452d729",
+              "file": "piechart.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-3: PieChart has correct dimensions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1285,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.613Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-507c496c77134293cb2a",
+              "file": "piechart.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-4: PieChart ID is correct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1240,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.647Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-38041adf5b6707625045",
+              "file": "piechart.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-5: PieChart render count is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1177,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:46.892Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-b2cc74e7d5e818138945",
+              "file": "piechart.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-6: PieChart renders without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1547,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.277Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-44fd5538d6a1f28ac707",
+              "file": "piechart.spec.ts",
+              "line": 72,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-7: PieChart is accessible globally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1038,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.394Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-870597b1bdd1f2718848",
+              "file": "piechart.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-8: PieChart currentChart is set",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "failed",
+                      "duration": 1116,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/piechart.spec.ts:110:24",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/piechart.spec.ts",
+                          "column": 24,
+                          "line": 110
+                        },
+                        "snippet": "  108 |       return chart?.constructor.name === 'PieChart';\n  109 |     });\n> 110 |     expect(isPieChart).toBe(true);\n      |                        ^\n  111 |   });\n  112 |\n  113 |   test('VIS-PC-9: PieChart SVG has viewBox attribute', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/piechart.spec.ts",
+                            "column": 24,
+                            "line": 110
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  108 |       return chart?.constructor.name === 'PieChart';\n  109 |     });\n> 110 |     expect(isPieChart).toBe(true);\n      |                        ^\n  111 |   });\n  112 |\n  113 |   test('VIS-PC-9: PieChart SVG has viewBox attribute', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/piechart.spec.ts:110:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.400Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/piechart-PieChart-Visualiz-15e75-ieChart-currentChart-is-set-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/piechart-PieChart-Visualiz-15e75-ieChart-currentChart-is-set-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/piechart-PieChart-Visualiz-15e75-ieChart-currentChart-is-set-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/piechart.spec.ts",
+                        "column": 24,
+                        "line": 110
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-96ddeca5bc8780ec839a",
+              "file": "piechart.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-9: PieChart SVG has viewBox attribute",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 1188,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/piechart.spec.ts:121:21",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/piechart.spec.ts",
+                          "column": 21,
+                          "line": 121
+                        },
+                        "snippet": "  119 |     const svg = page.locator('#chart-container svg');\n  120 |     const viewBox = await svg.getAttribute('viewBox');\n> 121 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  122 |   });\n  123 |\n  124 |   test('VIS-PC-10: PieChart slices have fill colors', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/piechart.spec.ts",
+                            "column": 21,
+                            "line": 121
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n\n  119 |     const svg = page.locator('#chart-container svg');\n  120 |     const viewBox = await svg.getAttribute('viewBox');\n> 121 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  122 |   });\n  123 |\n  124 |   test('VIS-PC-10: PieChart slices have fill colors', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/piechart.spec.ts:121:21"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.926Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/piechart-PieChart-Visualiz-b1baa-t-SVG-has-viewBox-attribute-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/piechart-PieChart-Visualiz-b1baa-t-SVG-has-viewBox-attribute-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/piechart-PieChart-Visualiz-b1baa-t-SVG-has-viewBox-attribute-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/piechart.spec.ts",
+                        "column": 21,
+                        "line": 121
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-01ff348c89808a40b904",
+              "file": "piechart.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-10: PieChart slices have fill colors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1188,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.938Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-9c7685d1b005a9f416b4",
+              "file": "piechart.spec.ts",
+              "line": 124,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-11: PieChart has accessibility role",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1261,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:47.934Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-42f60fbc2526bbf02e45",
+              "file": "piechart.spec.ts",
+              "line": 135,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-12: PieChart has aria-label",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1275,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:48.114Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-5d44d13a90beda8c70ef",
+              "file": "piechart.spec.ts",
+              "line": 146,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-13: PieChart shows labels when enabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1097,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:48.464Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-e11fc159cf1bf4b921d5",
+              "file": "piechart.spec.ts",
+              "line": 157,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-14: Switching from PieChart to another chart works",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1329,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.303Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-7e3c3cbe53f2d0e291e2",
+              "file": "piechart.spec.ts",
+              "line": 168,
+              "column": 7
+            },
+            {
+              "title": "VIS-PC-15: PieChart container is cleared before rendering",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1097,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:48.878Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "572570e22c3b6fbff823-c78a84d2b0850d030386",
+              "file": "piechart.spec.ts",
+              "line": 180,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "scatterplot.spec.ts",
+      "file": "scatterplot.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "ScatterPlot Visualization Tests",
+          "file": "scatterplot.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "VIS-SP-1: ScatterPlot renders SVG element",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1139,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:49.013Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-e5e10a2162fa0abea79e",
+              "file": "scatterplot.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-2: ScatterPlot renders shape elements for points",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1098,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:49.171Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-eca7cb2e4e7e442bdc35",
+              "file": "scatterplot.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-3: ScatterPlot has correct dimensions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1166,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:49.245Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-f77362f26b270d882093",
+              "file": "scatterplot.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-4: ScatterPlot ID is correct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1269,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.925Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-21a435911e74d6c5bfe0",
+              "file": "scatterplot.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-5: ScatterPlot render count is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1142,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:49.436Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-1107fc91f1dc7fa668b6",
+              "file": "scatterplot.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-6: ScatterPlot renders without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1514,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:49.465Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-bdfe9e1e9cca0b70bccd",
+              "file": "scatterplot.spec.ts",
+              "line": 72,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-7: ScatterPlot is accessible globally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 1111,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.061Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-528f04d7774afe2e6a67",
+              "file": "scatterplot.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-8: ScatterPlot currentChart is set",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 1063,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts:110:27",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts",
+                          "column": 27,
+                          "line": 110
+                        },
+                        "snippet": "  108 |       return chart?.constructor.name === 'ScatterPlot';\n  109 |     });\n> 110 |     expect(isScatterPlot).toBe(true);\n      |                           ^\n  111 |   });\n  112 |\n  113 |   test('VIS-SP-9: ScatterPlot SVG has viewBox attribute', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts",
+                            "column": 27,
+                            "line": 110
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  108 |       return chart?.constructor.name === 'ScatterPlot';\n  109 |     });\n> 110 |     expect(isScatterPlot).toBe(true);\n      |                           ^\n  111 |   });\n  112 |\n  113 |   test('VIS-SP-9: ScatterPlot SVG has viewBox attribute', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts:110:27"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:49.601Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/scatterplot-ScatterPlot-Vi-d37f0-terPlot-currentChart-is-set-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/scatterplot-ScatterPlot-Vi-d37f0-terPlot-currentChart-is-set-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/scatterplot-ScatterPlot-Vi-d37f0-terPlot-currentChart-is-set-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts",
+                        "column": 27,
+                        "line": 110
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-701c8b9e5c36ab0b4890",
+              "file": "scatterplot.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-9: ScatterPlot SVG has viewBox attribute",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 1052,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n    at /home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts:121:21",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts",
+                          "column": 21,
+                          "line": 121
+                        },
+                        "snippet": "  119 |     const svg = page.locator('#chart-container svg');\n  120 |     const viewBox = await svg.getAttribute('viewBox');\n> 121 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  122 |   });\n  123 |\n  124 |   test('VIS-SP-10: ScatterPlot has accessibility role', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts",
+                            "column": 21,
+                            "line": 121
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mnull\u001b[39m\n\n  119 |     const svg = page.locator('#chart-container svg');\n  120 |     const viewBox = await svg.getAttribute('viewBox');\n> 121 |     expect(viewBox).toBeTruthy();\n      |                     ^\n  122 |   });\n  123 |\n  124 |   test('VIS-SP-10: ScatterPlot has accessibility role', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts:121:21"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.009Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/scatterplot-ScatterPlot-Vi-aafcb-t-SVG-has-viewBox-attribute-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/scatterplot-ScatterPlot-Vi-aafcb-t-SVG-has-viewBox-attribute-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/scatterplot-ScatterPlot-Vi-aafcb-t-SVG-has-viewBox-attribute-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/scatterplot.spec.ts",
+                        "column": 21,
+                        "line": 121
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-ce41f3993083639aaa60",
+              "file": "scatterplot.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-10: ScatterPlot has accessibility role",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1144,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.233Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-fb1a5354e4765e01b70f",
+              "file": "scatterplot.spec.ts",
+              "line": 124,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-11: ScatterPlot has aria-label",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1183,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.318Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-bcee42bea6bf840e1b04",
+              "file": "scatterplot.spec.ts",
+              "line": 135,
+              "column": 7
+            },
+            {
+              "title": "VIS-SP-12: ScatterPlot container is cleared before rendering",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1261,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.456Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12694613d814ab1f3e8d-c3e860b03819ca85c45d",
+              "file": "scatterplot.spec.ts",
+              "line": 146,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "signal-propagation.spec.ts",
+      "file": "signal-propagation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Signal Propagation Tests",
+          "file": "signal-propagation.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SIG-1: Network creation button is present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1113,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:50.638Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-1179e1f123fbef7db12d",
+              "file": "signal-propagation.spec.ts",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "SIG-2: Send signal button is initially disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1106,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.481Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-629c20c6b7cdcaf0be34",
+              "file": "signal-propagation.spec.ts",
+              "line": 25,
+              "column": 7
+            },
+            {
+              "title": "SIG-3: Creating network enables send signal button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1127,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.012Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-8a0581a002f87ea008d6",
+              "file": "signal-propagation.spec.ts",
+              "line": 33,
+              "column": 7
+            },
+            {
+              "title": "SIG-4: Creating network updates signal log",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.963Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-c43e6930e01c1ba4a3dd",
+              "file": "signal-propagation.spec.ts",
+              "line": 43,
+              "column": 7
+            },
+            {
+              "title": "SIG-5: Sending signal updates log",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1162,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.424Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-33718dd3743248d5c4d1",
+              "file": "signal-propagation.spec.ts",
+              "line": 53,
+              "column": 7
+            },
+            {
+              "title": "SIG-6: Create network button is disabled after creation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1153,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.563Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-d8f40ab3802702317291",
+              "file": "signal-propagation.spec.ts",
+              "line": 65,
+              "column": 7
+            },
+            {
+              "title": "SIG-7: Signal log is visible",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 6312,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#signal-log')\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#signal-log')\u001b[22m\n\u001b[2m    9 × locator resolved to <div id=\"signal-log\"></div>\u001b[22m\n\u001b[2m      - unexpected value \"hidden\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#signal-log')\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#signal-log')\u001b[22m\n\u001b[2m    9 × locator resolved to <div id=\"signal-log\"></div>\u001b[22m\n\u001b[2m      - unexpected value \"hidden\"\u001b[22m\n\n    at /home/matthias/projects/synapse/e2e/tests/signal-propagation.spec.ts:79:47",
+                        "location": {
+                          "file": "/home/matthias/projects/synapse/e2e/tests/signal-propagation.spec.ts",
+                          "column": 47,
+                          "line": 79
+                        },
+                        "snippet": "  77 |     // WHEN: Checking for the signal log\n  78 |     // THEN: It is visible\n> 79 |     await expect(page.locator('#signal-log')).toBeVisible();\n     |                                               ^\n  80 |   });\n  81 |\n  82 |   test('SIG-8: Multiple signals can be sent', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/matthias/projects/synapse/e2e/tests/signal-propagation.spec.ts",
+                            "column": 47,
+                            "line": 79
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('#signal-log')\nExpected: visible\nReceived: hidden\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#signal-log')\u001b[22m\n\u001b[2m    9 × locator resolved to <div id=\"signal-log\"></div>\u001b[22m\n\u001b[2m      - unexpected value \"hidden\"\u001b[22m\n\n\n  77 |     // WHEN: Checking for the signal log\n  78 |     // THEN: It is visible\n> 79 |     await expect(page.locator('#signal-log')).toBeVisible();\n     |                                               ^\n  80 |   });\n  81 |\n  82 |   test('SIG-8: Multiple signals can be sent', async ({ page }) => {\n    at /home/matthias/projects/synapse/e2e/tests/signal-propagation.spec.ts:79:47"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.764Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/matthias/projects/synapse/test-results/signal-propagation-Signal--7b69c-SIG-7-Signal-log-is-visible-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/matthias/projects/synapse/test-results/signal-propagation-Signal--7b69c-SIG-7-Signal-log-is-visible-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/matthias/projects/synapse/test-results/signal-propagation-Signal--7b69c-SIG-7-Signal-log-is-visible-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/matthias/projects/synapse/e2e/tests/signal-propagation.spec.ts",
+                        "column": 47,
+                        "line": 79
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-bbe4d2c9aea0df173baf",
+              "file": "signal-propagation.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "SIG-8: Multiple signals can be sent",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1215,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.795Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-7f39d4694db751e89138",
+              "file": "signal-propagation.spec.ts",
+              "line": 82,
+              "column": 7
+            },
+            {
+              "title": "SIG-9: Signal propagation section is visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 1114,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:51.886Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-385d26bc26d671681aa9",
+              "file": "signal-propagation.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "SIG-10: Signal operations occur without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1592,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.178Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "825dbafab93f1aede131-c930b51120a8556d90ae",
+              "file": "signal-propagation.spec.ts",
+              "line": 103,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "smoke.spec.ts",
+      "file": "smoke.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Synapse Framework - Smoke Tests",
+          "file": "smoke.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SMOKE-1: Framework loads without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 1039,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.428Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4219922fea2e2bd3c691-f968ee39747d974586ac",
+              "file": "smoke.spec.ts",
+              "line": 13,
+              "column": 7
+            },
+            {
+              "title": "SMOKE-2: Page title is correct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 590,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.478Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4219922fea2e2bd3c691-a7207aee7fc9fc21c7ac",
+              "file": "smoke.spec.ts",
+              "line": 32,
+              "column": 7
+            },
+            {
+              "title": "SMOKE-3: Main sections are visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 550,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.634Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4219922fea2e2bd3c691-1db5a81326288af9b4f6",
+              "file": "smoke.spec.ts",
+              "line": 41,
+              "column": 7
+            },
+            {
+              "title": "SMOKE-4: Control buttons are present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 551,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:52.811Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4219922fea2e2bd3c691-e2d89cc066daa19d234a",
+              "file": "smoke.spec.ts",
+              "line": 55,
+              "column": 7
+            },
+            {
+              "title": "SMOKE-5: Synapse framework is available globally",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 989,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-08T14:34:53.054Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4219922fea2e2bd3c691-0cef236d9cc1e2466085",
+              "file": "smoke.spec.ts",
+              "line": 68,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-11-08T14:34:35.560Z",
+    "duration": 22637.537,
+    "expected": 89,
+    "skipped": 0,
+    "unexpected": 14,
+    "flaky": 0
+  }
+}

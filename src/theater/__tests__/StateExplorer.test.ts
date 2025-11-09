@@ -1,6 +1,39 @@
 import { StateExplorer } from '../instruments/StateExplorer';
 import { VisualNeuron } from '../../ui/VisualNeuron';
 
+// Test component
+class TestComponent extends VisualNeuron<{ name: string }> {
+  constructor(props: { name: string }) {
+    super({
+      id: 'test-component',
+      type: 'cortical',
+      threshold: 0.5,
+      props,
+      initialState: {},
+    });
+  }
+
+  protected override executeProcessing<_TInput = unknown, TOutput = unknown>(): Promise<TOutput> {
+    return Promise.resolve(undefined as TOutput);
+  }
+
+  protected override performRender() {
+    return {
+      type: 'render' as const,
+      data: {
+        vdom: {
+          tag: 'div',
+          props: { className: 'test-component' },
+          children: [this.receptiveField.name],
+        },
+        styles: {},
+      },
+      strength: 1.0,
+      timestamp: Date.now(),
+    };
+  }
+}
+
 describe('StateExplorer - Time-Travel Debugging', () => {
   let explorer: StateExplorer;
 
@@ -40,7 +73,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
 
   describe('State Inspection', () => {
     it('should inspect component state', async () => {
-      const component = new VisualNeuron({ name: 'Test', value: 'test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await explorer.inspect(component);
 
       expect(result).toBeDefined();
@@ -49,7 +82,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should return inspection data', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       const result = await explorer.inspect(component);
 
       expect(result.data).toBeDefined();
@@ -59,7 +92,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should create snapshot on inspection', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await explorer.inspect(component);
 
       const current = explorer.getCurrentSnapshot();
@@ -69,7 +102,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
 
   describe('Snapshot Management', () => {
     it('should create snapshots', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       await explorer.inspect(component);
       await explorer.inspect(component);
@@ -79,7 +112,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should get current snapshot', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await explorer.inspect(component);
 
       const current = explorer.getCurrentSnapshot();
@@ -88,7 +121,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should get snapshot by ID', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await explorer.inspect(component);
 
       const current = explorer.getCurrentSnapshot();
@@ -99,7 +132,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should clear snapshots', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await explorer.inspect(component);
 
       explorer.clearSnapshots();
@@ -110,7 +143,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
 
     it('should limit snapshot count', async () => {
       const limited = new StateExplorer({ maxSnapshots: 5 });
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       for (let i = 0; i < 10; i++) {
         await limited.inspect(component);
@@ -139,7 +172,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should step backward', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       await explorer.inspect(component);
       await explorer.inspect(component);
@@ -150,7 +183,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should step forward', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       await explorer.inspect(component);
       await explorer.inspect(component);
@@ -162,7 +195,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should jump to specific snapshot', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       await explorer.inspect(component);
       await explorer.inspect(component);
@@ -177,7 +210,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
   describe('State Validation', () => {
     it('should validate state when enabled', async () => {
       const validator = new StateExplorer({ validateState: true });
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       const result = await validator.inspect(component);
 
@@ -189,7 +222,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
 
     it('should skip validation when disabled', async () => {
       const noValidator = new StateExplorer({ validateState: false });
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       const result = await noValidator.inspect(component);
 
@@ -201,7 +234,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
 
   describe('State Change Analysis', () => {
     it('should analyze state changes', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
 
       // Create multiple snapshots to analyze
       for (let i = 0; i < 15; i++) {
@@ -225,7 +258,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
     });
 
     it('should render with snapshots', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await explorer.inspect(component);
 
       const html = explorer.render();
@@ -236,7 +269,7 @@ describe('StateExplorer - Time-Travel Debugging', () => {
 
   describe('Cleanup', () => {
     it('should clear all data on cleanup', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestComponent({ name: 'Test' });
       await explorer.inspect(component);
 
       await explorer.cleanup();

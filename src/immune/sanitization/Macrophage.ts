@@ -280,7 +280,7 @@ export class Macrophage extends EventEmitter {
     } else {
       // Remove disallowed tags
       const tagPattern = /<(\/?)([\w-]+)([^>]*)>/gi;
-      value = value.replace(tagPattern, (match, closing, tagName) => {
+      value = value.replace(tagPattern, (match, _closing, tagName) => {
         if (this.config.htmlAllowedTags.includes(tagName.toLowerCase())) {
           return match;
         }

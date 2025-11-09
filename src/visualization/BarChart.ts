@@ -75,7 +75,7 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
    * Calculate positions for all bars
    */
   public calculateBarPositions(): BarPosition[] {
-    const { data, orientation, padding, height } = this.receptiveField;
+    const { data, orientation, padding } = this.receptiveField;
 
     if (!data || data.length === 0) {
       return [];
@@ -92,15 +92,13 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
     const barWidth = this.calculateBarWidth();
     const barSpacing = this.receptiveField.barSpacing || 4;
 
-    const positions: BarPosition[] = [];
-
     if (orientation === 'horizontal') {
       return this.calculateHorizontalBarPositions(
         data,
         bounds,
         effectivePadding,
         barWidth,
-        barSpacing
+        barSpacing,
       );
     } else {
       return this.calculateVerticalBarPositions(
@@ -108,7 +106,7 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
         bounds,
         effectivePadding,
         barWidth,
-        barSpacing
+        barSpacing,
       );
     }
   }
@@ -121,10 +119,9 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
     bounds: DataBounds,
     padding: { top: number; right: number; bottom: number; left: number },
     barWidth: number,
-    barSpacing: number
+    barSpacing: number,
   ): BarPosition[] {
-    const { width, height } = this.receptiveField;
-    const chartWidth = width - padding.left - padding.right;
+    const { height } = this.receptiveField;
     const chartHeight = height - padding.top - padding.bottom;
 
     const yRange = bounds.maxY - bounds.minY || 1;
@@ -132,6 +129,7 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
 
     for (let i = 0; i < data.length; i++) {
       const point = data[i];
+      if (!point) continue;
       const x = padding.left + i * (barWidth + barSpacing);
 
       // Handle negative values
@@ -158,17 +156,16 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
     bounds: DataBounds,
     padding: { top: number; right: number; bottom: number; left: number },
     barHeight: number,
-    barSpacing: number
+    barSpacing: number,
   ): BarPosition[] {
-    const { width, height } = this.receptiveField;
+    const { width } = this.receptiveField;
     const chartWidth = width - padding.left - padding.right;
-    const chartHeight = height - padding.top - padding.bottom;
 
-    const xRange = bounds.maxX - bounds.minX || 1;
     const positions: BarPosition[] = [];
 
     for (let i = 0; i < data.length; i++) {
       const point = data[i];
+      if (!point) continue;
       const y = padding.top + i * (barHeight + barSpacing);
 
       // Handle negative values
@@ -235,7 +232,7 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
   /**
    * Get data as accessible table
    */
-  public getDataAsTable(): Array<{ x: number; y: number; label?: string }> {
+  public getDataAsTable(): Array<{ x: number; y: number; label: string | undefined }> {
     const { data } = this.receptiveField;
     return data.map((d) => ({ x: d.x, y: d.y, label: d.label }));
   }
@@ -275,6 +272,7 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
       props: {
         width,
         height,
+        viewBox: `0 0 ${width} ${height}`,
         role: 'img',
         'aria-label': `Bar chart with ${this.receptiveField.data.length} bars`,
       },
@@ -300,9 +298,7 @@ export class BarChart extends VisualNeuron<BarChartProps, BaseChartState> {
   /**
    * Process incoming signals
    */
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any
-  ): Promise<TOutput> {
+  protected override async executeProcessing<TOutput = unknown>(_input: unknown): Promise<TOutput> {
     // Handle chart-specific signals here
     return undefined as TOutput;
   }

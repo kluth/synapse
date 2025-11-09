@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await, @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-misused-promises, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-unused-vars, no-useless-catch */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { BloodCell } from './BloodCell';
 import { EventEmitter } from 'events';
 

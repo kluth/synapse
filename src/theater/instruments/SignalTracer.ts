@@ -149,7 +149,7 @@ export class SignalTracer implements MicroscopeLens {
   /**
    * Initialize tracer
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async initialize(): Promise<void> {
     this.traces.clear();
     this.signalHistory = [];
@@ -158,7 +158,7 @@ export class SignalTracer implements MicroscopeLens {
   /**
    * Cleanup tracer
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async cleanup(): Promise<void> {
     this.traces.clear();
     this.signalHistory = [];
@@ -167,7 +167,7 @@ export class SignalTracer implements MicroscopeLens {
   /**
    * Inspect component signals
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
+
   public async inspect(component: VisualNeuron): Promise<InspectionResult> {
     const startTime = Date.now();
     const signals = this.extractSignals(component);

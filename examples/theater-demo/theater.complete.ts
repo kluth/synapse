@@ -12,8 +12,6 @@
  */
 
 import { Theater } from '../../src/theater/core/Theater';
-import { Stage } from '../../src/theater/core/Stage';
-import { Amphitheater } from '../../src/theater/core/Amphitheater';
 import { TheaterServer } from '../../src/theater/server/TheaterServer';
 import { HotReload } from '../../src/theater/server/HotReload';
 import { WebSocketBridge } from '../../src/theater/server/WebSocketBridge';
@@ -31,35 +29,17 @@ import {
 /**
  * Complete Theater Setup
  */
-export class CompleteTheaterDemo {
+class CompleteTheaterDemo {
   private theater: Theater;
   private server: TheaterServer;
   private hotReload: HotReload;
   private wsbridge: WebSocketBridge;
-  private stage: Stage;
-  private amphitheater: Amphitheater;
 
   constructor() {
     // Initialize Theater
     this.theater = new Theater({
-      name: 'Button Component Theater',
-      autoStart: false,
-      theme: 'light',
-    });
-
-    // Initialize Stage
-    this.stage = new Stage({
-      viewport: { width: 1024, height: 768 },
-      isolation: 'shadow-dom',
-      theme: 'light',
-    });
-
-    // Initialize Amphitheater (Gallery)
-    this.amphitheater = new Amphitheater({
-      layout: 'grid',
-      theme: 'light',
-      enableSearch: true,
-      enableFilters: true,
+      title: 'Button Component Theater',
+      darkMode: false,
     });
 
     // Initialize Server
@@ -73,7 +53,7 @@ export class CompleteTheaterDemo {
     // Initialize Hot Reload
     this.hotReload = new HotReload({
       enabled: true,
-      patterns: ['examples/**/*.ts', 'src/ui/**/*.ts'],
+      patterns: [{ pattern: 'examples/**/*.ts' }, { pattern: 'src/ui/**/*.ts' }],
       ignore: ['node_modules/**', 'dist/**', '**/*.test.ts'],
       debounce: 300,
       verbose: true,
@@ -99,16 +79,16 @@ export class CompleteTheaterDemo {
       console.log('🎭 Theater started');
     });
 
-    this.theater.on('specimen:mounted', (event) => {
+    this.theater.on('specimen:mounted', (event: { specimenId: string }) => {
       console.log(`📦 Specimen mounted: ${event.specimenId}`);
     });
 
     // Server events
-    this.server.on('started', (event) => {
+    this.server.on('started', (event: { url: string }) => {
       console.log(`🚀 Server started at ${event.url}`);
     });
 
-    this.server.on('reload', (event) => {
+    this.server.on('reload', (event: { reason: string }) => {
       console.log(`🔄 Hot reload triggered: ${event.reason}`);
       this.wsbridge.broadcast({
         type: 'reload',
@@ -118,17 +98,17 @@ export class CompleteTheaterDemo {
     });
 
     // Hot reload events
-    this.hotReload.on('change', (event) => {
+    this.hotReload.on('change', (event: { path: string; type: string }) => {
       console.log(`📝 File changed: ${event.path} (${event.type})`);
       this.server.triggerReload(`File ${event.type}: ${event.path}`);
     });
 
     // WebSocket events
-    this.wsbridge.on('client:connected', (event) => {
+    this.wsbridge.on('client:connected', (event: { clientId: string }) => {
       console.log(`🔌 Client connected: ${event.clientId}`);
     });
 
-    this.wsbridge.on('message:received', (event) => {
+    this.wsbridge.on('message:received', (event: { clientId: string; message: { type: string } }) => {
       console.log(`📨 Message from ${event.clientId}:`, event.message.type);
     });
   }
@@ -141,7 +121,7 @@ export class CompleteTheaterDemo {
 
     ButtonSpecimens.forEach((specimen) => {
       // Register with Amphitheater
-      this.amphitheater.registerSpecimen(specimen);
+      this.theater.amphitheater.registerSpecimen(specimen.metadata);
 
       console.log(`  ✓ ${specimen.metadata.name}`);
     });
@@ -169,13 +149,13 @@ export class CompleteTheaterDemo {
     console.log('\n📊 Atlas Statistics:');
     console.log(`  Components: ${atlasStats.totalComponents}`);
     console.log(`  Examples: ${atlasStats.totalExamples}`);
-    console.log(`  Categories: ${atlasStats.categories.join(', ')}`);
+    console.log(`  Categories: ${Object.keys(atlasStats.byCategory).join(', ')}`);
 
     // Show Catalogue statistics
     const catalogueStats = ButtonCatalogue.getStatistics();
     console.log('\n📊 Catalogue Statistics:');
     console.log(`  Total Components: ${catalogueStats.total}`);
-    console.log(`  Stable: ${catalogueStats.byStability.stable}`);
+    console.log(`  Stable: ${catalogueStats.byStability['stable']}`);
 
     // Show Protocol statistics
     const protocolStats = ButtonProtocol.getStatistics();
@@ -208,7 +188,7 @@ export class CompleteTheaterDemo {
 
     // Start Theater
     console.log('🎭 Starting Theater...\n');
-    this.theater.start();
+    await this.theater.start();
 
     // Run tests
     await this.runTests();
@@ -226,7 +206,7 @@ export class CompleteTheaterDemo {
   public async stop(): Promise<void> {
     console.log('\n🛑 Stopping Theater...\n');
 
-    this.theater.stop();
+    await this.theater.stop();
     await this.server.stop();
     await this.hotReload.stop();
     await this.wsbridge.stop();
@@ -249,8 +229,8 @@ export class CompleteTheaterDemo {
     // Server statistics
     const serverStats = this.server.getStatistics();
     console.log(`\n🚀 Server:`);
-    console.log(`  URL: ${this.server.getURL()}`);
-    console.log(`  WebSocket: ${this.server.getWebSocketURL()}`);
+    console.log(`  URL: ${this.server.getUrl()}`);
+    console.log(`  WebSocket: ${this.server.getWebSocketUrl()}`);
     console.log(`  Active Connections: ${serverStats.activeConnections}`);
     console.log(`  Total Requests: ${serverStats.totalRequests}`);
 
@@ -259,7 +239,6 @@ export class CompleteTheaterDemo {
     console.log(`\n🔥 Hot Reload:`);
     console.log(`  Watching: ${hotReloadStats.watchedFiles} files`);
     console.log(`  Total Changes: ${hotReloadStats.totalChanges}`);
-    console.log(`  Pattern Count: ${hotReloadStats.patternCount}`);
 
     // WebSocket statistics
     const wsStats = this.wsbridge.getStatistics();
@@ -270,23 +249,23 @@ export class CompleteTheaterDemo {
     console.log(`  Broadcast Count: ${wsStats.broadcastCount}`);
 
     // Amphitheater statistics
-    const amphiStats = this.amphitheater.getStatistics();
+    const amphiStats = this.theater.amphitheater.getStats();
     console.log(`\n🏛️ Amphitheater:`);
     console.log(`  Total Specimens: ${amphiStats.totalSpecimens}`);
-    console.log(`  Categories: ${amphiStats.categories}`);
+    console.log(`  Categories: ${amphiStats.totalCategories}`);
 
     // Laboratory statistics
-    const labStats = ButtonLaboratory.getStatistics();
+    const labStats = ButtonLaboratory.getStats();
     console.log(`\n🧪 Laboratory:`);
-    console.log(`  Total Experiments: ${labStats.total}`);
+    console.log(`  Total Experiments: ${labStats.totalExperiments}`);
     console.log(`  Passed: ${labStats.passed}`);
     console.log(`  Failed: ${labStats.failed}`);
-    console.log(`  Success Rate: ${labStats.successRate.toFixed(1)}%`);
+    console.log(`  Success Rate: ${(labStats.successRate * 100).toFixed(1)}%`);
 
     console.log('\n' + '='.repeat(60));
     console.log('\n✨ Theater is ready for development!\n');
-    console.log(`Visit ${this.server.getURL()} to view components`);
-    console.log(`WebSocket connected at ${this.server.getWebSocketURL()}`);
+    console.log(`Visit ${this.server.getUrl()} to view components`);
+    console.log(`WebSocket connected at ${this.server.getWebSocketUrl()}`);
     console.log('\n' + '='.repeat(60) + '\n');
   }
 
@@ -363,8 +342,8 @@ export class CompleteTheaterDemo {
       protocol: ButtonProtocol.export(),
       server: {
         statistics: this.server.getStatistics(),
-        url: this.server.getURL(),
-        wsUrl: this.server.getWebSocketURL(),
+        url: this.server.getUrl(),
+        wsUrl: this.server.getWebSocketUrl(),
       },
       hotReload: {
         statistics: this.hotReload.getStatistics(),

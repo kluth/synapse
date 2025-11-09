@@ -4,7 +4,7 @@
  */
 
 import { VisualOligodendrocyte } from '../VisualOligodendrocyte';
-import type { VirtualDOMNode, PatchOperation } from '../../types';
+import type { VirtualDOMNode } from '../../types';
 
 describe('VisualOligodendrocyte - Rendering Optimization', () => {
   let oligodendrocyte: VisualOligodendrocyte;
@@ -105,7 +105,7 @@ describe('VisualOligodendrocyte - Rendering Optimization', () => {
 
       const patches = oligodendrocyte.diff(oldTree, newTree);
       expect(patches.length).toBeGreaterThan(0);
-      expect(patches[0].type).toBe('UPDATE');
+      expect(patches[0]!.type).toBe('UPDATE');
     });
 
     it('should detect tag replacement', () => {
@@ -118,7 +118,7 @@ describe('VisualOligodendrocyte - Rendering Optimization', () => {
       };
 
       const patches = oligodendrocyte.diff(oldTree, newTree);
-      expect(patches[0].type).toBe('REPLACE');
+      expect(patches[0]!.type).toBe('REPLACE');
     });
 
     it('should detect child additions', () => {
@@ -167,8 +167,8 @@ describe('VisualOligodendrocyte - Rendering Optimization', () => {
 
       const metrics = oligodendrocyte.getRenderMetrics('component-1');
       expect(metrics).toBeDefined();
-      expect(metrics.renderCount).toBe(2);
-      expect(metrics.averageRenderTime).toBe(17);
+      expect(metrics!.renderCount).toBe(2);
+      expect(metrics!.averageRenderTime).toBe(17);
     });
 
     it('should identify slow renders', async () => {

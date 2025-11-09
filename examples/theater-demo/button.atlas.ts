@@ -17,7 +17,7 @@ import type { CatalogueEntry } from '../../src/theater/atlas/ComponentCatalogue'
  */
 export const ButtonAtlas = new Atlas({
   name: 'Button Documentation',
-  autoDocument: true,
+  autoGenerate: true,
 });
 
 /**
@@ -37,54 +37,52 @@ const buttonDocumentation: ComponentDocumentation = {
       type: 'string',
       required: true,
       description: 'The text content displayed on the button',
-      default: undefined,
+      defaultValue: undefined,
     },
     {
       name: 'variant',
       type: "'primary' | 'secondary' | 'danger'",
       required: false,
       description: 'Visual style variant of the button',
-      default: 'primary',
+      defaultValue: 'primary',
     },
     {
       name: 'disabled',
       type: 'boolean',
       required: false,
       description: 'Whether the button is disabled and non-interactive',
-      default: false,
+      defaultValue: false,
     },
     {
       name: 'onClick',
       type: '() => void',
       required: false,
       description: 'Callback function invoked when button is clicked',
-      default: undefined,
+      defaultValue: undefined,
     },
   ],
 
   state: [
     {
-      name: 'pressed',
+      key: 'pressed',
       type: 'boolean',
       description: 'Indicates whether the button is currently in pressed state',
-      default: false,
+      initialValue: false,
     },
     {
-      name: 'clickCount',
+      key: 'clickCount',
       type: 'number',
       description: 'Tracks the total number of times the button has been clicked',
-      default: 0,
+      initialValue: 0,
     },
   ],
 
   signals: [
     {
-      name: 'clicked',
+      type: 'ui:click',
       description: 'Emitted when the button is successfully clicked',
-      payload: {
-        clickCount: 'number',
-        timestamp: 'number',
-      },
+      dataType: '{ clickCount: number }',
+      trigger: 'User clicks the button',
     },
   ],
 
@@ -93,7 +91,12 @@ const buttonDocumentation: ComponentDocumentation = {
       title: 'Basic Usage',
       description: 'Create a simple button with a label',
       code: `const button = new ButtonComponent({
-  label: 'Click Me'
+  id: 'btn-basic',
+  type: 'cortical',
+  threshold: 0.5,
+  props: {
+    label: 'Click Me'
+  }
 });
 button.activate();`,
       language: 'typescript',
@@ -102,10 +105,15 @@ button.activate();`,
       title: 'With Click Handler',
       description: 'Button with custom click handler',
       code: `const button = new ButtonComponent({
-  label: 'Submit',
-  variant: 'primary',
-  onClick: () => {
-    console.log('Button clicked!');
+  id: 'btn-handler',
+  type: 'cortical',
+  threshold: 0.5,
+  props: {
+    label: 'Submit',
+    variant: 'primary',
+    onClick: () => {
+      console.log('Button clicked!');
+    }
   }
 });`,
       language: 'typescript',
@@ -114,8 +122,13 @@ button.activate();`,
       title: 'Disabled State',
       description: 'Create a disabled button',
       code: `const button = new ButtonComponent({
-  label: 'Disabled',
-  disabled: true
+  id: 'btn-disabled',
+  type: 'cortical',
+  threshold: 0.5,
+  props: {
+    label: 'Disabled',
+    disabled: true
+  }
 });`,
       language: 'typescript',
     },
@@ -123,9 +136,14 @@ button.activate();`,
       title: 'Danger Variant',
       description: 'Use danger variant for destructive actions',
       code: `const deleteButton = new ButtonComponent({
-  label: 'Delete',
-  variant: 'danger',
-  onClick: () => handleDelete()
+  id: 'btn-danger',
+  type: 'cortical',
+  threshold: 0.5,
+  props: {
+    label: 'Delete',
+    variant: 'danger',
+    onClick: () => handleDelete()
+  }
 });`,
       language: 'typescript',
     },
@@ -148,18 +166,14 @@ export const ButtonCatalogue = new ComponentCatalogue({
 
 const buttonEntry: CatalogueEntry = {
   id: 'button',
-  name: 'Button',
-  description: 'Interactive button component',
-  category: 'Forms',
-  tags: ['interactive', 'form'],
-  path: 'examples/theater-demo/ButtonComponent.ts',
+  documentation: buttonDocumentation,
   dependencies: ['VisualNeuron'],
   dependents: [],
   version: '1.0.0',
-  status: 'stable',
   stability: 'stable',
   popularity: 0,
-  lastModified: Date.now(),
+  lastUpdated: Date.now(),
+  maintained: true,
 };
 
 ButtonCatalogue.add(buttonEntry);
@@ -171,15 +185,12 @@ export const ButtonDiagram = new Diagram();
 
 // Generate component hierarchy diagram
 export function generateHierarchyDiagram(): string {
-  return ButtonDiagram.generateComponentHierarchy(
-    [buttonDocumentation],
-    {
-      type: 'component-hierarchy',
-      format: 'mermaid',
-      title: 'Button Component Hierarchy',
-      direction: 'TB',
-    },
-  );
+  return ButtonDiagram.generateComponentHierarchy([buttonDocumentation], {
+    type: 'component-hierarchy',
+    format: 'mermaid',
+    title: 'Button Component Hierarchy',
+    direction: 'TB',
+  });
 }
 
 // Generate state machine diagram
@@ -260,7 +271,7 @@ ButtonProtocol.createAccessibilityGuideline(
   'button-a11y-2',
   'Disabled State Indication',
   'Disabled buttons must be visually distinguishable and convey their state',
-  '3.2',
+  '2.1',
   '3.2.4',
   {
     severity: 'important',
@@ -314,8 +325,8 @@ export function generateFullDocumentation(): void {
   buttonDocumentation.props.forEach((prop) => {
     console.log(`- **${prop.name}** (${prop.type})${prop.required ? ' *required*' : ''}`);
     console.log(`  ${prop.description}`);
-    if (prop.default !== undefined) {
-      console.log(`  Default: \`${prop.default}\``);
+    if (prop.defaultValue !== undefined) {
+      console.log(`  Default: \`${String(prop.defaultValue)}\``);
     }
     console.log('');
   });
@@ -323,10 +334,10 @@ export function generateFullDocumentation(): void {
   // State
   console.log('\n## State\n');
   buttonDocumentation.state.forEach((state) => {
-    console.log(`- **${state.name}** (${state.type})`);
+    console.log(`- **${state.key}** (${state.type})`);
     console.log(`  ${state.description}`);
-    if (state.default !== undefined) {
-      console.log(`  Default: \`${state.default}\``);
+    if (state.initialValue !== undefined) {
+      console.log(`  Default: \`${String(state.initialValue)}\``);
     }
     console.log('');
   });
@@ -361,5 +372,5 @@ export function generateFullDocumentation(): void {
   console.log('\n## Documentation Statistics\n');
   console.log(`Total Components: ${atlasStats.totalComponents}`);
   console.log(`Total Examples: ${atlasStats.totalExamples}`);
-  console.log(`Categories: ${atlasStats.categories.join(', ')}`);
+  console.log(`Categories: ${Object.keys(atlasStats.byCategory).join(', ')}`);
 }

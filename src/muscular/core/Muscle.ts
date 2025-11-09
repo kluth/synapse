@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/prefer-nullish-coalescing */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Bone } from '../../skeletal/core/Bone';
 
 /**
@@ -18,7 +15,7 @@ export interface RetryPolicy {
 export interface MuscleMetadata {
   description?: string;
   version?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -37,7 +34,7 @@ export interface MuscleOptions {
  */
 export interface ExecutionContext {
   signal?: AbortSignal;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -60,7 +57,7 @@ export class Muscle<_TInput = unknown, TOutput = unknown> {
 
   constructor(
     name: string,
-    fn: (...args: any[]) => TOutput | Promise<TOutput>,
+    fn: (...args: unknown[]) => TOutput | Promise<TOutput>,
     options: MuscleOptions = {},
   ) {
     this.name = name;
@@ -73,7 +70,7 @@ export class Muscle<_TInput = unknown, TOutput = unknown> {
   /**
    * Execute the muscle synchronously
    */
-  public execute(...args: any[]): TOutput {
+  public execute(...args: unknown[]): TOutput {
     // Check for cancellation
     const context = this.extractContext(args);
     if (context?.signal?.aborted) {
@@ -113,7 +110,7 @@ export class Muscle<_TInput = unknown, TOutput = unknown> {
   /**
    * Execute the muscle asynchronously with retry support
    */
-  public async executeAsync(...args: any[]): Promise<TOutput> {
+  public async executeAsync(...args: unknown[]): Promise<TOutput> {
     // Check for cancellation
     const context = this.extractContext(args);
     if (context?.signal?.aborted) {
@@ -190,7 +187,7 @@ export class Muscle<_TInput = unknown, TOutput = unknown> {
   /**
    * Validate input against schema
    */
-  private validateInput(args: any[]): void {
+  private validateInput(args: unknown[]): void {
     if (!this.options.inputSchema) {
       return;
     }
@@ -222,7 +219,7 @@ export class Muscle<_TInput = unknown, TOutput = unknown> {
   /**
    * Generate cache key from arguments
    */
-  private getCacheKey(args: any[]): string {
+  private getCacheKey(args: unknown[]): string {
     try {
       // Filter out context object if present
       const argsWithoutContext = args.filter((arg, index) => {
@@ -246,7 +243,7 @@ export class Muscle<_TInput = unknown, TOutput = unknown> {
   /**
    * Extract execution context from arguments
    */
-  private extractContext(args: any[]): ExecutionContext | undefined {
+  private extractContext(args: unknown[]): ExecutionContext | undefined {
     // Check if last argument is a context object
     if (args.length > 0) {
       const lastArg = args[args.length - 1];

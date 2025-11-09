@@ -33,7 +33,7 @@ describe('Artery', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
-      expect(received[0].payload).toEqual({ data: 'test' });
+      expect(received[0]?.payload).toEqual({ data: 'test' });
 
       await artery.stop();
     });
@@ -42,7 +42,9 @@ describe('Artery', () => {
       const artery = new Artery('test-stream');
       const received: BloodCell[] = [];
 
-      artery.onData((cell) => received.push(cell));
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
       await artery.send(new BloodCell({ data: 1 }));
@@ -153,7 +155,9 @@ describe('Artery', () => {
       });
 
       const received: BloodCell[] = [];
-      artery.onData((cell) => received.push(cell));
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
 
@@ -182,7 +186,9 @@ describe('Artery', () => {
       });
 
       const received: BloodCell[] = [];
-      artery.onData((cell) => received.push(cell));
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
 
@@ -257,7 +263,7 @@ describe('Artery', () => {
       await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(batches.length).toBeGreaterThanOrEqual(1);
-      expect(batches[0].length).toBeGreaterThanOrEqual(2);
+      expect(batches[0]?.length).toBeGreaterThanOrEqual(2);
 
       await artery.stop();
     });
@@ -297,18 +303,20 @@ describe('Artery', () => {
 
       artery.transform((cell) => {
         return new BloodCell({
-          data: cell.payload.data.toUpperCase(),
+          data: (cell.payload as { data: string }).data.toUpperCase(),
         });
       });
 
-      artery.onData((cell) => received.push(cell));
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
       await artery.send(new BloodCell({ data: 'hello' }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
-      expect(received[0].payload.data).toBe('HELLO');
+      expect((received[0]?.payload as { data: string })?.data).toBe('HELLO');
 
       await artery.stop();
     });
@@ -317,8 +325,10 @@ describe('Artery', () => {
       const artery = new Artery('test-stream');
       const received: BloodCell[] = [];
 
-      artery.filter((cell) => cell.payload.data > 5);
-      artery.onData((cell) => received.push(cell));
+      artery.filter((cell) => (cell.payload as { data: number }).data > 5);
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
       await artery.send(new BloodCell({ data: 3 }));
@@ -329,8 +339,8 @@ describe('Artery', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(2);
-      expect(received[0].payload.data).toBe(7);
-      expect(received[1].payload.data).toBe(9);
+      expect((received[0]?.payload as { data: number })?.data).toBe(7);
+      expect((received[1]?.payload as { data: number })?.data).toBe(9);
 
       await artery.stop();
     });
@@ -340,10 +350,12 @@ describe('Artery', () => {
       const received: BloodCell[] = [];
 
       artery
-        .transform((cell) => new BloodCell({ data: cell.payload.data * 2 }))
-        .transform((cell) => new BloodCell({ data: cell.payload.data + 10 }));
+        .transform((cell) => new BloodCell({ data: (cell.payload as { data: number }).data * 2 }))
+        .transform((cell) => new BloodCell({ data: (cell.payload as { data: number }).data + 10 }));
 
-      artery.onData((cell) => received.push(cell));
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
       await artery.send(new BloodCell({ data: 5 }));
@@ -351,7 +363,7 @@ describe('Artery', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       // (5 * 2) + 10 = 20
-      expect(received[0].payload.data).toBe(20);
+      expect((received[0]?.payload as { data: number })?.data).toBe(20);
 
       await artery.stop();
     });
@@ -377,7 +389,7 @@ describe('Artery', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].message).toContain('Transform failed');
+      expect(errors[0]?.message).toContain('Transform failed');
 
       await artery.stop();
     });
@@ -387,11 +399,15 @@ describe('Artery', () => {
       const received: BloodCell[] = [];
       let errorCount = 0;
 
-      artery.onError(() => errorCount++);
-      artery.onData((cell) => received.push(cell));
+      artery.onError(() => {
+        errorCount++;
+      });
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       artery.transform((cell) => {
-        if (cell.payload.data === 2) {
+        if ((cell.payload as { data: number }).data === 2) {
           throw new Error('Failed on 2');
         }
         return cell;
@@ -485,8 +501,12 @@ describe('Artery', () => {
       const received1: BloodCell[] = [];
       const received2: BloodCell[] = [];
 
-      artery.onData((cell) => received1.push(cell));
-      artery.onData((cell) => received2.push(cell));
+      artery.onData((cell) => {
+        received1.push(cell);
+      });
+      artery.onData((cell) => {
+        received2.push(cell);
+      });
 
       await artery.start();
       await artery.send(new BloodCell({ data: 'test' }));
@@ -503,7 +523,9 @@ describe('Artery', () => {
       const artery = new Artery('test-stream');
       const received: BloodCell[] = [];
 
-      const unsubscribe = artery.onData((cell) => received.push(cell));
+      const unsubscribe = artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
       await artery.send(new BloodCell({ data: 1 }));
@@ -526,7 +548,9 @@ describe('Artery', () => {
       const artery = new Artery('test-stream', { maxBufferSize: 10 });
       const received: BloodCell[] = [];
 
-      artery.onData((cell) => received.push(cell));
+      artery.onData((cell) => {
+        received.push(cell);
+      });
 
       await artery.start();
 

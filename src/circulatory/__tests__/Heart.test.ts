@@ -26,15 +26,19 @@ describe('Heart', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(messages).toHaveLength(1);
-      expect(messages[0].payload).toEqual({ data: 'hello' });
+      expect(messages[0]?.payload).toEqual({ data: 'hello' });
     });
 
     it('should support multiple subscribers', async () => {
       const messages1: BloodCell[] = [];
       const messages2: BloodCell[] = [];
 
-      heart.subscribe('test-topic', (cell) => messages1.push(cell));
-      heart.subscribe('test-topic', (cell) => messages2.push(cell));
+      heart.subscribe('test-topic', (cell) => {
+        messages1.push(cell);
+      });
+      heart.subscribe('test-topic', (cell) => {
+        messages2.push(cell);
+      });
 
       await heart.publish('test-topic', new BloodCell({ data: 'hello' }));
 
@@ -47,7 +51,9 @@ describe('Heart', () => {
     it('should not deliver to unsubscribed topics', async () => {
       const messages: BloodCell[] = [];
 
-      heart.subscribe('topic-a', (cell) => messages.push(cell));
+      heart.subscribe('topic-a', (cell) => {
+        messages.push(cell);
+      });
       await heart.publish('topic-b', new BloodCell({ data: 'hello' }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -58,7 +64,9 @@ describe('Heart', () => {
     it('should support unsubscribe', async () => {
       const messages: BloodCell[] = [];
 
-      const unsubscribe = heart.subscribe('test-topic', (cell) => messages.push(cell));
+      const unsubscribe = heart.subscribe('test-topic', (cell) => {
+        messages.push(cell);
+      });
       unsubscribe();
 
       await heart.publish('test-topic', new BloodCell({ data: 'hello' }));
@@ -73,7 +81,7 @@ describe('Heart', () => {
       const processedOrder: number[] = [];
 
       heart.subscribe('test-topic', (cell) => {
-        processedOrder.push(cell.payload.id);
+        processedOrder.push((cell.payload as { id: number }).id);
       });
 
       // Publish in order: low, medium, high
@@ -91,7 +99,7 @@ describe('Heart', () => {
       const processedOrder: number[] = [];
 
       heart.subscribe('test-topic', (cell) => {
-        processedOrder.push(cell.payload.id);
+        processedOrder.push((cell.payload as { id: number }).id);
       });
 
       await heart.publish('test-topic', new BloodCell({ id: 1 }, { priority: 5 }));
@@ -120,14 +128,16 @@ describe('Heart', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(dlqMessages).toHaveLength(1);
-      expect(dlqMessages[0].payload).toEqual({ data: 'test' });
+      expect(dlqMessages[0]?.payload).toEqual({ data: 'test' });
     });
 
     it('should retry before moving to DLQ', async () => {
       let attempts = 0;
       const dlqMessages: BloodCell[] = [];
 
-      heart.onDeadLetter((cell) => dlqMessages.push(cell));
+      heart.onDeadLetter((cell) => {
+        dlqMessages.push(cell);
+      });
 
       heart.subscribe('test-topic', () => {
         attempts++;
@@ -146,7 +156,9 @@ describe('Heart', () => {
       let attempts = 0;
       const dlqMessages: BloodCell[] = [];
 
-      heart.onDeadLetter((cell) => dlqMessages.push(cell));
+      heart.onDeadLetter((cell) => {
+        dlqMessages.push(cell);
+      });
 
       heart.subscribe('test-topic', () => {
         attempts++;
@@ -167,8 +179,12 @@ describe('Heart', () => {
       const userMessages: BloodCell[] = [];
       const orderMessages: BloodCell[] = [];
 
-      heart.subscribe('user.*', (cell) => userMessages.push(cell));
-      heart.subscribe('order.*', (cell) => orderMessages.push(cell));
+      heart.subscribe('user.*', (cell) => {
+        userMessages.push(cell);
+      });
+      heart.subscribe('order.*', (cell) => {
+        orderMessages.push(cell);
+      });
 
       await heart.publish('user.created', new BloodCell({ id: 1 }));
       await heart.publish('user.updated', new BloodCell({ id: 2 }));
@@ -265,15 +281,17 @@ describe('Heart', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Now subscribe and replay persisted messages
-      persistentHeart.subscribe('test-topic', (cell) => messages.push(cell));
+      persistentHeart.subscribe('test-topic', (cell) => {
+        messages.push(cell);
+      });
       await persistentHeart.replay('test-topic');
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Should receive 2 messages from replay
       expect(messages).toHaveLength(2);
-      expect(messages[0].payload).toEqual({ data: 'test1' });
-      expect(messages[1].payload).toEqual({ data: 'test2' });
+      expect(messages[0]?.payload).toEqual({ data: 'test1' });
+      expect(messages[1]?.payload).toEqual({ data: 'test2' });
 
       await persistentHeart.stop();
     });
@@ -282,7 +300,9 @@ describe('Heart', () => {
   describe('TTL and Expiration', () => {
     it('should not deliver expired messages', async () => {
       const messages: BloodCell[] = [];
-      heart.subscribe('test-topic', (cell) => messages.push(cell));
+      heart.subscribe('test-topic', (cell) => {
+        messages.push(cell);
+      });
 
       // Create an already expired message
       const expiredCell = new BloodCell({ data: 'test' }, { ttl: 1 });

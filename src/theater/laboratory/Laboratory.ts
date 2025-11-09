@@ -181,7 +181,6 @@ export class Laboratory extends EventEmitter {
     this.emit('experiment:registered', { id, name: experiment.getName() });
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log(`[Laboratory] Registered experiment: ${experiment.getName()}`);
     }
   }
@@ -199,7 +198,6 @@ export class Laboratory extends EventEmitter {
     this.emit('experiment:unregistered', { id: experimentId });
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log(`[Laboratory] Unregistered experiment: ${experimentId}`);
     }
   }
@@ -232,7 +230,6 @@ export class Laboratory extends EventEmitter {
     this.emit('started');
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log(`[Laboratory] Starting ${this.experiments.size} experiments...`);
     }
 
@@ -250,9 +247,8 @@ export class Laboratory extends EventEmitter {
       const report = this.generateReport();
 
       if (this.verbose) {
-        // eslint-disable-next-line no-console
         console.log(`[Laboratory] Completed in ${report.duration}ms`);
-        // eslint-disable-next-line no-console
+
         console.log(
           `[Laboratory] Results: ${report.stats.passed}/${report.stats.totalExperiments} passed`,
         );
@@ -286,7 +282,6 @@ export class Laboratory extends EventEmitter {
     }
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log(`[Laboratory] Running experiment: ${experiment.getName()}`);
     }
 
@@ -302,7 +297,7 @@ export class Laboratory extends EventEmitter {
 
       if (this.verbose) {
         const status = result.success ? 'PASS' : 'FAIL';
-        // eslint-disable-next-line no-console
+
         console.log(`[Laboratory] ${status}: ${experiment.getName()} (${result.duration}ms)`);
       }
 
@@ -400,7 +395,6 @@ export class Laboratory extends EventEmitter {
     this.emit('paused');
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log('[Laboratory] Paused');
     }
   }
@@ -417,7 +411,6 @@ export class Laboratory extends EventEmitter {
     this.emit('resumed');
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log('[Laboratory] Resumed');
     }
   }
@@ -431,7 +424,6 @@ export class Laboratory extends EventEmitter {
     this.emit('stopped');
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log('[Laboratory] Stopped');
     }
   }
@@ -499,7 +491,6 @@ export class Laboratory extends EventEmitter {
     this.emit('cleared');
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log('[Laboratory] Cleared');
     }
   }
@@ -516,7 +507,6 @@ export class Laboratory extends EventEmitter {
     this.emit('cleaned-up');
 
     if (this.verbose) {
-      // eslint-disable-next-line no-console
       console.log('[Laboratory] Cleaned up');
     }
   }

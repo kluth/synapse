@@ -17,11 +17,11 @@ class TestComponent extends VisualNeuron<{ label: string; value: number }> {
     });
   }
 
-  protected executeProcessing(): Promise<void> {
-    return Promise.resolve();
+  protected override executeProcessing<_TInput = unknown, TOutput = unknown>(): Promise<TOutput> {
+    return Promise.resolve(undefined as TOutput);
   }
 
-  protected performRender() {
+  protected override performRender() {
     const label = this.receptiveField.label ?? 'Test';
     const value = this.receptiveField.value ?? 0;
 

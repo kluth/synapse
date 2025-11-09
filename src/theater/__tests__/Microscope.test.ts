@@ -1,5 +1,36 @@
 import { Microscope, type MicroscopeLens, type InspectionResult } from '../instruments/Microscope';
 import { VisualNeuron } from '../../ui/VisualNeuron';
+import type { RenderSignal } from '../../ui/types';
+import type { Input } from '../../types';
+
+// Test component implementation
+class TestVisualComponent extends VisualNeuron<{ name: string }> {
+  protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
+    _input: Input<_TInput>,
+  ): Promise<TOutput> {
+    return undefined as TOutput;
+  }
+
+  protected performRender(): RenderSignal {
+    return {
+      type: 'render',
+      data: {
+        vdom: {
+          tag: 'div',
+          children: [this.receptiveField.name ?? 'Test'],
+        },
+        styles: {},
+        metadata: {
+          componentId: this.id,
+          renderCount: this.getRenderCount(),
+          lastRenderTime: Date.now(),
+        },
+      },
+      strength: 1.0,
+      timestamp: Date.now(),
+    };
+  }
+}
 
 describe('Microscope - Central Debugging Hub', () => {
   let microscope: Microscope;
@@ -114,7 +145,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       microscope.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       const result = await microscope.inspect(component);
 
       expect(result).toBeDefined();
@@ -123,7 +159,12 @@ describe('Microscope - Central Debugging Hub', () => {
     });
 
     it('should throw error when no lens available', async () => {
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
 
       await expect(microscope.inspect(component)).rejects.toThrow(
         'No lens available for mode: signals',
@@ -134,7 +175,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       microscope.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       await microscope.inspect(component);
 
       const history = microscope.getHistory();
@@ -150,7 +196,12 @@ describe('Microscope - Central Debugging Hub', () => {
         eventFired = true;
       });
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       await microscope.inspect(component);
 
       expect(eventFired).toBe(true);
@@ -160,7 +211,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       microscope.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       await microscope.inspect(component);
 
       expect(microscope.getCurrentComponent()).toBe(component);
@@ -172,7 +228,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       microscope.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
 
       await microscope.inspect(component);
       await microscope.inspect(component);
@@ -186,7 +247,12 @@ describe('Microscope - Central Debugging Hub', () => {
       microscope.registerLens(createMockLens('signals'));
       microscope.registerLens(createMockLens('state'));
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
 
       await microscope.inspect(component);
 
@@ -204,7 +270,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       microscope.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       await microscope.inspect(component);
 
       microscope.clearHistory();
@@ -217,7 +288,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       limited.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
 
       for (let i = 0; i < 10; i++) {
         await limited.inspect(component);
@@ -261,7 +337,12 @@ describe('Microscope - Central Debugging Hub', () => {
       microscope.registerLens(createMockLens('signals'));
       microscope.registerLens(createMockLens('state'));
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       await microscope.inspect(component);
 
       const exported = microscope.exportData();
@@ -303,7 +384,12 @@ describe('Microscope - Central Debugging Hub', () => {
       const lens = createMockLens('signals');
       microscope.registerLens(lens);
 
-      const component = new VisualNeuron({ name: 'Test' });
+      const component = new TestVisualComponent({
+        id: 'test-component',
+        type: 'cortical',
+        threshold: 0.5,
+        props: { name: 'Test' },
+      });
       await microscope.inspect(component);
 
       await microscope.cleanup();

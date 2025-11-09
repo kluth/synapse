@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Muscle } from '../core/Muscle';
 
 /**
@@ -7,15 +5,23 @@ import { Muscle } from '../core/Muscle';
  */
 export class ReduceMuscle {
   static create<T, U>(reducer: (acc: U, item: T) => U, initialValue: U): Muscle<T[], U> {
-    return new Muscle('reduce', (arr: T[]) => arr.reduce(reducer, initialValue), {
-      deterministic: true,
-    });
+    return new Muscle(
+      'reduce',
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
+        return arr.reduce(reducer, initialValue);
+      },
+      {
+        deterministic: true,
+      },
+    );
   }
 
   static groupBy<T>(property: keyof T): Muscle<T[], Record<string, T[]>> {
     return new Muscle(
       'groupBy',
-      (arr: T[]) => {
+      (...args: unknown[]) => {
+        const arr = args[0] as T[];
         return arr.reduce(
           (acc, item) => {
             const key = String(item[property]);

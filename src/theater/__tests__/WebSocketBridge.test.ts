@@ -100,7 +100,7 @@ describe('WebSocketBridge - Real-time Communication', () => {
       const client = bridge.getClient('client1');
       expect(client).toBeDefined();
       expect(client?.id).toBe('client1');
-      expect(client?.metadata.browser).toBe('chrome');
+      expect(client?.metadata['browser']).toBe('chrome');
     });
 
     it('should disconnect client', () => {

@@ -49,7 +49,7 @@ describe('Schema', () => {
 
       expect(result.valid).toBe(false);
       expect(result.errors).toHaveLength(1);
-      expect(result.errors[0].field).toBe('age');
+      expect(result.errors[0]!.field).toBe('age');
     });
   });
 
@@ -66,8 +66,8 @@ describe('Schema', () => {
 
       expect(result.valid).toBe(false);
       expect(result.errors).toHaveLength(1);
-      expect(result.errors[0].field).toBe('age');
-      expect(result.errors[0].code).toBe('REQUIRED');
+      expect(result.errors[0]!.field).toBe('age');
+      expect(result.errors[0]!.code).toBe('REQUIRED');
     });
 
     it('should allow optional fields to be missing', () => {
@@ -130,7 +130,7 @@ describe('Schema', () => {
 
       expect(result.valid).toBe(false);
       expect(result.errors).toHaveLength(1);
-      expect(result.errors[0].field).toBe('email');
+      expect(result.errors[0]!.field).toBe('email');
     });
 
     it('should collect multiple validation errors', () => {
@@ -240,8 +240,8 @@ describe('Schema', () => {
 
       expect(result.valid).toBe(false);
       expect(result.errors).toHaveLength(1);
-      expect(result.errors[0].field).toBe('extra');
-      expect(result.errors[0].code).toBe('UNKNOWN_FIELD');
+      expect(result.errors[0]!.field).toBe('extra');
+      expect(result.errors[0]!.code).toBe('UNKNOWN_FIELD');
     });
   });
 
@@ -272,7 +272,7 @@ describe('Schema', () => {
 
       expect(result.valid).toBe(false);
       expect(result.errors).toHaveLength(1);
-      expect(result.errors[0].code).toBe('REQUIRED');
+      expect(result.errors[0]!.code).toBe('REQUIRED');
     });
 
     it('should validate empty object with all optional fields', () => {

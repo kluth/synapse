@@ -4,16 +4,17 @@
 
 import { SensoryNeuron } from '../SensoryNeuron';
 import type { RenderSignal, UIEventSignal } from '../types';
+import type { Input, Signal } from '../../types';
 
 // Mock DOM Event
 class MockDOMEvent {
   type: string;
-  target: any;
-  currentTarget: any;
+  target: Record<string, unknown>;
+  currentTarget: Record<string, unknown>;
   preventDefault = jest.fn();
   stopPropagation = jest.fn();
 
-  constructor(type: string, target: any = {}) {
+  constructor(type: string, target: Record<string, unknown> = {}) {
     this.type = type;
     this.target = target;
     this.currentTarget = target;
@@ -55,16 +56,21 @@ class TestInputNeuron extends SensoryNeuron<
     };
   }
 
-  protected override async executeProcessing<TInput = unknown, TOutput = unknown>(
-    input: any,
+  protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
+    input: Input<_TInput>,
   ): Promise<TOutput> {
-    const signal = input.data;
+    const signal = input.data as
+      | {
+          type?: string;
+          data?: { payload?: { value?: string }; data?: { payload?: { value?: string } } };
+        }
+      | undefined;
     if (signal?.type === 'ui:focus') {
       this.setState({ focused: true });
     } else if (signal?.type === 'ui:blur') {
       this.setState({ focused: false });
     } else if (signal?.type === 'ui:input') {
-      const value = signal.data?.payload?.value ?? signal.data?.data?.payload?.value;
+      const value = signal.data?.payload?.value ?? signal.data?.data?.payload?.value ?? '';
       this.setState({ value });
       this.getProps().onChange(value);
     }
@@ -105,37 +111,43 @@ describe('SensoryNeuron', () => {
 
     it('should capture click interactions', async () => {
       const mockEvent = new MockDOMEvent('click', { value: 'test' });
-      const signals: any[] = [];
+      const signals: unknown[] = [];
 
-      neuron.on('signal', (signal) => signals.push(signal));
+      neuron.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       await neuron.captureInteraction(mockEvent, 'ui:click', {});
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const clickSignals = signals.filter((s) => s.type === 'ui:click');
+      const clickSignals = signals.filter((s: any) => s.type === 'ui:click');
       expect(clickSignals.length).toBeGreaterThan(0);
     });
 
     it('should capture input events and convert to neural signals', async () => {
       const mockEvent = new MockDOMEvent('input', { value: 'hello' });
-      const signals: any[] = [];
+      const signals: unknown[] = [];
 
-      neuron.on('signal', (signal) => signals.push(signal));
+      neuron.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       await neuron.captureInteraction(mockEvent, 'ui:input', { value: 'hello' });
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const inputSignals = signals.filter((s) => s.type === 'ui:input');
+      const inputSignals = signals.filter((s: any) => s.type === 'ui:input');
       expect(inputSignals.length).toBeGreaterThan(0);
     });
 
     it('should capture focus events', async () => {
       const mockEvent = new MockDOMEvent('focus', {});
-      const signals: any[] = [];
+      const signals: unknown[] = [];
 
-      neuron.on('signal', (signal) => signals.push(signal));
+      neuron.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       await neuron.captureInteraction(mockEvent, 'ui:focus', {});
 
@@ -150,7 +162,7 @@ describe('SensoryNeuron', () => {
         data: { payload: {}, target: neuron.id },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -173,8 +185,8 @@ describe('SensoryNeuron', () => {
       let capturedSignal: UIEventSignal | null = null;
 
       neuron.on('signal', (signal) => {
-        if (signal.type === 'ui:input') {
-          capturedSignal = signal;
+        if ((signal as { type: string }).type === 'ui:input') {
+          capturedSignal = signal as UIEventSignal;
         }
       });
 
@@ -185,7 +197,7 @@ describe('SensoryNeuron', () => {
       expect(capturedSignal).not.toBeNull();
       expect(capturedSignal!.type).toBe('ui:input');
       expect(capturedSignal!.data.target).toBe(neuron.id);
-      expect(capturedSignal!.data.payload).toEqual({ value: 'test' });
+      expect(capturedSignal!.data['payload']).toEqual({ value: 'test' });
     });
 
     it('should include DOM event reference in signal', async () => {
@@ -193,8 +205,8 @@ describe('SensoryNeuron', () => {
       let capturedSignal: UIEventSignal | null = null;
 
       neuron.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
-          capturedSignal = signal;
+        if ((signal as { type: string }).type === 'ui:click') {
+          capturedSignal = signal as UIEventSignal;
         }
       });
 
@@ -217,7 +229,7 @@ describe('SensoryNeuron', () => {
         data: { payload: { value: 'hello world' }, target: neuron.id },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -227,15 +239,17 @@ describe('SensoryNeuron', () => {
 
     it('should handle keyboard events', async () => {
       const mockEvent = new MockDOMEvent('keydown', {});
-      const signals: any[] = [];
+      const signals: unknown[] = [];
 
-      neuron.on('signal', (signal) => signals.push(signal));
+      neuron.on('signal', (signal) => {
+        signals.push(signal);
+      });
 
       await neuron.captureInteraction(mockEvent, 'ui:keydown', { key: 'Enter' });
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const keySignals = signals.filter((s) => s.type === 'ui:keydown');
+      const keySignals = signals.filter((s: any) => s.type === 'ui:keydown');
       expect(keySignals.length).toBeGreaterThan(0);
     });
   });
@@ -250,8 +264,8 @@ describe('SensoryNeuron', () => {
       let capturedSignal: UIEventSignal | null = null;
 
       neuron.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
-          capturedSignal = signal;
+        if ((signal as { type: string }).type === 'ui:click') {
+          capturedSignal = signal as UIEventSignal;
         }
       });
 
@@ -267,8 +281,8 @@ describe('SensoryNeuron', () => {
       let capturedSignal: UIEventSignal | null = null;
 
       neuron.on('signal', (signal) => {
-        if (signal.type === 'ui:hover') {
-          capturedSignal = signal;
+        if ((signal as { type: string }).type === 'ui:hover') {
+          capturedSignal = signal as UIEventSignal;
         }
       });
 
@@ -283,7 +297,7 @@ describe('SensoryNeuron', () => {
   describe('Debouncing', () => {
     it('should debounce rapid input events', async () => {
       class DebouncedInput extends TestInputNeuron {
-        protected getRefractoryPeriod(): number {
+        protected override getRefractoryPeriod(): number {
           return 100;
         }
       }
@@ -309,7 +323,7 @@ describe('SensoryNeuron', () => {
           data: { payload: { value: `test${i}` }, target: debouncedNeuron.id },
           strength: 1.0,
           timestamp: Date.now(),
-        });
+        } as unknown as Signal);
       }
 
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -329,7 +343,7 @@ describe('SensoryNeuron', () => {
     it('should render different styles when focused', async () => {
       // Unfocused
       let renderSignal = neuron.render();
-      expect(renderSignal.data.styles.border).toBe('1px solid gray');
+      expect(renderSignal.data.styles['border']).toBe('1px solid gray');
 
       // Focus
       await neuron.receive({
@@ -337,12 +351,12 @@ describe('SensoryNeuron', () => {
         data: { payload: {}, target: neuron.id },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       renderSignal = neuron.render();
-      expect(renderSignal.data.styles.border).toBe('2px solid blue');
+      expect(renderSignal.data.styles['border']).toBe('2px solid blue');
     });
 
     it('should update rendered value when input changes', async () => {
@@ -351,12 +365,12 @@ describe('SensoryNeuron', () => {
         data: { payload: { value: 'new value' }, target: neuron.id },
         strength: 1.0,
         timestamp: Date.now(),
-      });
+      } as unknown as Signal);
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       const renderSignal = neuron.render();
-      expect(renderSignal.data.vdom.props!.value).toBe('new value');
+      expect(renderSignal.data.vdom.props!['value']).toBe('new value');
     });
   });
 
@@ -370,8 +384,8 @@ describe('SensoryNeuron', () => {
       let capturedSignal: UIEventSignal | null = null;
 
       neuron.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
-          capturedSignal = signal;
+        if ((signal as { type: string }).type === 'ui:click') {
+          capturedSignal = signal as UIEventSignal;
         }
       });
 
@@ -387,8 +401,8 @@ describe('SensoryNeuron', () => {
       let capturedSignal: UIEventSignal | null = null;
 
       neuron.on('signal', (signal) => {
-        if (signal.type === 'ui:click') {
-          capturedSignal = signal;
+        if ((signal as { type: string }).type === 'ui:click') {
+          capturedSignal = signal as UIEventSignal;
         }
       });
 

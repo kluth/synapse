@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument */
 /**
  * VisualAstrocyte - UI State Management
  * Neural-inspired state manager with time-travel debugging (like Redux/Zustand)
@@ -19,22 +18,22 @@ export interface StateSnapshot {
 
 export interface StateHistoryEntry {
   timestamp: number;
-  state: Record<string, any>;
+  state: Record<string, unknown>;
   action?: string;
 }
 
-type StateChangeCallback = (newValue: any, oldValue: any) => void;
-type StateMiddleware = (path: string, value: any, prevValue?: any) => any;
-type Selector = (state: Record<string, any>) => any;
+type StateChangeCallback = (newValue: unknown, oldValue: unknown) => void;
+type StateMiddleware = (path: string, value: unknown, prevValue?: unknown) => unknown;
+type Selector<T = unknown> = (state: Record<string, unknown>) => T;
 
 /**
  * VisualAstrocyte - Manages global UI state with time-travel debugging
  */
 export class VisualAstrocyte extends Astrocyte {
-  private uiState: Record<string, any> = {};
+  private uiState: Record<string, unknown> = {};
   private subscribers: Map<string, Set<StateChangeCallback>> = new Map();
-  private selectors: Map<string, Selector> = new Map();
-  private selectorCache: Map<string, { value: any; stateHash: string }> = new Map();
+  private selectors: Map<string, Selector<unknown>> = new Map();
+  private selectorCache: Map<string, { value: unknown; stateHash: string }> = new Map();
   private middleware: StateMiddleware[] = [];
 
   // Time-travel debugging
@@ -86,7 +85,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Get the entire state or a specific path
    */
-  public getState(path?: string): any {
+  public getState(path?: string): unknown {
     if (path === undefined || path === '') {
       return { ...this.uiState };
     }
@@ -97,7 +96,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Set state at a specific path
    */
-  public setState(path: string, value: any): void {
+  public setState(path: string, value: unknown): void {
     if (!path) return;
 
     const oldValue = this.getNestedValue(this.uiState, path);
@@ -190,7 +189,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Select derived state (memoized)
    */
-  public select(name: string): any {
+  public select(name: string): unknown {
     const selector = this.selectors.get(name);
     if (!selector) {
       throw new Error(`Selector '${name}' not found`);
@@ -301,13 +300,17 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Get nested value using path notation (e.g., "user.profile.name")
    */
-  private getNestedValue(obj: any, path: string): any {
+  private getNestedValue(obj: unknown, path: string): unknown {
     const keys = path.split('.');
     let current = obj;
 
     for (const key of keys) {
       if (current === null || current === undefined) return undefined;
-      current = current[key];
+      if (typeof current === 'object' && current !== null) {
+        current = (current as Record<string, unknown>)[key];
+      } else {
+        return undefined;
+      }
     }
 
     return current;
@@ -316,7 +319,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Set nested value using path notation
    */
-  private setNestedValue(obj: any, path: string, value: any): void {
+  private setNestedValue(obj: Record<string, unknown>, path: string, value: unknown): void {
     const keys = path.split('.');
     const lastKey = keys.pop();
     if (lastKey === undefined) return;
@@ -327,7 +330,7 @@ export class VisualAstrocyte extends Astrocyte {
       if (!(key in current)) {
         current[key] = {};
       }
-      current = current[key];
+      current = current[key] as Record<string, unknown>;
     }
 
     current[lastKey] = value;
@@ -336,7 +339,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Delete nested value using path notation
    */
-  private deleteNestedValue(obj: any, path: string): void {
+  private deleteNestedValue(obj: Record<string, unknown>, path: string): void {
     const keys = path.split('.');
     const lastKey = keys.pop();
     if (lastKey === undefined) return;
@@ -345,7 +348,7 @@ export class VisualAstrocyte extends Astrocyte {
 
     for (const key of keys) {
       if (!(key in current)) return;
-      current = current[key];
+      current = current[key] as Record<string, unknown>;
     }
 
     // Use Reflect.deleteProperty instead of dynamic delete
@@ -355,7 +358,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Notify subscribers of state changes
    */
-  private notifySubscribers(path: string, newValue: any, oldValue: any): void {
+  private notifySubscribers(path: string, newValue: unknown, oldValue: unknown): void {
     // Exact path match
     const exactCallbacks = this.subscribers.get(path);
     if (exactCallbacks) {
@@ -437,7 +440,7 @@ export class VisualAstrocyte extends Astrocyte {
   /**
    * Hash state for memoization
    */
-  private hashState(obj: any): string {
+  private hashState(obj: unknown): string {
     try {
       return JSON.stringify(obj);
     } catch {

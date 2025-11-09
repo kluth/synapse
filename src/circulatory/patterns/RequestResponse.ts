@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents */
-/* eslint-disable @typescript-eslint/require-await, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Heart } from '../core/Heart';
 import { BloodCell } from '../core/BloodCell';
 import { randomUUID } from 'crypto';
@@ -15,13 +12,13 @@ export interface RequestOptions {
 /**
  * Request handler
  */
-type RequestHandler = (request: BloodCell) => Promise<any> | any;
+type RequestHandler<TResponse = unknown> = (request: BloodCell) => Promise<TResponse> | TResponse;
 
 /**
  * Pending request
  */
-interface PendingRequest {
-  resolve: (value: any) => void;
+interface PendingRequest<TResponse = unknown> {
+  resolve: (value: TResponse) => void;
   reject: (error: Error) => void;
   timer: NodeJS.Timeout;
 }
@@ -37,8 +34,8 @@ interface PendingRequest {
  */
 export class RequestResponse {
   private heart: Heart;
-  private pendingRequests: Map<string, PendingRequest> = new Map();
-  private handlers: Map<string, RequestHandler> = new Map();
+  private pendingRequests: Map<string, PendingRequest<unknown>> = new Map();
+  private handlers: Map<string, RequestHandler<unknown>> = new Map();
 
   constructor(heart: Heart) {
     this.heart = heart;
@@ -57,18 +54,22 @@ export class RequestResponse {
   /**
    * Send a request and wait for response
    */
-  public async request(handler: string, payload: any, options: RequestOptions = {}): Promise<any> {
+  public async request<TPayload = unknown, TResponse = unknown>(
+    handler: string,
+    payload: TPayload,
+    options: RequestOptions = {},
+  ): Promise<TResponse> {
     const requestId = randomUUID();
     const timeout = options.timeout ?? 5000;
 
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise<TResponse>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pendingRequests.delete(requestId);
         reject(new Error('Request timeout'));
       }, timeout);
 
       this.pendingRequests.set(requestId, {
-        resolve,
+        resolve: resolve as (value: unknown) => void,
         reject,
         timer,
       });
@@ -89,7 +90,10 @@ export class RequestResponse {
   /**
    * Register request handler
    */
-  public onRequest(handler: string, callback: RequestHandler): void {
+  public onRequest<TResponse = unknown>(
+    handler: string,
+    callback: RequestHandler<TResponse>,
+  ): void {
     this.handlers.set(handler, callback);
   }
 

@@ -70,8 +70,8 @@ describe('Amphitheater - Component Gallery', () => {
 
       const categories = amphitheater.getCategories();
       expect(categories).toHaveLength(1);
-      expect(categories[0].id).toBe('Cards');
-      expect(categories[0].specimens).toContain('card-1');
+      expect(categories[0]!.id).toBe('Cards');
+      expect(categories[0]!.specimens).toContain('card-1');
     });
 
     it('should unregister a specimen', () => {
@@ -214,12 +214,12 @@ describe('Amphitheater - Component Gallery', () => {
 
       const buttonSpecimens = amphitheater.getSpecimensByCategory('Buttons');
       expect(buttonSpecimens).toHaveLength(2);
-      expect(buttonSpecimens[0].id).toBe('btn-1');
-      expect(buttonSpecimens[1].id).toBe('btn-2');
+      expect(buttonSpecimens[0]!.id).toBe('btn-1');
+      expect(buttonSpecimens[1]!.id).toBe('btn-2');
 
       const cardSpecimens = amphitheater.getSpecimensByCategory('Cards');
       expect(cardSpecimens).toHaveLength(1);
-      expect(cardSpecimens[0].id).toBe('card-1');
+      expect(cardSpecimens[0]!.id).toBe('card-1');
     });
 
     it('should return empty array for non-existent category', () => {
@@ -278,7 +278,7 @@ describe('Amphitheater - Component Gallery', () => {
       const filtered = amphitheater.getFilteredSpecimens();
 
       expect(filtered).toHaveLength(1);
-      expect(filtered[0].id).toBe('btn-primary');
+      expect(filtered[0]!.id).toBe('btn-primary');
     });
 
     it('should filter by multiple tags', () => {
@@ -300,19 +300,19 @@ describe('Amphitheater - Component Gallery', () => {
     it('should search by query in description', () => {
       const results = amphitheater.search('card component');
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('card-basic');
+      expect(results[0]!.id).toBe('card-basic');
     });
 
     it('should search by query in tags', () => {
       const results = amphitheater.search('form');
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('input-text');
+      expect(results[0]!.id).toBe('input-text');
     });
 
     it('should search case-insensitively', () => {
       const results = amphitheater.search('PRIMARY');
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe('btn-primary');
+      expect(results[0]!.id).toBe('btn-primary');
     });
 
     it('should combine filters', () => {
@@ -323,7 +323,7 @@ describe('Amphitheater - Component Gallery', () => {
       const filtered = amphitheater.getFilteredSpecimens();
 
       expect(filtered).toHaveLength(1);
-      expect(filtered[0].id).toBe('btn-primary');
+      expect(filtered[0]!.id).toBe('btn-primary');
     });
 
     it('should emit filter:change event', () => {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/require-await, @typescript-eslint/prefer-optional-chain */
 /**
  * Amphitheater - Component observation gallery
  *

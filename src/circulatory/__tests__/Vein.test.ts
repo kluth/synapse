@@ -35,7 +35,7 @@ describe('Vein', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(received).toHaveLength(1);
-      expect(received[0].payload).toEqual({ data: 'test' });
+      expect(received[0]!.payload).toEqual({ data: 'test' });
 
       await vein.stop();
     });
@@ -268,8 +268,8 @@ describe('Vein', () => {
       const msg1 = await vein.pull();
       const msg2 = await vein.pull();
 
-      expect(msg1?.payload.data).toBe(1);
-      expect(msg2?.payload.data).toBe(2);
+      expect((msg1?.payload as { data: number }).data).toBe(1);
+      expect((msg2?.payload as { data: number }).data).toBe(2);
 
       await vein.stop();
     });
@@ -301,8 +301,8 @@ describe('Vein', () => {
       const batch = await vein.pullBatch(2);
 
       expect(batch).toHaveLength(2);
-      expect(batch[0].payload.data).toBe(1);
-      expect(batch[1].payload.data).toBe(2);
+      expect((batch[0]!.payload as { data: number }).data).toBe(1);
+      expect((batch[1]!.payload as { data: number }).data).toBe(2);
 
       await vein.stop();
     });
@@ -404,7 +404,7 @@ describe('Vein', () => {
       });
 
       vein.onMessage((cell) => {
-        if (cell.payload.data === 2) {
+        if ((cell.payload as any).data === 2) {
           throw new Error('Failed on 2');
         }
         received.push(cell);
@@ -548,7 +548,7 @@ describe('Vein', () => {
       await vein.start();
 
       vein.onMessage((cell) => {
-        received.push(cell.payload.data);
+        received.push((cell.payload as any).data);
       });
 
       for (let i = 1; i <= 10; i++) {
@@ -572,7 +572,7 @@ describe('Vein', () => {
       await vein.start();
 
       vein.onMessage((cell) => {
-        received.push(cell.payload.data);
+        received.push((cell.payload as any).data);
       });
 
       await vein.receive(new BloodCell({ data: 1 }, { priority: 0 }));

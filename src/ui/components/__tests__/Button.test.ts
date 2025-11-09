@@ -38,13 +38,13 @@ describe('Button Component', () => {
 
     it('should apply variant class', () => {
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.className).toContain('primary');
+      expect(rendered.data.vdom.props?.['className']).toContain('primary');
     });
 
     it('should render as disabled', () => {
       button.updateProps({ disabled: true });
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.disabled).toBe(true);
+      expect(rendered.data.vdom.props?.['disabled']).toBe(true);
     });
   });
 
@@ -106,19 +106,19 @@ describe('Button Component', () => {
     it('should support primary variant', () => {
       button.updateProps({ variant: 'primary' });
       const rendered = button.render();
-      expect(rendered.data.styles.backgroundColor).toBeDefined();
+      expect(rendered.data.styles['backgroundColor']).toBeDefined();
     });
 
     it('should support secondary variant', () => {
       button.updateProps({ variant: 'secondary' });
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.className).toContain('secondary');
+      expect(rendered.data.vdom.props?.['className']).toContain('secondary');
     });
 
     it('should support danger variant', () => {
       button.updateProps({ variant: 'danger' });
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.className).toContain('danger');
+      expect(rendered.data.vdom.props?.['className']).toContain('danger');
     });
   });
 
@@ -126,13 +126,13 @@ describe('Button Component', () => {
     it('should support small size', () => {
       button.updateProps({ size: 'small' });
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.className).toContain('small');
+      expect(rendered.data.vdom.props?.['className']).toContain('small');
     });
 
     it('should support large size', () => {
       button.updateProps({ size: 'large' });
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.className).toContain('large');
+      expect(rendered.data.vdom.props?.['className']).toContain('large');
     });
   });
 
@@ -140,8 +140,8 @@ describe('Button Component', () => {
     it('should show loading state', () => {
       button.updateProps({ loading: true });
       const rendered = button.render();
-      expect(rendered.data.vdom.props?.disabled).toBe(true);
-      expect(rendered.data.vdom.props?.className).toContain('loading');
+      expect(rendered.data.vdom.props?.['disabled']).toBe(true);
+      expect(rendered.data.vdom.props?.['className']).toContain('loading');
     });
   });
 });
