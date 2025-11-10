@@ -221,7 +221,7 @@ export class Macrophage extends EventEmitter {
       aggressive: config.aggressive ?? false,
       customRules: config.customRules ?? [],
       htmlAllowedTags: config.htmlAllowedTags ?? ['b', 'i', 'u', 'em', 'strong', 'p', 'br'],
-      maxLength: config.maxLength ?? 0,
+      maxLength: config.maxLength ?? 10000,
     };
 
     // Load custom rules

@@ -560,7 +560,7 @@ const strict = new Macrophage({
   htmlEncode: true,
   stripScripts: true,          // Remove all scripts
   allowedTags: ['p', 'br'],    // Only allow specific HTML tags
-  maxLength: 10000,            // Maximum input length
+  maxLength: 10000,            // Maximum input length. Defaults to 10000.
 });
 
 // Lenient sanitization

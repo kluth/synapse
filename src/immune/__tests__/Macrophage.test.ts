@@ -69,6 +69,16 @@ describe('Macrophage - Input Sanitization System', () => {
       expect(result.modified).toBe(false);
     });
 
+    it('should apply default maxLength if not provided', () => {
+      const defaultMacrophage = new Macrophage({ verbose: false }); // No maxLength provided
+      const longInput = 'a'.repeat(10001); // 10001 characters
+      const result = defaultMacrophage.sanitizeHTML(longInput);
+
+      expect(result.value.length).toBe(10000);
+      expect(result.modified).toBe(true);
+      expect(result.removed).toContain('truncated 1 characters');
+    });
+
     it('should truncate long inputs', () => {
       const short = new Macrophage({ maxLength: 10, verbose: false });
       const input = 'This is a very long input string';

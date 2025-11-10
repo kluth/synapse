@@ -598,7 +598,7 @@ interface MacrophageConfig {
   htmlEncode?: boolean - Enable HTML encoding for output (optional).
   stripScripts?: boolean - Remove all script tags from input (optional).
   allowedTags?: string[] - List of allowed HTML tags (optional).
-  maxLength?: number - Maximum allowed input length (optional).
+  maxLength?: number - Maximum allowed input length. Defaults to `10000`.
 }
 ```
 
