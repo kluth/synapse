@@ -4,6 +4,7 @@
  */
 
 import { Astrocyte } from '../../glial/Astrocyte';
+import { randomUUID } from 'crypto';
 
 export interface VisualAstrocyteConfig {
   id: string;
@@ -445,7 +446,7 @@ export class VisualAstrocyte extends Astrocyte {
       return JSON.stringify(obj);
     } catch {
       // Circular reference - use timestamp as unique hash
-      return String(Date.now()) + Math.random();
+      return String(Date.now()) + randomUUID();
     }
   }
 }

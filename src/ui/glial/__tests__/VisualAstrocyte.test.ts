@@ -4,11 +4,20 @@
  */
 
 import { VisualAstrocyte } from '../VisualAstrocyte';
+import { randomUUID } from 'crypto'; // Import directly from crypto
+
+jest.mock('crypto', () => ({
+  ...jest.requireActual('crypto'),
+  randomUUID: jest.fn(() => 'mock-uuid'),
+}));
+
+const mockRandomUUID = randomUUID as jest.Mock; // Use the directly imported randomUUID
 
 describe('VisualAstrocyte - UI State Management', () => {
   let astrocyte: VisualAstrocyte;
 
   beforeEach(() => {
+    mockRandomUUID.mockClear();
     astrocyte = new VisualAstrocyte({
       id: 'ui-state-manager',
       maxHistorySize: 50,
@@ -447,6 +456,19 @@ describe('VisualAstrocyte - UI State Management', () => {
       expect(() => {
         astrocyte.setState('circular', circular);
       }).not.toThrow();
+    });
+
+    it('should use randomUUID for hashState when circular references exist', () => {
+      const circular: { a: number; self?: unknown } = { a: 1 };
+      circular.self = circular;
+
+      astrocyte.setState('circular', circular);
+      // Trigger hashState via selector memoization
+      // We need a selector that accesses the 'circular' state
+      astrocyte.registerSelector('circularState', (state) => state['circular']);
+      astrocyte.select('circularState');
+
+      expect(mockRandomUUID).toHaveBeenCalled();
     });
 
     it('should handle errors in selector functions', () => {
