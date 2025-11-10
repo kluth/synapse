@@ -48,9 +48,9 @@ class NeuralNode implements INeuralNode {
 **Config**:
 ```typescript
 interface NeuralNodeConfig {
-  id: string              // Unique identifier
-  type: NeuronType        // 'cortical' | 'reflex' | 'sensory' | 'motor'
-  threshold: number       // Activation threshold (0.0 - 1.0)
+  id: string - Unique identifier for the neural node.
+  type: NeuronType - The type of neuron ('cortical' | 'reflex' | 'sensory' | 'motor').
+  threshold: number - Activation threshold (0.0 - 1.0) for the neural node.
 }
 ```
 
@@ -130,11 +130,11 @@ class Connection implements IConnection {
 **Config**:
 ```typescript
 interface ConnectionConfig {
-  source: INeuralNode                    // Source neuron
-  target: INeuralNode                    // Target neuron
-  weight: number                         // Signal amplification (0.0 - 1.0)
-  type: ConnectionType                   // 'excitatory' | 'inhibitory' | 'modulatory'
-  speed: TransmissionSpeed               // 'myelinated' | 'unmyelinated'
+  source: INeuralNode - The source neural node of the connection.
+  target: INeuralNode - The target neural node of the connection.
+  weight: number - Signal amplification (0.0 - 1.0) for the connection.
+  type: ConnectionType - The type of connection ('excitatory' | 'inhibitory' | 'modulatory').
+  speed: TransmissionSpeed - The transmission speed of the connection ('myelinated' | 'unmyelinated').
 }
 ```
 
@@ -315,8 +315,8 @@ class Heart extends EventEmitter {
 **Options**:
 ```typescript
 interface HeartOptions {
-  persistence?: boolean       // Persist messages
-  maxQueueSize?: number      // Queue capacity
+  persistence?: boolean - Whether to persist messages (optional).
+  maxQueueSize?: number - The maximum capacity of the message queue (optional).
 }
 ```
 
@@ -464,12 +464,12 @@ class TCell extends EventEmitter {
 **Config**:
 ```typescript
 interface TCellConfig {
-  id: string
-  algorithm: 'HS256' | 'HS384' | 'HS512' | 'RS256'
-  secretKey: string
-  expiresIn?: string          // e.g., '1h', '7d'
-  refreshEnabled?: boolean
-  mfaEnabled?: boolean
+  id: string - Unique identifier for the TCell instance.
+  algorithm: 'HS256' | 'HS384' | 'HS512' | 'RS256' - The JWT signing algorithm to use.
+  secretKey: string - The secret key used for signing JWTs.
+  expiresIn?: string - Token expiration time (e.g., '1h', '7d') (optional).
+  refreshEnabled?: boolean - Whether token refresh is enabled (optional).
+  mfaEnabled?: boolean - Whether Multi-Factor Authentication is enabled (optional).
 }
 ```
 
@@ -590,15 +590,15 @@ class Macrophage extends EventEmitter {
 **Config**:
 ```typescript
 interface MacrophageConfig {
-  id: string
-  xss?: boolean               // XSS protection
-  sqlInjection?: boolean      // SQL injection protection
-  commandInjection?: boolean  // Command injection protection
-  pathTraversal?: boolean     // Path traversal protection
-  htmlEncode?: boolean        // HTML encoding
-  stripScripts?: boolean      // Remove all scripts
-  allowedTags?: string[]      // Allowed HTML tags
-  maxLength?: number          // Max input length
+  id: string - Unique identifier for the Macrophage instance.
+  xss?: boolean - Enable XSS (Cross-Site Scripting) protection (optional).
+  sqlInjection?: boolean - Enable SQL injection protection (optional).
+  commandInjection?: boolean - Enable command injection protection (optional).
+  pathTraversal?: boolean - Enable path traversal protection (optional).
+  htmlEncode?: boolean - Enable HTML encoding for output (optional).
+  stripScripts?: boolean - Remove all script tags from input (optional).
+  allowedTags?: string[] - List of allowed HTML tags (optional).
+  maxLength?: number - Maximum allowed input length (optional).
 }
 ```
 
@@ -700,11 +700,11 @@ class Muscle<TInput, TOutput> {
 **Options**:
 ```typescript
 interface MuscleOptions {
-  inputSchema?: Bone              // Validate inputs
-  outputSchema?: Bone             // Validate outputs
-  deterministic?: boolean         // Enable memoization
-  retry?: RetryPolicy             // Retry configuration
-  metadata?: MuscleMetadata       // Additional metadata
+  inputSchema?: Bone - Schema for validating inputs (optional).
+  outputSchema?: Bone - Schema for validating outputs (optional).
+  deterministic?: boolean - Enable memoization for deterministic functions (optional).
+  retry?: RetryPolicy - Configuration for retrying function execution (optional).
+  metadata?: MuscleMetadata - Additional metadata for the muscle (optional).
 }
 ```
 
@@ -784,9 +784,9 @@ class Astrocyte extends EventEmitter {
 **Config**:
 ```typescript
 interface AstrocyteConfig {
-  id: string
-  maxSize?: number            // Max items (LRU eviction)
-  defaultTTL?: number         // Default TTL in ms
+  id: string - Unique identifier for the Astrocyte instance.
+  maxSize?: number - Maximum number of items to store (for LRU eviction) (optional).
+  defaultTTL?: number - Default Time-To-Live in milliseconds for cached items (optional).
 }
 ```
 
@@ -947,12 +947,12 @@ type TransmissionSpeed = 'myelinated' | 'unmyelinated';
 type NodeState = 'inactive' | 'active' | 'firing' | 'refractory' | 'failed';
 
 interface Signal {
-  id: string;
-  sourceId: string;
-  type: ConnectionType;
-  strength: number;        // 0.0 - 1.0
-  payload: unknown;
-  timestamp: Date;
+  id: string - Unique identifier for the signal.
+  sourceId: string - The ID of the source neuron that emitted the signal.
+  type: ConnectionType - The type of connection ('excitatory' | 'inhibitory' | 'modulatory').
+  strength: number - The strength of the signal (0.0 - 1.0).
+  payload: unknown - The actual data payload carried by the signal.
+  timestamp: Date - The timestamp when the signal was created.
 }
 
 interface Decision {
