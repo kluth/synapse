@@ -725,26 +725,15 @@ console.log(result);  // 'HELLO'
 
 ### MuscleGroup
 
-Function pipeline.
+A `MuscleGroup` orchestrates a series of `Muscle` instances into a data processing pipeline. The output of one `Muscle` becomes the input for the next, allowing for complex transformations to be built from simple, reusable functions.
 
-```typescript
-class MuscleGroup<TInput, TOutput> {
-  constructor(name: string, muscles: Muscle[])
-
-  // Execution
-  execute(input: TInput): Promise<TOutput>
-
-  // Properties
-  readonly name: string
-  readonly muscles: Muscle[]
-}
-```
-
-**Example**:
 ```typescript
 const pipeline = new MuscleGroup('data-pipeline', [
+  // 1. Parse the CSV string into an array of lines
   new Muscle('parse', (csv) => csv.split('\n')),
+  // 2. Filter out any empty lines
   new Muscle('filter', (lines) => lines.filter(line => line.length > 0)),
+  // 3. Convert each line to uppercase
   new Muscle('map', (lines) => lines.map(line => line.toUpperCase())),
 ]);
 
