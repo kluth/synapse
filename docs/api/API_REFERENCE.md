@@ -834,27 +834,39 @@ class Stage extends EventEmitter {
   getState(): string
 
   // Component Management
-  mount(id: string, component: unknown): void
-  unmount(id: string): void
-  getComponent(id: string): unknown
+  mount(element: HTMLElement, id?: string): Promise<void>
+  unmount(): Promise<void>
+  getMountedComponent(): MountedComponent | null
 
   // Events
   on(event: string, handler: (...args: unknown[]) => void): this
 }
 ```
 
-**Example**:
+**Methods**:
+
+#### `mount(element: HTMLElement, id?: string): Promise<void>`
+Mounts an HTML element (component) onto the Stage for rendering and observation. If a component is already mounted, it will be unmounted first. The `id` is optional and defaults to 'component'. This method handles the rendering based on the configured `isolation` mode (iframe, shadow-dom, or none).
+
 ```typescript
 const stage = new Stage({ title: 'My Tests', darkMode: false });
+await stage.initialize(document.getElementById('stage-container')!);
 
-stage.mount('my-component', myComponent);
+const myComponentElement = document.createElement('div');
+myComponentElement.textContent = 'Hello from my component!';
 
-await stage.start();
+await stage.mount(myComponentElement, 'my-component-id');
 
-const component = stage.getComponent('my-component');
-const result = await component.doSomething();
+const mounted = stage.getMountedComponent();
+console.log('Mounted component ID:', mounted?.id);
+```
 
-await stage.stop();
+#### `unmount(): Promise<void>`
+Unmounts the currently active component from the Stage and clears its container. This method ensures that the DOM is cleaned up and resources are released.
+
+```typescript
+await stage.unmount();
+console.log('Component unmounted. Has mounted component:', stage.hasMountedComponent());
 ```
 
 ### Laboratory
