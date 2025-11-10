@@ -6,7 +6,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { createHash, randomBytes, createHmac } from 'crypto';
+import { createHash, randomBytes, createHmac, timingSafeEqual } from 'crypto';
 
 /**
  * Authentication method types
@@ -466,7 +466,14 @@ export class TCell extends EventEmitter {
 
     // Verify password
     const passwordHash = await this.hashPassword(password, user.salt);
-    const passwordValid = passwordHash === user.passwordHash;
+    const expectedHashBuffer = Buffer.from(user.passwordHash, 'hex');
+    const actualHashBuffer = Buffer.from(passwordHash, 'hex');
+
+    // Ensure both buffers have the same length to prevent timing attacks
+    // if one hash is shorter than the other due to an error.
+    const passwordValid =
+      expectedHashBuffer.length === actualHashBuffer.length &&
+      timingSafeEqual(expectedHashBuffer, actualHashBuffer);
 
     if (!passwordValid) {
       user.failedAttempts++;
