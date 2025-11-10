@@ -237,10 +237,54 @@ export class Astrocyte {
       return allKeys;
     }
 
-    // Simple glob pattern matching (supports *)
+    // Validate pattern to prevent ReDoS attacks (CWE-1333)
+    this.validateGlobPattern(pattern);
+
+    // Simple glob pattern matching (supports * and ?)
     const regex = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
 
     return allKeys.filter((key) => regex.test(key));
+  }
+
+  /**
+   * Validate glob pattern to prevent ReDoS attacks
+   * Checks for dangerous patterns that could cause exponential backtracking
+   */
+  private validateGlobPattern(pattern: string): void {
+    // 1. Check pattern length (prevent extremely long patterns)
+    if (pattern.length > 1000) {
+      throw new Error('Pattern too long (max 1000 characters)');
+    }
+
+    // 2. Check for consecutive wildcards first (e.g., "**", "***", etc.)
+    if (/\*{2,}/.test(pattern)) {
+      throw new Error('Pattern contains consecutive wildcards');
+    }
+
+    // 3. Check wildcard density (prevent excessive wildcards)
+    const wildcardCount = (pattern.match(/[*?]/g) || []).length;
+    const wildcardDensity = wildcardCount / pattern.length;
+
+    if (wildcardDensity > 0.5) {
+      throw new Error('Pattern has too many wildcards (max 50% density)');
+    }
+
+    // 4. Limit total number of wildcards
+    if (wildcardCount > 20) {
+      throw new Error('Pattern has too many wildcards (max 20)');
+    }
+
+    // 5. Check for forbidden patterns that could cause catastrophic backtracking
+    const dangerousPatterns = [
+      /(\*.*){3,}/, // Multiple wildcards with content between
+      /(\?.*){10,}/, // Many single-char wildcards
+    ];
+
+    for (const dangerous of dangerousPatterns) {
+      if (dangerous.test(pattern)) {
+        throw new Error('Pattern contains potentially dangerous regex structure');
+      }
+    }
   }
 
   /**

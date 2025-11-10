@@ -18,6 +18,7 @@ export { Astrocyte, Oligodendrocyte, Microglia, Ependymal } from './glial';
 
 // Communication
 export { EventBus } from './communication';
+export { Heart } from './circulatory/core/Heart';
 
 // Network management
 export { NeuralCircuit } from './network';
@@ -59,6 +60,7 @@ export type {
 
 // Schemas
 export { SignalSchema, EventSchema } from './types';
+export { Bone } from './skeletal/core/Bone';
 
 /**
  * Framework version

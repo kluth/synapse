@@ -216,6 +216,60 @@ describe('Astrocyte - State Management System', () => {
     });
   });
 
+  describe('ReDoS protection', () => {
+    beforeEach(async () => {
+      await astrocyte.activate();
+      await astrocyte.set('test:key1', 'value1');
+      await astrocyte.set('test:key2', 'value2');
+    });
+
+    it('should reject patterns that are too long', () => {
+      const longPattern = 'a'.repeat(1001);
+      expect(() => astrocyte.keys(longPattern)).toThrow('Pattern too long');
+    });
+
+    it('should reject patterns with too many wildcards', () => {
+      // Create pattern with many wildcards but not triggering other checks
+      const densePattern = '*?*?*?*?*?*?*?*?*?*?*?*?*?'; // High wildcard density
+      expect(() => astrocyte.keys(densePattern)).toThrow('too many wildcards');
+    });
+
+    it('should reject patterns with consecutive wildcards', () => {
+      expect(() => astrocyte.keys('test:key**value')).toThrow('consecutive wildcards');
+      expect(() => astrocyte.keys('a***b')).toThrow('consecutive wildcards');
+    });
+
+    it('should reject patterns with more than 20 wildcards', () => {
+      const manyWildcards = 'a*'.repeat(21); // 21 wildcards
+      expect(() => astrocyte.keys(manyWildcards)).toThrow('too many wildcards');
+    });
+
+    it('should reject potentially dangerous patterns', () => {
+      // Pattern that could cause catastrophic backtracking
+      const dangerous = 'a*a*a*a*a*a*b';
+      expect(() => astrocyte.keys(dangerous)).toThrow('dangerous regex structure');
+    });
+
+    it('should accept safe patterns', () => {
+      // These should work without throwing
+      expect(() => astrocyte.keys('test:*')).not.toThrow();
+      expect(() => astrocyte.keys('test:key?')).not.toThrow();
+      expect(() => astrocyte.keys('*:key1')).not.toThrow();
+      expect(() => astrocyte.keys('test:*:*')).not.toThrow();
+    });
+
+    it('should not cause DoS with malicious patterns', () => {
+      // This test ensures the validation catches the pattern before regex execution
+      const maliciousPattern = 'a*a*a*a*a*a*a*a*a*a*a*b';
+      const startTime = Date.now();
+
+      expect(() => astrocyte.keys(maliciousPattern)).toThrow();
+
+      const duration = Date.now() - startTime;
+      expect(duration).toBeLessThan(100); // Should fail fast, not hang
+    });
+  });
+
   describe('statistics and monitoring', () => {
     beforeEach(async () => {
       await astrocyte.activate();

@@ -116,7 +116,8 @@ describe('Macrophage - Input Sanitization System', () => {
       const input = 'value /* comment */ more';
       const result = macrophage.sanitizeSQL(input);
 
-      expect(result.value).toBe('value  more');
+      // Comments replaced with space, then normalized to single space
+      expect(result.value).toBe('value more');
       expect(result.modified).toBe(true);
     });
 
@@ -141,6 +142,84 @@ describe('Macrophage - Input Sanitization System', () => {
       const input = "'; DROP TABLE users; --";
       const result = macrophage.sanitizeSQL(input);
 
+      expect(result.value).toContain("''");
+      expect(result.modified).toBe(true);
+    });
+
+    // Enhanced tests for Issue #42
+    it('should remove additional dangerous SQL keywords (EXEC, EXECUTE, DECLARE)', () => {
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+
+      const execTest = aggressive.sanitizeSQL('1; EXEC xp_cmdshell');
+      expect(execTest.value).not.toContain('EXEC');
+
+      const executeTest = aggressive.sanitizeSQL('1; EXECUTE sp_executesql');
+      expect(executeTest.value).not.toContain('EXECUTE');
+
+      const declareTest = aggressive.sanitizeSQL('DECLARE @var INT');
+      expect(declareTest.value).not.toContain('DECLARE');
+    });
+
+    it('should remove more SQL keywords (ALTER, TRUNCATE, MERGE)', () => {
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+
+      const alterTest = aggressive.sanitizeSQL('ALTER TABLE users');
+      expect(alterTest.value).not.toContain('ALTER');
+
+      const truncateTest = aggressive.sanitizeSQL('TRUNCATE TABLE logs');
+      expect(truncateTest.value).not.toContain('TRUNCATE');
+
+      const mergeTest = aggressive.sanitizeSQL('MERGE INTO target');
+      expect(mergeTest.value).not.toContain('MERGE');
+    });
+
+    it('should normalize Unicode to prevent encoding bypasses', () => {
+      // U+0053 = 'S', can be used for S\u0045LECT bypass
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+      const input = 'S\u0045LECT * FROM users'; // SELECT with Unicode E
+      const result = aggressive.sanitizeSQL(input);
+
+      // After normalization and keyword removal, SELECT should be gone
+      expect(result.value).not.toContain('SELECT');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove null bytes', () => {
+      const input = 'value\x00injection';
+      const result = macrophage.sanitizeSQL(input);
+
+      expect(result.value).not.toContain('\x00');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should normalize whitespace to prevent comment-based bypasses', () => {
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+      const input = 'SELECT/**/FROM/**/users'; // Comment-separated keywords
+      const result = aggressive.sanitizeSQL(input);
+
+      // Comments removed, whitespace normalized, keywords removed
+      expect(result.value).not.toContain('SELECT');
+      expect(result.value).not.toContain('FROM');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should handle combined bypass attempts', () => {
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+      const input = "'; UNION/**/ALL/**/SELECT password FROM users--";
+      const result = aggressive.sanitizeSQL(input);
+
+      expect(result.value).not.toContain('UNION');
+      expect(result.value).not.toContain('SELECT');
+      expect(result.value).toContain("''"); // Quotes escaped
+      expect(result.modified).toBe(true);
+    });
+
+    it('should prevent stacked query attacks', () => {
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+      const input = "value'; DROP TABLE users; --";
+      const result = aggressive.sanitizeSQL(input);
+
+      expect(result.value).not.toContain('DROP');
       expect(result.value).toContain("''");
       expect(result.modified).toBe(true);
     });

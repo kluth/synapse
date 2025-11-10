@@ -310,6 +310,7 @@ export class Macrophage extends EventEmitter {
 
   /**
    * Sanitize SQL input (prevent SQL injection)
+   * Enhanced with comprehensive keyword list and normalization (Issue #42)
    */
   public sanitizeSQL(input: string): SanitizationResult {
     this.stats.totalSanitizations++;
@@ -325,13 +326,17 @@ export class Macrophage extends EventEmitter {
       removed.push(`truncated ${original.length - value.length} characters`);
     }
 
-    // Escape single quotes
-    if (value.includes("'")) {
-      removed.push('single quotes');
-      value = value.replace(/'/g, "''");
+    // Normalize input to prevent encoding bypasses
+    // 1. Unicode normalization (prevent U+0053ELECT bypasses)
+    value = value.normalize('NFKC');
+
+    // 2. Remove null bytes
+    if (value.includes('\x00')) {
+      removed.push('null bytes');
+      value = value.replace(/\x00/g, '');
     }
 
-    // Remove SQL comments
+    // 3. Remove SQL comments (before keyword checks to prevent comment-based bypasses)
     if (value.includes('--')) {
       removed.push('SQL comments');
       value = value.replace(/--[^\n]*/g, '');
@@ -339,19 +344,68 @@ export class Macrophage extends EventEmitter {
 
     if (value.includes('/*')) {
       removed.push('block comments');
-      value = value.replace(/\/\*[\s\S]*?\*\//g, '');
+      value = value.replace(/\/\*[\s\S]*?\*\//g, ' '); // Replace with space to preserve word boundaries
     }
 
-    // In aggressive mode, remove common SQL keywords
+    // 4. Normalize whitespace (prevent SELECT/**/FROM bypasses)
+    // Do this after comment removal to handle multiple spaces from comment removal
+    const hadMultipleSpaces = /\s{2,}/.test(value);
+    value = value.replace(/\s+/g, ' ');
+    if (hadMultipleSpaces) {
+      removed.push('extra whitespace');
+    }
+
+    // Escape single quotes (standard SQL escaping)
+    if (value.includes("'")) {
+      removed.push('single quotes');
+      value = value.replace(/'/g, "''");
+    }
+
+    // In aggressive mode, remove dangerous SQL keywords
     if (this.config.aggressive) {
-      const sqlKeywords = ['UNION', 'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'CREATE'];
+      // Expanded keyword list (Issue #42)
+      const sqlKeywords = [
+        'SELECT',
+        'INSERT',
+        'UPDATE',
+        'DELETE',
+        'DROP',
+        'CREATE',
+        'ALTER',
+        'TRUNCATE',
+        'EXEC',
+        'EXECUTE',
+        'DECLARE',
+        'MERGE',
+        'UNION',
+        'JOIN',
+        'FROM',
+        'WHERE',
+        'HAVING',
+        'GRANT',
+        'REVOKE',
+        'CALL',
+        'PROCEDURE',
+        'FUNCTION',
+        'TRIGGER',
+        'VIEW',
+        'INDEX',
+        'DATABASE',
+        'TABLE',
+        'COLUMN',
+      ];
+
       for (const keyword of sqlKeywords) {
+        // Use word boundaries to avoid matching partial words
         const pattern = new RegExp(`\\b${keyword}\\b`, 'gi');
         if (pattern.test(value)) {
           removed.push(keyword);
-          value = value.replace(pattern, '');
+          value = value.replace(pattern, ' '); // Replace with space to maintain word boundaries
         }
       }
+
+      // Clean up multiple spaces after keyword removal
+      value = value.replace(/\s+/g, ' ').trim();
     }
 
     const modified = value !== original;

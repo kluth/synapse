@@ -8,6 +8,7 @@
  */
 
 import { test, expect } from '@playwright/test';
+import { showChart } from '../helpers/chart-helpers';
 
 test.describe('LineChart Visualization Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -18,7 +19,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-1: LineChart renders SVG element', async ({ page }) => {
     // GIVEN: A LineChart component with data
     // WHEN: The component is rendered in the browser
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: An SVG element appears in the DOM
     const svg = page.locator('#chart-container svg');
@@ -28,7 +29,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-2: LineChart path element is present', async ({ page }) => {
     // GIVEN: A LineChart with 5 data points
     // WHEN: The component renders
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The SVG contains a <path> element
     const path = page.locator('#chart-container svg path');
@@ -38,7 +39,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-3: LineChart has correct dimensions', async ({ page }) => {
     // GIVEN: A LineChart with width=800 and height=300
     // WHEN: The component renders
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The SVG has width="800" and height="300"
     const svg = page.locator('#chart-container svg');
@@ -51,7 +52,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-4: LineChart uses smooth curves when enabled', async ({ page }) => {
     // GIVEN: A LineChart with smooth=true
     // WHEN: The component renders
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The path uses cubic bezier curves (contains "C")
     const path = page.locator('#chart-container svg path').first();
@@ -62,7 +63,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-5: LineChart has correct color', async ({ page }) => {
     // GIVEN: A LineChart with color="#3b82f6"
     // WHEN: The component renders
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The line path has the correct stroke color
     const path = page.locator('#chart-container svg path').first();
@@ -73,7 +74,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-6: LineChart ID is correct', async ({ page }) => {
     // GIVEN: A LineChart component
     // WHEN: The chart is shown
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The chart ID is 'line-chart'
     const chartId = await page.locator('#chart-info code').textContent();
@@ -83,7 +84,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-7: LineChart render count is displayed', async ({ page }) => {
     // GIVEN: A rendered LineChart
     // WHEN: The chart is shown
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The render count is displayed and greater than 0
     const renderCount = await page.locator('#chart-render-count').textContent();
@@ -100,7 +101,7 @@ test.describe('LineChart Visualization Tests', () => {
     });
 
     // WHEN: The LineChart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
     await page.waitForTimeout(500);
 
     // THEN: No console errors occurred
@@ -109,7 +110,7 @@ test.describe('LineChart Visualization Tests', () => {
 
   test('VIS-LC-9: LineChart is accessible globally', async ({ page }) => {
     // GIVEN: A rendered LineChart
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // WHEN: Checking the global Synapse object
     const hasLineChart = await page.evaluate(() => {
@@ -123,7 +124,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-10: LineChart currentChart is set', async ({ page }) => {
     // GIVEN: A rendered LineChart
     // WHEN: The chart is shown
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: currentChart is set in the global object
     const hasCurrentChart = await page.evaluate(() => {
@@ -135,7 +136,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-11: LineChart SVG has viewBox attribute', async ({ page }) => {
     // GIVEN: A LineChart component
     // WHEN: The chart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The SVG has a viewBox attribute
     const svg = page.locator('#chart-container svg');
@@ -146,7 +147,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-12: LineChart path has fill attribute', async ({ page }) => {
     // GIVEN: A LineChart component
     // WHEN: The chart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The path has fill="none" (line only, no area fill)
     const path = page.locator('#chart-container svg path').first();
@@ -157,7 +158,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-13: LineChart path has stroke-width', async ({ page }) => {
     // GIVEN: A LineChart component
     // WHEN: The chart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The path has a stroke-width attribute
     const path = page.locator('#chart-container svg path').first();
@@ -168,7 +169,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-14: LineChart renders data points as circles when enabled', async ({ page }) => {
     // GIVEN: A LineChart with data points
     // WHEN: The chart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: Circle elements may be present for data points
     const svg = page.locator('#chart-container svg');
@@ -178,10 +179,10 @@ test.describe('LineChart Visualization Tests', () => {
 
   test('VIS-LC-15: Switching from LineChart to another chart works', async ({ page }) => {
     // GIVEN: A rendered LineChart
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // WHEN: Switching to a BarChart
-    await page.click('#show-bar-chart');
+    await showChart(page, 'bar');
 
     // THEN: The chart container updates to show BarChart
     const chartId = await page.locator('#chart-info code').textContent();
@@ -190,10 +191,10 @@ test.describe('LineChart Visualization Tests', () => {
 
   test('VIS-LC-16: LineChart container is cleared before rendering', async ({ page }) => {
     // GIVEN: A BarChart is already shown
-    await page.click('#show-bar-chart');
+    await showChart(page, 'bar');
 
     // WHEN: Switching to LineChart
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: Only one SVG element is in the container
     const svgCount = await page.locator('#chart-container svg').count();
@@ -203,7 +204,7 @@ test.describe('LineChart Visualization Tests', () => {
   test('VIS-LC-17: LineChart has accessibility role', async ({ page }) => {
     // GIVEN: A LineChart component
     // WHEN: The chart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: The SVG has role="img" for accessibility
     const svg = page.locator('#chart-container svg');
@@ -211,21 +212,34 @@ test.describe('LineChart Visualization Tests', () => {
     expect(role).toBe('img');
   });
 
-  test('VIS-LC-18: LineChart has aria-label', async ({ page }) => {
+  test('VIS-LC-18a: LineChart has a descriptive aria-label', async ({ page }) => {
     // GIVEN: A LineChart component
     // WHEN: The chart is rendered
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
-    // THEN: The SVG has an aria-label
-    const svg = page.locator('#chart-container svg');
+    // THEN: The SVG has a descriptive aria-label
+    const svg = page.locator('[data-testid="linechart-svg"]');
     const ariaLabel = await svg.getAttribute('aria-label');
-    expect(ariaLabel).toBeTruthy();
+    expect(ariaLabel).toContain('Line chart showing data from');
+  });
+
+  test('VIS-LC-21: LineChart is focusable via keyboard', async ({ page }) => {
+    // GIVEN: A LineChart component is rendered
+    await showChart(page, 'line');
+
+    // WHEN: The user presses the Tab key
+    await page.keyboard.press('Tab');
+
+    // THEN: The chart's SVG element should be focused
+    const focusedElement = page.locator(':focus');
+    const testId = await focusedElement.getAttribute('data-testid');
+    expect(testId).toBe('linechart-svg');
   });
 
   test('VIS-LC-19: LineChart activation changes currentChart reference', async ({ page }) => {
     // GIVEN: No chart is shown initially
     // WHEN: LineChart is activated
-    await page.click('#show-line-chart');
+    await showChart(page, 'line');
 
     // THEN: currentChart references a LineChart instance
     const isLineChart = await page.evaluate(() => {
@@ -235,16 +249,48 @@ test.describe('LineChart Visualization Tests', () => {
     expect(isLineChart).toBe(true);
   });
 
-  test('VIS-LC-20: Multiple LineChart renders increment render count', async ({ page }) => {
-    // GIVEN: A LineChart is shown
-    await page.click('#show-line-chart');
+  test('VIS-LC-23: Brush and zoom works correctly', async ({ page }) => {
+    // GIVEN: A LineChart is rendered
+    await showChart(page, 'line');
+    const initialDataCount = await page.evaluate(() => (window as any).Synapse.currentChart.receptiveField.data.length);
 
-    // WHEN: The same chart is shown again (re-rendered)
-    await page.click('#show-bar-chart');
-    await page.click('#show-line-chart');
+    // WHEN: The user brushes on the chart
+    await page.mouse.move(100, 150);
+    await page.mouse.down();
+    await page.mouse.move(300, 150);
+    await page.mouse.up();
 
-    // THEN: A new chart is created with its own render count
-    const newCount = await page.locator('#chart-render-count').textContent();
-    expect(newCount).toBeTruthy();
+    // THEN: The chart should be zoomed in
+    const zoomedDataCount = await page.evaluate(() => (window as any).Synapse.currentChart.receptiveField.data.length);
+    expect(zoomedDataCount).toBeLessThan(initialDataCount);
+
+    // WHEN: The user clicks the reset zoom button
+    await page.click('#reset-zoom');
+
+    // THEN: The chart should be reset
+    const resetDataCount = await page.evaluate(() => (window as any).Synapse.currentChart.receptiveField.data.length);
+    expect(resetDataCount).toBe(initialDataCount);
+  });
+
+  test('VIS-LC-22: Tooltip appears on hover and disappears on mouse out', async ({ page }) => {
+    // GIVEN: A LineChart is rendered
+    await showChart(page, 'line');
+    const firstPoint = page.locator('#chart-container svg circle').first();
+    const pointData = await page.evaluate(() => (window as any).Synapse.currentChart.receptiveField.data[0]);
+
+    // WHEN: The user hovers over the first point
+    await firstPoint.hover();
+
+    // THEN: A tooltip with the correct value should be visible
+    const tooltip = page.locator('#chart-container svg text');
+    await expect(tooltip).toBeVisible();
+    const tooltipText = await tooltip.textContent();
+    expect(tooltipText).toBe(pointData.y.toString());
+
+    // WHEN: The user moves the mouse away
+    await page.mouse.move(0, 0);
+
+    // THEN: The tooltip should not be visible
+    await expect(tooltip).not.toBeVisible();
   });
 });

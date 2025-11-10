@@ -23,15 +23,33 @@ Here are the most recommended security headers for production environments:
 *   **Purpose**: A powerful header that provides granular control over the resources (scripts, styles, images, etc.) a web application can load. By defining a whitelist of trusted sources, CSP effectively defends against Cross-Site Scripting (XSS) and other code injection attacks.
 *   **Example**:
     ```
-    Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.cdn.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ws://*.example.com;
+    Content-Security-Policy: default-src 'self';
+                             script-src 'self' https://trusted.cdn.com 'unsafe-inline' 'unsafe-eval';
+                             style-src 'self' https://trusted.cdn.com 'unsafe-inline';
+                             img-src 'self' data: https://cdn.example.com;
+                             connect-src 'self' ws://*.example.com;
+                             object-src 'none';
+                             frame-ancestors 'self';
+                             base-uri 'self';
+                             form-action 'self';
+                             upgrade-insecure-requests;
+                             block-all-mixed-content;
+                             report-uri /csp-report-endpoint;
     ```
 *   **Explanation**:
     *   `default-src 'self'`: Default policy for all resource types, restricting them to the same origin as the document.
-    *   `script-src`: Specifies valid sources for JavaScript.
+    *   `script-src`: Specifies valid sources for JavaScript. `'unsafe-inline'` and `'unsafe-eval'` should be avoided if possible, but are sometimes necessary for legacy applications or certain frameworks.
     *   `style-src`: Specifies valid sources for stylesheets. `'unsafe-inline'` is often needed for legacy CSS but should be avoided if possible.
-    *   `img-src`: Specifies valid sources for images. `data:` allows data URIs for images.
+    *   `img-src`: Specifies valid sources for images. `data:` allows data URIs for images, `https://cdn.example.com` allows images from a specific CDN.
     *   `connect-src`: Restricts URLs that can be loaded using script interfaces (e.g., `fetch`, `XMLHttpRequest`, `WebSocket`).
-*   **Note**: CSP can be complex to implement correctly. Start with a reporting-only mode (`Content-Security-Policy-Report-Only`) to monitor violations before enforcing.
+    *   `object-src 'none'`: Prevents the use of `<object>`, `<embed>`, and `<applet>` elements, which can be vectors for old plugin-based attacks.
+    *   `frame-ancestors 'self'`: Specifies valid parents that may embed the page using `<frame>`, `<iframe>`, `<object>`, `<embed>`, or `<applet>`. This supersedes `X-Frame-Options` for modern browsers.
+    *   `base-uri 'self'`: Restricts the URLs that can be used in a document's `<base>` element.
+    *   `form-action 'self'`: Restricts the URLs that can be used as the target of form submissions.
+    *   `upgrade-insecure-requests`: Instructs user agents to rewrite URL schemes, changing HTTP to HTTPS for all requests.
+    *   `block-all-mixed-content`: Prevents loading any assets using HTTP when the page is loaded over HTTPS.
+    *   `report-uri /csp-report-endpoint` (or `report-to`): Specifies a URI to which the browser sends reports when a Content Security Policy is violated. This is crucial for monitoring and refining your CSP.
+*   **Note**: CSP can be complex to implement correctly. Start with a reporting-only mode (`Content-Security-Policy-Report-Only`) to monitor violations before enforcing. Always test thoroughly.
 
 ### 3. X-Content-Type-Options
 
