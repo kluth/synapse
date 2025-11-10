@@ -44,6 +44,8 @@ The Theater System provides a complete development and testing environment.
 
 ```typescript
 import { Stage, Laboratory, Hypothesis } from '@synapse-framework/core';
+import { MyComponent } from './my-component'; // Placeholder for example component
+import { UserService } from './user-service'; // Placeholder for example service
 
 // Create a stage
 const stage = new Stage({
@@ -80,6 +82,7 @@ await lab.runAll();
 ```typescript
 import { NeuralNode } from '@synapse-framework/core';
 import { describe, it, expect } from '@jest/globals';
+import { UserService } from './user-service'; // Placeholder for example service
 
 describe('UserService', () => {
   let service: UserService;
@@ -139,6 +142,7 @@ describe('UserService', () => {
 
 ```typescript
 import { Stage, Laboratory, Hypothesis, TestSubject } from '@synapse-framework/core';
+import { UserService } from './user-service'; // Placeholder for example service
 
 describe('UserService (Theater)', () => {
   const stage = new Stage({ title: 'UserService Tests' });
@@ -188,7 +192,8 @@ describe('UserService (Theater)', () => {
 ### Testing Muscles (Pure Functions)
 
 ```typescript
-import { Muscle } from '@synapse-framework/core';
+import { Muscle, Bone } from '@synapse-framework/core';
+import { z } from 'zod';
 
 describe('DataTransform Muscle', () => {
   const transform = new Muscle(
@@ -428,6 +433,8 @@ import {
   TCell,
   BCell,
 } from '@synapse-framework/core';
+import { UserService } from './user-service'; // Placeholder for example service
+import { EmailService } from './email-service'; // Placeholder for example service
 
 describe('User Registration Flow', () => {
   let heart: Heart;
@@ -510,6 +517,7 @@ describe('User Registration Flow', () => {
 
 ```typescript
 import { Stage, Laboratory } from '@synapse-framework/core';
+import { Database, setupTestDatabase, teardownTestDatabase } from './database-utils'; // Placeholder for example database utilities
 
 describe('Database Integration', () => {
   const stage = new Stage({ title: 'DB Tests' });
@@ -610,6 +618,8 @@ test('should receive real-time updates', async ({ page }) => {
 ### Pattern 1: Arrange-Act-Assert
 
 ```typescript
+import { UserService } from './user-service'; // Placeholder for example service
+
 it('should process user data', async () => {
   // Arrange
   const service = new UserService();
@@ -647,6 +657,9 @@ lab.experiment('user creation', async () => {
 ### Pattern 3: Test Fixtures
 
 ```typescript
+import crypto from 'crypto';
+import { TCell } from '@synapse-framework/core';
+
 class TestFixtures {
   static async createUser(overrides = {}) {
     return {
@@ -734,6 +747,7 @@ class MockEmailService {
     return { success: true };
   }
 }
+import { UserService } from './user-service'; // Placeholder for example service
 
 it('should send welcome email', async () => {
   const mockEmail = new MockEmailService();
@@ -804,6 +818,7 @@ describe('Performance', () => {
 
 ```typescript
 import { Stage, PerformanceProfiler, SignalTracer, HealthMonitor } from '@synapse-framework/core';
+import { myService } from './my-service'; // Placeholder for example service
 
 describe('Service Performance', () => {
   const stage = new Stage({ title: 'Performance Tests' });
