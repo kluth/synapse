@@ -315,8 +315,8 @@ class Heart extends EventEmitter {
 **Options**:
 ```typescript
 interface HeartOptions {
-  persistence?: boolean - Whether to persist messages (optional).
-  maxQueueSize?: number - The maximum capacity of the message queue (optional).
+  persistence?: boolean - Whether to persist messages. Defaults to `false`.
+  maxQueueSize?: number - The maximum capacity of the message queue. Defaults to `Infinity` (unbounded).
 }
 ```
 
