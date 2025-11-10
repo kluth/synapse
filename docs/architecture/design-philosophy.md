@@ -155,7 +155,7 @@ async function handleRequest(req) {
 
 ### Decision 1: Threshold-Based Activation
 
-**Decision**: Neurons require accumulated signal strength to exceed a threshold before processing.
+**Decision**: Neurons require accumulated signal strength (a value between 0.0 and 1.0) to exceed a threshold before processing.
 
 **Rationale**:
 - Provides natural backpressure
