@@ -48,7 +48,7 @@ Use the Circulatory System when you need:
 The Heart is the central message broker that routes messages between components:
 
 ```typescript
-import { Heart } from '@synapse-framework/core';
+import { Heart, BloodCell } from '@synapse-framework/core';
 
 const heart = new Heart({
   persistence: true,     // Persist messages
@@ -364,7 +364,7 @@ fireAndForget.send('analytics.track', {
 // No waiting, execution continues immediately
 
 // Register handler
-fireAndForget.handle('analytics.track', async (data) => {
+fireAndForget.onMessage('analytics.track', async (data) => {
   await analyticsDatabase.insert(data);
 });
 ```
@@ -687,8 +687,10 @@ class Heart {
 
   // Management
   acknowledge(cell: BloodCell): void;
-  getStatistics(): HeartStatistics;
-  getQueueSize(): number;
+  getStats(): HeartStatistics;
+  getPersistedMessages(topic: string): Promise<BloodCell[]>;
+  replay(topic: string): Promise<void>;
+  stop(): Promise<void>;
 
   // Event handlers
   onDeadLetter(handler: (cell: BloodCell) => void): void;

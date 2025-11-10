@@ -143,14 +143,14 @@ export class UserService extends CorticalNeuron {
     // Initialize state stores
     this.userStore = new Astrocyte({
       id: 'user-store',
-      maxSize: 1000,
-      defaultTTL: 3600000, // 1 hour
+      cacheSize: 1000,
+      ttl: 3600000, // 1 hour
     });
 
     this.sessionStore = new Astrocyte({
       id: 'session-store',
-      maxSize: 500,
-      defaultTTL: 1800000, // 30 minutes
+      cacheSize: 500,
+      ttl: 1800000, // 30 minutes
     });
   }
 
