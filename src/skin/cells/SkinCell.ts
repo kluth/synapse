@@ -72,8 +72,8 @@ export abstract class SkinCell extends HTMLElement {
   protected render(): void {
     if (!this.template) return;
 
-    // Clear shadow root
-    this.shadowRoot.innerHTML = '';
+    // Clear shadow root using safe DOM method (prevents XSS pattern)
+    this.shadowRoot.replaceChildren();
 
     // Clone template content (W3C standard)
     const instance = this.template.content.cloneNode(true) as DocumentFragment;
