@@ -133,8 +133,8 @@ export class UserService extends CorticalNeuron {
   private userStore: Astrocyte;
   private sessionStore: Astrocyte;
 
-  constructor() {
-    super({
+  constructor(config?: { id: string; type: 'cortical'; threshold: number }) {
+    super(config || {
       id: 'user-service',
       type: 'cortical',
       threshold: 0.5,
@@ -239,7 +239,7 @@ export class UserService extends CorticalNeuron {
    * Find user by email
    */
   private findUserByEmail(email: string): User | null {
-    const userId = this.userStore.get(`email:${email}`);
+    const userId: string | null = this.userStore.get(`email:${email}`) as string | null;
     if (!userId) {
       return null;
     }
@@ -247,18 +247,22 @@ export class UserService extends CorticalNeuron {
     return this.userStore.get(`user:${userId}`) || null;
   }
 
-  /**
-   * Get service statistics
-   */
-  public getStats() {
-    return {
-      totalUsers: this.userStore.getKeysByPattern('user:*').length,
-      activeSessions: this.sessionStore.getKeysByPattern('session:*').length,
-      userStoreStats: this.userStore.getStatistics(),
-      sessionStoreStats: this.sessionStore.getStatistics(),
-    };
-  }
-}
+     /**
+      * Get service statistics
+      */
+     public getStats(): {
+       totalUsers: number;
+       activeSessions: number;
+       userStoreStats: ReturnType<Astrocyte['getStatistics']>;
+       sessionStoreStats: ReturnType<Astrocyte['getStatistics']>;
+     } {
+       return {
+         totalUsers: this.userStore.getKeysByPattern('user:*').length,
+         activeSessions: this.sessionStore.getKeysByPattern('session:*').length,
+         userStoreStats: this.userStore.getStatistics(),
+         sessionStoreStats: this.sessionStore.getStatistics(),
+       };
+     }}
 ```
 
 **What's happening here?**
@@ -406,18 +410,26 @@ export class UserManagementApp {
     console.log('✅ All services activated\n');
   }
 
+  interface AppEvent<T = unknown> {
+    id: string;
+    type: string;
+    source: string;
+    data: T;
+    timestamp: Date;
+  }
+
   /**
    * Setup event handlers for system events
    */
   private setupEventHandlers(): void {
     // Listen for user registration events
-    this.eventBus.subscribe('user:registered', async (event) => {
+    this.eventBus.subscribe('user:registered', async (event: AppEvent<User>) => {
       console.log(`📧 Sending welcome email to ${event.data.email}`);
       // In production, trigger email service
     });
 
     // Listen for login events
-    this.eventBus.subscribe('user:logged-in', async (event) => {
+    this.eventBus.subscribe('user:logged-in', async (event: AppEvent<User>) => {
       console.log(`👋 User ${event.data.username} logged in`);
       // In production, log analytics event
     });
@@ -434,16 +446,16 @@ export class UserManagementApp {
   }> {
     try {
       // Step 1: Sanitize input
-      const sanitized = this.securityService.sanitizeInput(input as Record<string, unknown>);
+      const sanitized: Record<string, unknown> = this.securityService.sanitizeInput(input as Record<string, unknown>);
 
       // Step 2: Validate schema
-      const validatedInput = RegisterUserSchema.validate(sanitized) as RegisterUserInput;
+      const validatedInput: RegisterUserInput = RegisterUserSchema.validate(sanitized) as RegisterUserInput;
 
       // Step 3: Register user
-      const user = await this.userService.registerUser(validatedInput);
+      const user: User = await this.userService.registerUser(validatedInput);
 
       // Step 4: Create authentication token
-      const token = await this.securityService.createToken(user.id, user.email);
+      const token: string = await this.securityService.createToken(user.id, user.email);
 
       // Step 5: Emit event
       await this.eventBus.emit('user:registered', {
@@ -482,16 +494,16 @@ export class UserManagementApp {
   }> {
     try {
       // Step 1: Sanitize input
-      const sanitized = this.securityService.sanitizeInput(input as Record<string, unknown>);
+      const sanitized: Record<string, unknown> = this.securityService.sanitizeInput(input as Record<string, unknown>);
 
       // Step 2: Validate schema
-      const credentials = LoginCredentialsSchema.validate(sanitized) as LoginCredentials;
+      const credentials: LoginCredentials = LoginCredentialsSchema.validate(sanitized) as LoginCredentials;
 
       // Step 3: Authenticate
-      const { user } = await this.userService.login(credentials);
+      const { user }: { user: User } = await this.userService.login(credentials);
 
       // Step 4: Create token
-      const token = await this.securityService.createToken(user.id, user.email);
+      const token: string = await this.securityService.createToken(user.id, user.email);
 
       // Step 5: Emit event
       await this.eventBus.emit('user:logged-in', {
@@ -522,7 +534,10 @@ export class UserManagementApp {
   /**
    * Get application statistics
    */
-  public getStats() {
+  public getStats(): {
+    userService: ReturnType<UserService['getStats']>;
+    health: ReturnType<UserService['healthCheck']>;
+  } {
     return {
       userService: this.userService.getStats(),
       health: this.userService.healthCheck(),
@@ -566,7 +581,12 @@ async function main() {
 
     // Demo: Register a new user
     console.log('📝 Registering new user...');
-    const registerResult = await app.registerUser({
+    const registerResult: {
+      success: boolean;
+      user?: { id: string; email: string; username: string };
+      token?: string;
+      error?: string;
+    } = await app.registerUser({
       email: 'alice@example.com',
       password: 'SecurePass123!',
       username: 'alice',
@@ -582,7 +602,12 @@ async function main() {
 
     // Demo: Login
     console.log('🔐 Logging in...');
-    const loginResult = await app.login({
+    const loginResult: {
+      success: boolean;
+      user?: { id: string; email: string; username: string };
+      token?: string;
+      error?: string;
+    } = await app.login({
       email: 'alice@example.com',
       password: 'SecurePass123!',
     });
@@ -597,7 +622,12 @@ async function main() {
 
     // Demo: Try to register duplicate user
     console.log('📝 Attempting duplicate registration...');
-    const duplicateResult = await app.registerUser({
+    const duplicateResult: {
+      success: boolean;
+      user?: { id: string; email: string; username: string };
+      token?: string;
+      error?: string;
+    } = await app.registerUser({
       email: 'alice@example.com',
       password: 'AnotherPass456!',
       username: 'alice2',
@@ -613,13 +643,13 @@ async function main() {
     console.log('='.repeat(60));
     console.log('STATISTICS');
     console.log('='.repeat(60));
-    const stats = app.getStats();
+    const stats: ReturnType<UserManagementApp['getStats']> = app.getStats();
     console.log(JSON.stringify(stats, null, 2));
     console.log('\n' + '='.repeat(60) + '\n');
 
     // Shutdown
     await app.shutdown();
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error:', error);
     process.exit(1);
   }
