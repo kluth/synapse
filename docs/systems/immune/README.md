@@ -538,10 +538,10 @@ const result = sanitizer.sanitize({
 if (result.safe) {
   console.log('Clean input:', result.sanitized);
   // {
-  //   name: '&lt;script&gt;alert("xss")&lt;/script&gt;',
+  //   comment: '&lt;script&gt;alert("xss")&lt;/script&gt;',
   //   email: 'user@example.com',
-  //   query: '\'; DROP TABLE users; --',  // Escaped
-  //   path: 'etc/passwd'  // Path traversal removed
+  //   query: "'; DROP TABLE users; --",  // SQL injection attempts are often escaped or removed depending on the underlying sanitizer.
+  //   path: 'etc/passwd'  // Path traversal attempts are typically removed or neutralized.
   // }
 } else {
   console.log('Threats found:', result.threats);
