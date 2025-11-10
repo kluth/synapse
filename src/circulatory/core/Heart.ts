@@ -1,5 +1,6 @@
 import type { BloodCell } from './BloodCell';
 import { EventEmitter } from 'events';
+import { randomBytes } from 'crypto';
 
 /**
  * Heart options
@@ -344,7 +345,7 @@ export class Heart extends EventEmitter {
    * Generate unique ID
    */
   private generateId(): string {
-    return `sub-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `sub-${Date.now()}-${randomBytes(16).toString('hex')}`;
   }
 
   /**

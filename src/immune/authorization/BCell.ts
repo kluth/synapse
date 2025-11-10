@@ -12,6 +12,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { randomBytes } from 'crypto';
 
 /**
  * Permission action types
@@ -956,14 +957,14 @@ export class BCell extends EventEmitter {
    * Generate permission ID
    */
   private generatePermissionId(): string {
-    return `perm_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `perm_${Date.now()}_${randomBytes(16).toString('hex')}`;
   }
 
   /**
    * Generate role ID
    */
   private generateRoleId(): string {
-    return `role_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `role_${Date.now()}_${randomBytes(16).toString('hex')}`;
   }
 
   /**
