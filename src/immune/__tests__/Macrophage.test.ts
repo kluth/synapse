@@ -341,6 +341,100 @@ describe('Macrophage - Input Sanitization System', () => {
 
       expect(result.modified).toBe(false);
     });
+
+    // Enhanced tests for Issue #43
+    it('should remove parentheses and braces', () => {
+      const input = 'command(arg){file}';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('(');
+      expect(result.value).not.toContain(')');
+      expect(result.value).not.toContain('{');
+      expect(result.value).not.toContain('}');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove glob patterns and special characters', () => {
+      const input = 'file*?.txt[abc]';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('*');
+      expect(result.value).not.toContain('?');
+      expect(result.value).not.toContain('[');
+      expect(result.value).not.toContain(']');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove command substitution patterns', () => {
+      const input = 'file$(whoami).txt';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('$(');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove variable expansion patterns', () => {
+      const input = 'path${HOME}/file';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('${');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove path traversal sequences', () => {
+      const input = '../../../etc/passwd';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('..');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove history expansion and tilde', () => {
+      const input = '!ls ~/file';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('!');
+      expect(result.value).not.toContain('~');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should remove null bytes', () => {
+      const input = 'command\x00injection';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('\x00');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should use whitelist in aggressive mode', () => {
+      const aggressive = new Macrophage({ aggressive: true, verbose: false });
+      const input = 'file@name#with%special.txt';
+      const result = aggressive.sanitizeCommand(input);
+
+      // Should only contain alphanumeric, underscore, hyphen, dot, slash
+      expect(result.value).toMatch(/^[a-zA-Z0-9._\-/]+$/);
+      expect(result.modified).toBe(true);
+    });
+
+    it('should handle combined injection attempts', () => {
+      const input = 'file.txt; rm -rf / &';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain(';');
+      expect(result.value).not.toContain('&');
+      expect(result.modified).toBe(true);
+    });
+
+    it('should prevent multiple bypass techniques', () => {
+      const input = 'file$(cat /etc/passwd)&&{rm -rf /}';
+      const result = macrophage.sanitizeCommand(input);
+
+      expect(result.value).not.toContain('$(');
+      expect(result.value).not.toContain('&&');
+      expect(result.value).not.toContain('{');
+      expect(result.value).not.toContain('}');
+      expect(result.modified).toBe(true);
+    });
   });
 
   describe('Alphanumeric Sanitization', () => {

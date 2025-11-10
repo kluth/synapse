@@ -231,7 +231,9 @@ describe('Astrocyte - State Management System', () => {
     it('should reject patterns with too many wildcards', () => {
       // Create pattern with many wildcards but not triggering other checks
       const densePattern = '*?*?*?*?*?*?*?*?*?*?*?*?*?'; // High wildcard density
-      expect(() => astrocyte.keys(densePattern)).toThrow('too many wildcards');
+      expect(() => astrocyte.keys(densePattern)).toThrow(
+        'Pattern has too many wildcards (max 50% density)',
+      );
     });
 
     it('should reject patterns with consecutive wildcards', () => {
@@ -247,7 +249,9 @@ describe('Astrocyte - State Management System', () => {
     it('should reject potentially dangerous patterns', () => {
       // Pattern that could cause catastrophic backtracking
       const dangerous = 'a*a*a*a*a*a*b';
-      expect(() => astrocyte.keys(dangerous)).toThrow('dangerous regex structure');
+      expect(() => astrocyte.keys(dangerous)).toThrow(
+        'Pattern contains potentially dangerous regex structure',
+      );
     });
 
     it('should accept safe patterns', () => {

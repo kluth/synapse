@@ -479,6 +479,7 @@ export class Macrophage extends EventEmitter {
 
   /**
    * Sanitize command input (prevent command injection)
+   * Enhanced with comprehensive character blacklist and whitelist option (Issue #43)
    */
   public sanitizeCommand(input: string): SanitizationResult {
     this.stats.totalSanitizations++;
@@ -494,13 +495,84 @@ export class Macrophage extends EventEmitter {
       removed.push(`truncated ${original.length - value.length} characters`);
     }
 
-    // Remove shell metacharacters
-    const metacharacters = ['|', ';', '&', '$', '`', '\n', '<', '>', '(', ')', '{', '}'];
+    // Remove null bytes
+    if (value.includes('\x00')) {
+      removed.push('null bytes');
+      value = value.replace(/\x00/g, '');
+    }
 
-    for (const char of metacharacters) {
-      if (value.includes(char)) {
-        removed.push(char);
-        value = value.replace(new RegExp(`\\${char}`, 'g'), '');
+    // In aggressive mode, use whitelist approach
+    if (this.config.aggressive) {
+      // Only allow safe characters: alphanumeric, underscore, hyphen, dot, slash
+      const safePattern = /^[a-zA-Z0-9._\-/]+$/;
+
+      if (!safePattern.test(value)) {
+        // Find and remove dangerous characters
+        const safeParts: string[] = [];
+        for (let i = 0; i < value.length; i++) {
+          const char = value[i];
+          if (char && /[a-zA-Z0-9._\-/]/.test(char)) {
+            safeParts.push(char);
+          } else {
+            if (!removed.includes('unsafe characters')) {
+              removed.push('unsafe characters');
+            }
+          }
+        }
+        value = safeParts.join('');
+      }
+    } else {
+      // Standard mode: comprehensive blacklist (Issue #43)
+      const dangerousChars = [
+        '|', // Pipe
+        ';', // Command separator
+        '&', // Background/AND
+        '$', // Variable expansion
+        '`', // Command substitution
+        '\n', // Newline
+        '\r', // Carriage return
+        '<', // Input redirection
+        '>', // Output redirection
+        '(', // Subshell
+        ')', // Subshell
+        '{', // Brace expansion
+        '}', // Brace expansion
+        '[', // Glob pattern
+        ']', // Glob pattern
+        '!', // History expansion (bash)
+        '*', // Glob wildcard
+        '?', // Glob wildcard
+        '~', // Home directory expansion
+        '^', // Some shells use for negation
+        '\\', // Escape character
+      ];
+
+      // Also check for dangerous patterns
+      const dangerousPatterns = [
+        '$(', // Command substitution
+        '${', // Variable expansion
+        '..', // Path traversal
+      ];
+
+      // Remove dangerous characters
+      for (const char of dangerousChars) {
+        if (value.includes(char)) {
+          removed.push(char);
+          // Escape special regex characters
+          const escapedChar = char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          value = value.replace(new RegExp(escapedChar, 'g'), '');
+        }
+      }
+
+      // Check for dangerous patterns
+      for (const pattern of dangerousPatterns) {
+        if (value.includes(pattern)) {
+          removed.push(`pattern: ${pattern}`);
+          value = value.replace(
+            new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+            '',
+          );
+        }
       }
     }
 
