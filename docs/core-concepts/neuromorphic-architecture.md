@@ -216,14 +216,31 @@ connection.weaken();     // Decrease weight
 
 ### Connection Types
 
-1. **Excitatory** - Promotes activation (positive signal)
-2. **Inhibitory** - Prevents activation (negative signal)
-3. **Modulatory** - Adjusts sensitivity (modifies threshold)
+
+
+1.  **Excitatory** - Promotes activation (positive signal).
+
+    *   **Implication**: Increases the `strength` of signals, making it more likely for the target neuron to reach its `threshold` and activate. Used for forwarding information that should trigger further processing.
+
+2.  **Inhibitory** - Prevents activation (negative signal).
+
+    *   **Implication**: Decreases the `strength` of signals, making it less likely for the target neuron to reach its `threshold`. Used for suppressing unwanted processing, implementing rate limiting, or creating competitive behaviors.
+
+3.  **Modulatory** - Adjusts sensitivity (modifies threshold).
+
+    *   **Implication**: Does not directly affect signal `strength`, but instead alters the target neuron's `threshold`. This can make a neuron more or less responsive to incoming signals, useful for adaptive behaviors or dynamic prioritization.
 
 ### Transmission Speed
 
-1. **Myelinated** - Fast, direct connection (microservices in same cluster)
-2. **Unmyelinated** - Slower, flexible (external services)
+
+
+1.  **Myelinated** - Fast, direct connection.
+
+    *   **Implication**: Represents highly optimized, low-latency communication channels, typically used for microservices within the same cluster or process. Ideal for synchronous or near-synchronous interactions where immediate response is critical.
+
+2.  **Unmyelinated** - Slower, flexible connection.
+
+    *   **Implication**: Represents more flexible, potentially higher-latency communication, often used for external services, message queues, or cross-datacenter communication. Suitable for asynchronous interactions where eventual consistency is acceptable and resilience to network issues is prioritized.
 
 ## Neural Circuits: Organizing Components
 
