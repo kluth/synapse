@@ -331,6 +331,8 @@ const isValid = await auth.verifyMFA('user-123', '123456');
 
 ### Creating Permissions
 
+Permissions are the most granular level of access control. They define specific actions that can be performed on specific resources. By creating granular permissions, you can precisely control what users are allowed to do within your application.
+
 ```typescript
 // Create granular permissions
 authz.createPermission({
@@ -357,6 +359,8 @@ authz.createPermission({
 
 ### Creating Roles
 
+Roles are collections of permissions. Instead of assigning individual permissions to each user, you assign roles, which simplifies management and makes your authorization model more scalable. Roles can also inherit permissions from other roles.
+
 ```typescript
 // Basic role
 authz.createRole({
@@ -378,6 +382,8 @@ authz.createRole({
 
 ### Assigning Roles
 
+Once roles and permissions are defined, you can assign roles to users. A user can have one or more roles, granting them all the permissions associated with those roles.
+
 ```typescript
 // Assign role to user
 authz.assignRole('user-123', 'author');
@@ -391,6 +397,8 @@ authz.revokeRole('user-123', 'author');
 ```
 
 ### Checking Authorization
+
+After setting up permissions and roles, you can check if a user is authorized to perform a specific action on a given resource. This is the core of enforcing access control within your application.
 
 ```typescript
 // Check if user can perform action
