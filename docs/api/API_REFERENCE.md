@@ -774,8 +774,8 @@ class Astrocyte extends EventEmitter {
 ```typescript
 interface AstrocyteConfig {
   id: string - Unique identifier for the Astrocyte instance.
-  maxSize?: number - Maximum number of items to store (for LRU eviction) (optional).
-  defaultTTL?: number - Default Time-To-Live in milliseconds for cached items (optional).
+  cacheSize?: number - Maximum number of items to store (for LRU eviction) (optional).
+  ttl?: number - Default Time-To-Live in milliseconds for cached items (optional).
 }
 ```
 
