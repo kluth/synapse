@@ -3,7 +3,7 @@
  */
 
 import { Effector } from '../Effector';
-import type { RenderSignal, EffectorProps, EffectorState } from '../types';
+import type { RenderSignal } from '../types';
 import { NeuralNode } from '../../core/NeuralNode';
 import type { Input, Signal } from '../../types';
 

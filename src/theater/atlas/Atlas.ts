@@ -10,8 +10,7 @@
  */
 
 import { EventEmitter } from 'events';
-import type { VisualNeuron } from '../../ui/VisualNeuron';
-import type { ComponentProps } from '../../ui/types';
+import type { SkinCell, SkinCellProps } from '../../ui/SkinCell';
 
 /**
  * Documentation entry for a component
@@ -265,8 +264,8 @@ export class Atlas extends EventEmitter {
   /**
    * Document a component from a VisualNeuron instance
    */
-  public documentComponent<TProps extends ComponentProps = ComponentProps>(
-    component: VisualNeuron<TProps>,
+  public documentComponent<TProps extends SkinCellProps = SkinCellProps>(
+    component: SkinCell<TProps, any>,
     metadata: {
       description: string;
       category: string;
@@ -299,8 +298,8 @@ export class Atlas extends EventEmitter {
    * Note: Cannot extract props from component instance due to protected access.
    * Props should be documented manually through the document() method.
    */
-  private extractPropsDocumentation<TProps extends ComponentProps>(
-    _component: VisualNeuron<TProps>,
+  private extractPropsDocumentation<TProps extends SkinCellProps>(
+    _component: SkinCell<TProps, any>,
   ): PropDocumentation[] {
     // Props extraction not possible due to protected receptiveField
     return [];
@@ -312,8 +311,8 @@ export class Atlas extends EventEmitter {
    * Note: Cannot extract state from component instance reliably.
    * State should be documented manually through the document() method.
    */
-  private extractStateDocumentation<TProps extends ComponentProps>(
-    _component: VisualNeuron<TProps>,
+  private extractStateDocumentation<TProps extends SkinCellProps>(
+    _component: SkinCell<TProps, any>,
   ): StateDocumentation[] {
     // State extraction not reliably possible
     return [];

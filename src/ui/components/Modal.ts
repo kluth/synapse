@@ -2,7 +2,7 @@
  * Modal Component - Overlay dialog
  */
 
-import { InterneuronUI } from '../InterneuronUI';
+import { DermalLayer } from '../DermalLayer';
 import type { RenderSignal } from '../types';
 
 export interface ModalProps {
@@ -18,7 +18,7 @@ export interface ModalState {
   isOpen: boolean;
 }
 
-export class Modal extends InterneuronUI<ModalProps, ModalState> {
+export class Modal extends DermalLayer<ModalProps, ModalState> {
   protected performRender(): RenderSignal {
     const props = this.getProps();
     const state = this.getState();

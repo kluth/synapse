@@ -5,8 +5,8 @@
  * The Anatomy Theater's capabilities.
  */
 
-import type { VisualNeuronConfig } from '../../src/ui/VisualNeuron';
-import { VisualNeuron } from '../../src/ui/VisualNeuron';
+import type { SkinCellConfig } from '../../src/ui/SkinCell';
+import { SkinCell } from '../../src/ui/SkinCell';
 import type { RenderSignal } from '../../src/ui/types';
 
 export interface ButtonComponentProps {
@@ -21,8 +21,8 @@ export interface ButtonComponentState {
   clickCount: number;
 }
 
-export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonComponentState> {
-  constructor(config: VisualNeuronConfig<ButtonComponentProps>) {
+export class ButtonComponent extends SkinCell<ButtonComponentProps, ButtonComponentState> {
+  constructor(config: SkinCellConfig<ButtonComponentProps>) {
     super({
       ...config,
       initialState: {
@@ -33,16 +33,17 @@ export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonCo
   }
 
   protected override shouldUpdate(nextProps: ButtonComponentProps): boolean {
+    const currentProps = this.getProps();
     return (
-      this.receptiveField.label !== nextProps.label ||
-      this.receptiveField.variant !== nextProps.variant ||
-      this.receptiveField.disabled !== nextProps.disabled
+      currentProps.label !== nextProps.label ||
+      currentProps.variant !== nextProps.variant ||
+      currentProps.disabled !== nextProps.disabled
     );
   }
 
   protected getStyles(): Record<string, unknown> {
-    const { variant = 'primary', disabled } = this.receptiveField;
-    const { pressed } = this.visualState;
+    const { variant = 'primary', disabled } = this.getProps();
+    const { pressed } = this.getState();
 
     const baseStyles = {
       padding: '8px 16px',
@@ -55,7 +56,7 @@ export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonCo
       opacity: disabled === true ? 0.5 : 1,
     };
 
-    const variantStyles = {
+    const variantStyles: Record<string, { background: string; color: string }> = {
       primary: {
         background: pressed ? '#0056b3' : '#007bff',
         color: '#ffffff',
@@ -77,13 +78,16 @@ export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonCo
   }
 
   public handleClick(): void {
-    if (this.receptiveField.disabled === true) {
+    const { disabled, onClick } = this.getProps();
+    const { clickCount } = this.getState();
+
+    if (disabled === true) {
       return;
     }
 
     this.setState({
       pressed: true,
-      clickCount: this.visualState.clickCount + 1,
+      clickCount: clickCount + 1,
     });
 
     // Reset pressed state after a short delay
@@ -92,14 +96,14 @@ export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonCo
     }, 100);
 
     // Call onClick handler if provided
-    this.receptiveField.onClick?.();
+    onClick?.();
 
     // Emit neural signal
     this.emitUIEvent({
       type: 'ui:click',
       data: {
         payload: {
-          clickCount: this.visualState.clickCount + 1,
+          clickCount: clickCount + 1,
         },
         target: this.id,
       },
@@ -109,7 +113,7 @@ export class ButtonComponent extends VisualNeuron<ButtonComponentProps, ButtonCo
   }
 
   protected override performRender(): RenderSignal {
-    const { label } = this.receptiveField;
+    const { label } = this.getProps();
     const styles = this.getStyles();
 
     return {

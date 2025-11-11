@@ -7,7 +7,7 @@
  */
 
 import type { MicroscopeLens, InspectionResult, InspectionIssue } from './Microscope';
-import type { VisualNeuron } from '../../ui/VisualNeuron';
+import type { SkinCell } from '../../ui/SkinCell';
 
 /**
  * Signal type placeholder
@@ -168,7 +168,7 @@ export class SignalTracer implements MicroscopeLens {
    * Inspect component signals
    */
 
-  public async inspect(component: VisualNeuron): Promise<InspectionResult> {
+  public async inspect(component: SkinCell<any, any>): Promise<InspectionResult> {
     const startTime = Date.now();
     const signals = this.extractSignals(component);
     const issues: InspectionIssue[] = [];
@@ -246,7 +246,7 @@ export class SignalTracer implements MicroscopeLens {
   /**
    * Extract signals from component
    */
-  private extractSignals(component: VisualNeuron): Signal<unknown>[] {
+  private extractSignals(component: SkinCell<any, any>): Signal<unknown>[] {
     const signals: Signal<unknown>[] = [];
 
     // Access component's internal signals through state
@@ -265,7 +265,7 @@ export class SignalTracer implements MicroscopeLens {
   /**
    * Trace a signal
    */
-  private traceSignal(signal: Signal<unknown>, component: VisualNeuron): void {
+  private traceSignal(signal: Signal<unknown>, component: SkinCell<any, any>): void {
     const signalId = this.getSignalId(signal);
     const existingTrace = this.traces.get(signalId);
 
@@ -433,7 +433,7 @@ export class SignalTracer implements MicroscopeLens {
   /**
    * Get component ID
    */
-  private getComponentId(_component: VisualNeuron): string {
+  private getComponentId(_component: SkinCell<any, any>): string {
     // In a real implementation, components would have IDs
     return 'component';
   }

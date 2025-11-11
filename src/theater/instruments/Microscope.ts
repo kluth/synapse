@@ -7,7 +7,7 @@
  */
 
 import { Instrument, type InstrumentConfig } from '../core/Instrument';
-import type { VisualNeuron } from '../../ui/VisualNeuron';
+import type { SkinCell } from '../../ui/SkinCell';
 
 /**
  * Inspection mode
@@ -46,7 +46,7 @@ export interface MicroscopeLens {
   /**
    * Inspect a component
    */
-  inspect: (component: VisualNeuron) => Promise<InspectionResult>;
+  inspect: (component: SkinCell<any, any>) => Promise<InspectionResult>;
 
   /**
    * Render lens UI
@@ -186,7 +186,7 @@ export class Microscope extends Instrument {
   private currentMode: InspectionMode = 'signals';
   private lenses: Map<InspectionMode, MicroscopeLens> = new Map();
   private inspectionHistory: InspectionResult[] = [];
-  private currentComponent: VisualNeuron | null = null;
+  private currentComponent: SkinCell<any, any> | null = null;
   private autoInspect: boolean = false;
   private recordHistory: boolean = true;
   private maxHistorySize: number = 100;
@@ -375,7 +375,7 @@ export class Microscope extends Instrument {
   /**
    * Inspect a component
    */
-  public async inspect(component: VisualNeuron): Promise<InspectionResult> {
+  public async inspect(component: SkinCell<any, any>): Promise<InspectionResult> {
     this.currentComponent = component;
 
     const lens = this.lenses.get(this.currentMode);
@@ -434,7 +434,7 @@ export class Microscope extends Instrument {
   /**
    * Get current component
    */
-  public getCurrentComponent(): VisualNeuron | null {
+  public getCurrentComponent(): SkinCell<any, any> | null {
     return this.currentComponent;
   }
 

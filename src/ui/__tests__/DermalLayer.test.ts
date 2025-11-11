@@ -4,7 +4,7 @@
 
 import { DermalLayer } from '../DermalLayer';
 import { SkinCell } from '../SkinCell';
-import type { RenderSignal, VirtualDOMNode, DermalLayerProps, DermalLayerState } from '../types';
+import type { RenderSignal, VirtualDOMNode } from '../types';
 import type { Input, Signal } from '../../types';
 
 // Simple child component for testing

@@ -7,7 +7,7 @@
  */
 
 import type { MicroscopeLens, InspectionResult, InspectionIssue } from './Microscope';
-import type { VisualNeuron } from '../../ui/VisualNeuron';
+import type { SkinCell } from '../../ui/SkinCell';
 
 /**
  * State snapshot
@@ -171,7 +171,7 @@ export class StateExplorer implements MicroscopeLens {
    * Inspect component state
    */
 
-  public async inspect(component: VisualNeuron): Promise<InspectionResult> {
+  public async inspect(component: SkinCell<any, any>): Promise<InspectionResult> {
     const componentId = this.getComponentId(component);
     const state = this.extractState(component);
     const props = this.extractProps(component);
@@ -360,7 +360,7 @@ export class StateExplorer implements MicroscopeLens {
   /**
    * Extract state from component
    */
-  private extractState(_component: VisualNeuron): Record<string, unknown> {
+  private extractState(_component: SkinCell<any, any>): Record<string, unknown> {
     // Simplified extraction - in reality would use component introspection
     return {};
   }
@@ -368,7 +368,7 @@ export class StateExplorer implements MicroscopeLens {
   /**
    * Extract props from component
    */
-  private extractProps(_component: VisualNeuron): Record<string, unknown> {
+  private extractProps(_component: SkinCell<any, any>): Record<string, unknown> {
     // Simplified extraction - in reality would use component introspection
     // VisualNeuron stores props in protected receptiveField
     // In a real implementation, this would have proper accessor methods
@@ -378,7 +378,7 @@ export class StateExplorer implements MicroscopeLens {
   /**
    * Get component ID
    */
-  private getComponentId(_component: VisualNeuron): string {
+  private getComponentId(_component: SkinCell<any, any>): string {
     return 'component';
   }
 

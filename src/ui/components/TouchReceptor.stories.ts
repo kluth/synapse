@@ -232,7 +232,12 @@ export const AllVariants: Story = {
     container.style.gap = '10px';
     container.style.flexWrap = 'wrap';
 
-    const variants: Array<TouchReceptorProps['variant']> = ['primary', 'secondary', 'danger', 'success'];
+    const variants: Array<TouchReceptorProps['variant']> = [
+      'primary',
+      'secondary',
+      'danger',
+      'success',
+    ];
 
     variants.forEach((variant) => {
       const button = new TouchReceptor({

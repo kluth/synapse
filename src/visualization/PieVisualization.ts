@@ -4,8 +4,13 @@
  */
 
 import { SkinCell } from '../ui/SkinCell';
-import type { RenderSignal, SkinCellProps, SkinCellState } from '../ui/types';
-import type { PieChartProps, PieChartState, PieDataPoint, SVGElement } from './types';
+import type { RenderSignal } from '../ui/types';
+import type {
+  PieVisualizationProps,
+  PieVisualizationState,
+  PieDataPoint,
+  SVGElement,
+} from './types';
 
 interface SliceAngle {
   dataPoint: PieDataPoint;
@@ -14,37 +19,37 @@ interface SliceAngle {
   percentage: number;
 }
 
-export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
+export class PieVisualization extends SkinCell<PieVisualizationProps, PieVisualizationState> {
   /**
    * Calculate total value of all slices
    */
   public calculateTotal(): number {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
     if (!data || data.length === 0) {
       return 0;
     }
-    return data.reduce((sum, point) => sum + point.value, 0);
+    return data.reduce((sum: number, point: PieDataPoint) => sum + point.value, 0);
   }
 
   /**
    * Calculate percentage for each slice
    */
   public calculatePercentages(): number[] {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
     const total = this.calculateTotal();
 
     if (total === 0) {
       return data.map(() => 0);
     }
 
-    return data.map((point) => (point.value / total) * 100);
+    return data.map((point: PieDataPoint) => (point.value / total) * 100);
   }
 
   /**
    * Calculate start and end angles for each slice
    */
   public calculateSliceAngles(): SliceAngle[] {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
     const percentages = this.calculatePercentages();
 
     let currentAngle = 0;
@@ -73,7 +78,7 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
    * Calculate radius for the pie chart
    */
   public calculateRadius(): number {
-    const { width, height } = this.receptiveField;
+    const { width, height } = this.getProps();
     const size = Math.min(width, height);
     const outerRadius = (size / 2) * 0.8; // 80% of available space
 
@@ -103,7 +108,7 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
     outerRadius: number,
     innerRadius: number = 0,
   ): string {
-    const { width, height } = this.receptiveField;
+    const { width, height } = this.getProps();
     const centerX = width / 2;
     const centerY = height / 2;
 
@@ -166,7 +171,7 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
    * Calculate label position for a slice
    */
   public calculateLabelPosition(slice: SliceAngle, radius: number): { x: number; y: number } {
-    const { width, height } = this.receptiveField;
+    const { width, height } = this.getProps();
     const centerX = width / 2;
     const centerY = height / 2;
 
@@ -201,14 +206,14 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
    * Handle slice hover
    */
   public onSliceHover(slice: PieDataPoint | null): void {
-    this.setState({ ...this.visualState, hoveredSlice: slice });
+    this.setState({ ...this.getState(), hoveredSlice: slice });
   }
 
   /**
    * Handle slice click
    */
   public onSliceClick(slice: PieDataPoint): void {
-    this.setState({ ...this.visualState, selectedSlice: slice });
+    this.setState({ ...this.getState(), selectedSlice: slice });
 
     // Emit UI event
     this.emitUIEvent({
@@ -230,10 +235,10 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
     label: string;
     percentage: number;
   }> {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
     const percentages = this.calculatePercentages();
 
-    return data.map((point, index) => ({
+    return data.map((point: PieDataPoint, index: number) => ({
       value: point.value,
       label: point.label,
       percentage: percentages[index] || 0,
@@ -244,7 +249,8 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
    * Render the pie chart
    */
   protected performRender(): RenderSignal {
-    const { width, height, innerRadius, showLabels, showPercentages } = this.receptiveField;
+    const { width, height, innerRadius, showLabels, showPercentages, data } = this.getProps();
+    const { hoveredSlice, selectedSlice } = this.getState();
 
     const children: Array<SVGElement | string> = [];
     const slices = this.calculateSliceAngles();
@@ -253,8 +259,8 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
 
     // Render slices
     for (const slice of slices) {
-      const isHovered = this.visualState.hoveredSlice === slice.dataPoint;
-      const isSelected = this.visualState.selectedSlice === slice.dataPoint;
+      const isHovered = hoveredSlice === slice.dataPoint;
+      const isSelected = selectedSlice === slice.dataPoint;
 
       const path = this.generateSlicePath(slice, outerRadius, effectiveInnerRadius);
 
@@ -305,7 +311,7 @@ export class PieVisualization extends SkinCell<PieChartProps, PieChartState> {
         height,
         viewBox: `0 0 ${width} ${height}`,
         role: 'img',
-        'aria-label': `Pie chart with ${this.receptiveField.data.length} slices`,
+        'aria-label': `Pie chart with ${data.length} slices`,
       },
       children,
     };

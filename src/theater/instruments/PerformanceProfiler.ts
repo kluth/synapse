@@ -7,7 +7,7 @@
  */
 
 import type { MicroscopeLens, InspectionResult, InspectionIssue } from './Microscope';
-import type { VisualNeuron } from '../../ui/VisualNeuron';
+import type { SkinCell } from '../../ui/SkinCell';
 
 /**
  * Performance metric
@@ -214,7 +214,7 @@ export class PerformanceProfiler implements MicroscopeLens {
   /**
    * Inspect component performance
    */
-  public async inspect(component: VisualNeuron): Promise<InspectionResult> {
+  public async inspect(component: SkinCell<any, any>): Promise<InspectionResult> {
     const componentId = this.getComponentId(component);
     const issues: InspectionIssue[] = [];
 
@@ -315,7 +315,7 @@ export class PerformanceProfiler implements MicroscopeLens {
    */
 
   private async profileRender(
-    _component: VisualNeuron,
+    _component: SkinCell<any, any>,
     componentId: string,
   ): Promise<RenderProfile> {
     const existingProfile = this.profiles.get(componentId);
@@ -359,7 +359,7 @@ export class PerformanceProfiler implements MicroscopeLens {
   /**
    * Collect performance metrics
    */
-  private collectMetrics(_component: VisualNeuron): PerformanceMetric[] {
+  private collectMetrics(_component: SkinCell<any, any>): PerformanceMetric[] {
     const metrics: PerformanceMetric[] = [];
     const now = new Date();
 
@@ -495,7 +495,7 @@ export class PerformanceProfiler implements MicroscopeLens {
   /**
    * Get component ID
    */
-  private getComponentId(_component: VisualNeuron): string {
+  private getComponentId(_component: SkinCell<any, any>): string {
     return 'component';
   }
 

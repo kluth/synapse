@@ -3,7 +3,7 @@
  */
 
 import { SkinCell } from '../SkinCell';
-import type { RenderSignal, SkinCellProps, SkinCellState } from '../types';
+import type { RenderSignal } from '../types';
 import type { Input, Signal } from '../../types';
 
 // Test implementation of SkinCell

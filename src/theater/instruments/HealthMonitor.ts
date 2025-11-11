@@ -7,7 +7,7 @@
  */
 
 import type { MicroscopeLens, InspectionResult, InspectionIssue } from './Microscope';
-import type { VisualNeuron } from '../../ui/VisualNeuron';
+import type { SkinCell } from '../../ui/SkinCell';
 
 /**
  * Health status
@@ -226,7 +226,7 @@ export class HealthMonitor implements MicroscopeLens {
   /**
    * Inspect component health
    */
-  public async inspect(component: VisualNeuron): Promise<InspectionResult> {
+  public async inspect(component: SkinCell<any, any>): Promise<InspectionResult> {
     const componentId = this.getComponentId(component);
     const issues: InspectionIssue[] = [];
 
@@ -373,7 +373,7 @@ export class HealthMonitor implements MicroscopeLens {
    * Run health checks on component
    */
 
-  private async runHealthChecks(component: VisualNeuron): Promise<HealthCheck[]> {
+  private async runHealthChecks(component: SkinCell<any, any>): Promise<HealthCheck[]> {
     const checks: HealthCheck[] = [];
     const componentId = this.getComponentId(component);
 
@@ -546,7 +546,7 @@ export class HealthMonitor implements MicroscopeLens {
   /**
    * Get component ID
    */
-  private getComponentId(_component: VisualNeuron): string {
+  private getComponentId(_component: SkinCell<any, any>): string {
     return 'component';
   }
 

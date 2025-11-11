@@ -39,7 +39,6 @@ export const DefaultButton = new Specimen(
         label: 'Click Me',
       },
     });
-    button.activate();
     return button;
   },
 );
@@ -64,7 +63,6 @@ export const PrimaryButton = new Specimen(
         variant: 'primary',
       },
     });
-    button.activate();
     return button;
   },
 );
@@ -89,7 +87,6 @@ export const SecondaryButton = new Specimen(
         variant: 'secondary',
       },
     });
-    button.activate();
     return button;
   },
 );
@@ -111,10 +108,8 @@ export const DangerButton = new Specimen(
       threshold: 0.5,
       props: {
         label: 'Delete',
-        variant: 'danger',
       },
     });
-    button.activate();
     return button;
   },
 );
@@ -139,7 +134,6 @@ export const DisabledButton = new Specimen(
         disabled: true,
       },
     });
-    button.activate();
     return button;
   },
 );
@@ -168,7 +162,6 @@ export const InteractiveButton = new Specimen(
         },
       },
     });
-    button.activate();
     return button;
   },
 );

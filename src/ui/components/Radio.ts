@@ -2,7 +2,7 @@
  * Radio Component - Single selection input
  */
 
-import { SensoryNeuron } from '../SensoryNeuron';
+import { Receptor } from '../Receptor';
 import type { RenderSignal, VirtualDOMNode } from '../types';
 import type { Input as NodeInput } from '../../types';
 
@@ -33,12 +33,12 @@ export interface RadioState {
   focused: boolean;
 }
 
-export class Radio extends SensoryNeuron<RadioProps, RadioState> {
+export class Radio extends Receptor<RadioProps, RadioState> {
   protected performRender(): RenderSignal {
     const props = this.getProps();
     const state = this.getState();
 
-    const radioOptions: VirtualDOMNode[] = props.options.map((option) => ({
+    const radioOptions: VirtualDOMNode[] = props.options.map((option: RadioOption) => ({
       tag: 'label',
       props: {
         className: 'radio-option',

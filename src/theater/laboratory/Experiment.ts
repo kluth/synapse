@@ -5,7 +5,6 @@
  * It includes setup, execution, validation, and teardown phases.
  */
 
-import type { VisualNeuron } from '../../ui/VisualNeuron';
 import type { Stage } from '../core/Stage';
 import type { TestSubject } from './TestSubject';
 import type { Hypothesis, HypothesisResult } from './Hypothesis';
@@ -28,11 +27,6 @@ export interface ExperimentConfig {
    * Experiment description
    */
   description?: string;
-
-  /**
-   * Component to test
-   */
-  component?: VisualNeuron;
 
   /**
    * Test subject wrapper

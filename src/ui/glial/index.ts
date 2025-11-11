@@ -2,8 +2,8 @@
  * Visual Glial Cells - UI Support Systems
  */
 
-export { VisualAstrocyte } from './VisualAstrocyte';
-export type { VisualAstrocyteConfig, StateSnapshot, StateHistoryEntry } from './VisualAstrocyte';
+export { Adipocyte } from './Adipocyte';
+export type { AdipocyteConfig, StateSnapshot, StateHistoryEntry } from './Adipocyte';
 
-export { VisualOligodendrocyte } from './VisualOligodendrocyte';
-export type { VisualOligodendrocyteConfig } from './VisualOligodendrocyte';
+export { Melanocyte } from './Melanocyte';
+export type { MelanocyteConfig } from './Melanocyte';

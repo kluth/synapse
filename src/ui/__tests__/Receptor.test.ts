@@ -3,7 +3,7 @@
  */
 
 import { Receptor } from '../Receptor';
-import type { RenderSignal, UIEventSignal, ReceptorProps, ReceptorState } from '../types';
+import type { RenderSignal, UIEventSignal } from '../types';
 import type { Input, Signal } from '../../types';
 
 // Mock DOM Event

@@ -72,10 +72,9 @@ const clickExperiment = new Experiment({
   testSubject: clickSubject,
   hypotheses: [Hypothesis.toHaveState(clickSubject, 'clickCount', 0)],
   test: async (subject) => {
-    const component = subject.getComponent() as ButtonComponent;
-    const initialCount = component.getState().clickCount;
-    component.handleClick();
-    const newCount = component.getState().clickCount;
+    const initialCount = subject.getState()['clickCount'] as number;
+    (subject.getComponent() as ButtonComponent).handleClick();
+    const newCount = subject.getState()['clickCount'] as number;
     if (newCount !== initialCount + 1) {
       throw new Error('Click count should have incremented');
     }
@@ -102,10 +101,9 @@ const disabledExperiment = new Experiment({
   description: 'Tests that disabled buttons do not respond to clicks',
   testSubject: disabledSubject,
   test: async (subject) => {
-    const component = subject.getComponent() as ButtonComponent;
-    const beforeClick = component.getState().clickCount;
-    component.handleClick();
-    const afterClick = component.getState().clickCount;
+    const beforeClick = subject.getState()['clickCount'] as number;
+    (subject.getComponent() as ButtonComponent).handleClick();
+    const afterClick = subject.getState()['clickCount'] as number;
     if (beforeClick !== afterClick) {
       throw new Error('Disabled button should not increment click count');
     }
@@ -132,14 +130,13 @@ const variantExperiment = new Experiment({
   description: 'Tests different button variants render with correct styles',
   testSubject: variantSubject,
   test: async (subject) => {
-    const component = subject.getComponent() as any;
-    component.updateProps({ variant: 'primary' });
-    component.render();
-    const primaryStyles = component.getStyles();
-    component.updateProps({ variant: 'secondary' });
-    component.render();
-    const secondaryStyles = component.getStyles();
-    if (primaryStyles.background === secondaryStyles.background) {
+    (subject.getComponent() as ButtonComponent).updateProps({ variant: 'primary' });
+    (subject.getComponent() as ButtonComponent).render();
+    const primaryStyles = (subject.getComponent() as any).getStyles();
+    (subject.getComponent() as ButtonComponent).updateProps({ variant: 'secondary' });
+    (subject.getComponent() as ButtonComponent).render();
+    const secondaryStyles = (subject.getComponent() as any).getStyles();
+    if (primaryStyles['background'] === secondaryStyles['background']) {
       throw new Error('Variant styles should be different');
     }
   },

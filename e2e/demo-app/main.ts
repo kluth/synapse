@@ -3,13 +3,28 @@
  * This app demonstrates framework features for E2E testing
  */
 
-import { VisualNeuron } from '../../src/ui/VisualNeuron';
-import { LineChart, BarChart, PieChart, ScatterPlot } from '../../src/visualization';
+import { SkinCell } from '../../src/ui/SkinCell';
+import {
+  LineVisualization,
+  BarVisualization,
+  PieVisualization,
+  ScatterVisualization,
+} from '../../src/visualization';
 import type { RenderSignal } from '../../src/ui/types';
 import type { ChartDataPoint, PieDataPoint } from '../../src/visualization/types';
 
-// Test VisualNeuron implementation
-class TestNeuron extends VisualNeuron<{ label: string }, { count: number }> {
+// Test SkinCell implementation
+class TestNeuron extends SkinCell<{ label: string }, { count: number }> {
+  constructor(config: {
+    id: string;
+    type: 'cortical' | 'reflex';
+    threshold: number;
+    props: { label: string };
+    initialState: { count: number };
+  }) {
+    super(config);
+  }
+
   protected override async executeProcessing<
     _TInput = unknown,
     TOutput = unknown,
@@ -18,8 +33,8 @@ class TestNeuron extends VisualNeuron<{ label: string }, { count: number }> {
   }
 
   protected performRender(): RenderSignal {
-    const { label } = this.receptiveField;
-    const { count } = this.visualState;
+    const { label } = this.getProps();
+    const { count } = this.getState();
 
     return {
       type: 'render',
@@ -44,7 +59,7 @@ class TestNeuron extends VisualNeuron<{ label: string }, { count: number }> {
 
 // Global state
 let currentNeuron: TestNeuron | null = null;
-let currentChart: LineChart | BarChart | PieChart | ScatterPlot | null = null;
+let currentChart: LineVisualization | BarVisualization | PieVisualization | ScatterVisualization | null = null;
 
 // Sample data
 const lineData: ChartDataPoint[] = [
@@ -135,7 +150,9 @@ const showScatterBtn = document.getElementById('show-scatter-plot') as HTMLButto
 const chartContainer = document.getElementById('chart-container') as HTMLDivElement;
 const chartInfo = document.getElementById('chart-info') as HTMLDivElement;
 
-async function renderChart(chart: LineChart | BarChart | PieChart | ScatterPlot): Promise<void> {
+async function renderChart(
+  chart: LineVisualization | BarVisualization | PieVisualization | ScatterVisualization,
+): Promise<void> {
   if (currentChart) {
     await currentChart.deactivate();
   }
@@ -223,7 +240,7 @@ function createSVGElement(vdom: {
 }
 
 showLineBtn.addEventListener('click', async () => {
-  const chart = new LineChart({
+  const chart = new LineVisualization({
     id: 'line-chart',
     type: 'cortical',
     threshold: 0.5,
@@ -244,7 +261,7 @@ showLineBtn.addEventListener('click', async () => {
 });
 
 showBarBtn.addEventListener('click', async () => {
-  const chart = new BarChart({
+  const chart = new BarVisualization({
     id: 'bar-chart',
     type: 'cortical',
     threshold: 0.5,
@@ -265,7 +282,7 @@ showBarBtn.addEventListener('click', async () => {
 });
 
 showPieBtn.addEventListener('click', async () => {
-  const chart = new PieChart({
+  const chart = new PieVisualization({
     id: 'pie-chart',
     type: 'cortical',
     threshold: 0.5,
@@ -285,7 +302,7 @@ showPieBtn.addEventListener('click', async () => {
 });
 
 showScatterBtn.addEventListener('click', async () => {
-  const chart = new ScatterPlot({
+  const chart = new ScatterVisualization({
     id: 'scatter-plot',
     type: 'cortical',
     threshold: 0.5,
@@ -330,11 +347,11 @@ sendSignalBtn.addEventListener('click', () => {
   get currentChart() {
     return currentChart;
   },
-  VisualNeuron,
-  LineChart,
-  BarChart,
-  PieChart,
-  ScatterPlot,
+  SkinCell,
+  LineVisualization,
+  BarVisualization,
+  PieVisualization,
+  ScatterVisualization,
 };
 
 console.log('Synapse Framework E2E Demo loaded');

@@ -4,29 +4,32 @@
  */
 
 import { SkinCell } from '../ui/SkinCell';
-import type { RenderSignal, SkinCellProps, SkinCellState } from '../ui/types';
+import type { RenderSignal } from '../ui/types';
 import type {
-  ScatterPlotProps,
-  BaseChartState,
+  ScatterVisualizationProps,
+  BaseVisualizationState,
   ChartDataPoint,
   DataBounds,
   CanvasPoint,
   SVGElement,
 } from './types';
 
-export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartState> {
+export class ScatterVisualization extends SkinCell<
+  ScatterVisualizationProps,
+  BaseVisualizationState
+> {
   /**
    * Calculate data bounds for scaling
    */
   public getDataBounds(): DataBounds {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
     }
 
-    const xValues = data.map((d) => d.x);
-    const yValues = data.map((d) => d.y);
+    const xValues = data.map((d: ChartDataPoint) => d.x);
+    const yValues = data.map((d: ChartDataPoint) => d.y);
 
     return {
       minX: Math.min(...xValues),
@@ -40,7 +43,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Convert data coordinates to canvas coordinates
    */
   public dataToCanvas(point: { x: number; y: number }): CanvasPoint {
-    const { width, height, padding } = this.receptiveField;
+    const { width, height, padding } = this.getProps();
     const bounds = this.getDataBounds();
 
     const effectivePadding = padding || {
@@ -66,7 +69,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Convert canvas coordinates to data coordinates
    */
   public canvasToData(point: CanvasPoint): { x: number; y: number } {
-    const { width, height, padding } = this.receptiveField;
+    const { width, height, padding } = this.getProps();
     const bounds = this.getDataBounds();
 
     const effectivePadding = padding || {
@@ -93,7 +96,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Find nearest point to given canvas coordinates
    */
   public findNearestPoint(canvasPoint: CanvasPoint): ChartDataPoint | null {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return null;
@@ -121,19 +124,20 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Get point size (for bubble charts)
    */
   public getPointSize(point: ChartDataPoint): number {
-    const { pointRadius, sizeField } = this.receptiveField;
+    const { pointRadius, sizeField, data } = this.getProps();
 
     // Use default radius if no size field specified
-    if (!sizeField || !point.metadata?.[sizeField]) {
+    if (!sizeField || point.metadata?.[sizeField] === undefined) {
       return pointRadius || 5;
     }
 
     // Scale size based on data
     const sizeValue = point.metadata[sizeField] as number;
-    const { data } = this.receptiveField;
 
     // Find min and max sizes
-    const sizes = data.map((d) => (d.metadata?.[sizeField] as number) || 0).filter((s) => s > 0);
+    const sizes = data
+      .map((d: ChartDataPoint) => (d.metadata?.[sizeField] as number) || 0)
+      .filter((s: number) => s > 0);
 
     if (sizes.length === 0) {
       return pointRadius || 5;
@@ -155,14 +159,14 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Handle point hover
    */
   public onPointHover(point: ChartDataPoint | null): void {
-    this.setState({ ...this.visualState, hoveredPoint: point });
+    this.setState({ ...this.getState(), hoveredPoint: point });
   }
 
   /**
    * Handle point click
    */
   public onPointClick(point: ChartDataPoint): void {
-    this.setState({ ...this.visualState, selectedPoint: point });
+    this.setState({ ...this.getState(), selectedPoint: point });
 
     // Emit UI event
     this.emitUIEvent({
@@ -180,15 +184,15 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Get data as accessible table
    */
   public getDataAsTable(): Array<{ x: number; y: number; label: string | undefined }> {
-    const { data } = this.receptiveField;
-    return data.map((d) => ({ x: d.x, y: d.y, label: d.label }));
+    const { data } = this.getProps();
+    return data.map((d: ChartDataPoint) => ({ x: d.x, y: d.y, label: d.label }));
   }
 
   /**
    * Identify point clusters using simple distance-based clustering
    */
   public identifyClusters(distanceThreshold: number): ChartDataPoint[][] {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return [];
@@ -229,7 +233,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Calculate point density (number of points within radius)
    */
   public calculateDensity(point: { x: number; y: number }, radius: number): number {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return 0;
@@ -259,7 +263,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
     isHovered: boolean,
     isSelected: boolean,
   ): SVGElement {
-    const { color } = this.receptiveField;
+    const { color } = this.getProps();
 
     return {
       tag: 'circle',
@@ -285,7 +289,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
     isHovered: boolean,
     isSelected: boolean,
   ): SVGElement {
-    const { color } = this.receptiveField;
+    const { color } = this.getProps();
     const halfSize = size;
 
     return {
@@ -313,7 +317,7 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
     isHovered: boolean,
     isSelected: boolean,
   ): SVGElement {
-    const { color } = this.receptiveField;
+    const { color } = this.getProps();
     const height = size * 1.5;
     const width = size * 1.3;
 
@@ -339,7 +343,8 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
    * Render the scatter plot
    */
   protected performRender(): RenderSignal {
-    const { width, height, data, pointShape } = this.receptiveField;
+    const { width, height, data, pointShape } = this.getProps();
+    const { hoveredPoint, selectedPoint } = this.getState();
 
     const children: Array<SVGElement | string> = [];
 
@@ -347,8 +352,8 @@ export class ScatterVisualization extends SkinCell<ScatterPlotProps, BaseChartSt
     for (const point of data) {
       const canvasPos = this.dataToCanvas(point);
       const size = this.getPointSize(point);
-      const isHovered = this.visualState.hoveredPoint === point;
-      const isSelected = this.visualState.selectedPoint === point;
+      const isHovered = hoveredPoint === point;
+      const isSelected = selectedPoint === point;
 
       let element: SVGElement;
 

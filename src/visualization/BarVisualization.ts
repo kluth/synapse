@@ -4,10 +4,10 @@
  */
 
 import { SkinCell } from '../ui/SkinCell';
-import type { RenderSignal, SkinCellProps, SkinCellState } from '../ui/types';
+import type { RenderSignal } from '../ui/types';
 import type {
-  BarChartProps,
-  BaseChartState,
+  BarVisualizationProps,
+  BaseVisualizationState,
   ChartDataPoint,
   DataBounds,
   CanvasPoint,
@@ -22,19 +22,19 @@ interface BarPosition {
   dataPoint: ChartDataPoint;
 }
 
-export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
+export class BarVisualization extends SkinCell<BarVisualizationProps, BaseVisualizationState> {
   /**
    * Calculate data bounds for scaling
    */
   public getDataBounds(): DataBounds {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
     }
 
-    const xValues = data.map((d) => d.x);
-    const yValues = data.map((d) => d.y);
+    const xValues = data.map((d: ChartDataPoint) => d.x);
+    const yValues = data.map((d: ChartDataPoint) => d.y);
 
     return {
       minX: Math.min(...xValues),
@@ -48,7 +48,7 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
    * Calculate bar width
    */
   public calculateBarWidth(): number {
-    const { barWidth, data, width, padding, barSpacing } = this.receptiveField;
+    const { barWidth, data, width, padding, barSpacing } = this.getProps();
 
     // Use custom bar width if provided
     if (typeof barWidth === 'number') {
@@ -75,7 +75,7 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
    * Calculate positions for all bars
    */
   public calculateBarPositions(): BarPosition[] {
-    const { data, orientation, padding } = this.receptiveField;
+    const { data, orientation, padding } = this.getProps();
 
     if (!data || data.length === 0) {
       return [];
@@ -121,7 +121,7 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
     barWidth: number,
     barSpacing: number,
   ): BarPosition[] {
-    const { height } = this.receptiveField;
+    const { height } = this.getProps();
     const chartHeight = height - padding.top - padding.bottom;
 
     const yRange = bounds.maxY - bounds.minY || 1;
@@ -158,7 +158,7 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
     barHeight: number,
     barSpacing: number,
   ): BarPosition[] {
-    const { width } = this.receptiveField;
+    const { width } = this.getProps();
     const chartWidth = width - padding.left - padding.right;
 
     const positions: BarPosition[] = [];
@@ -208,14 +208,14 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
    * Handle point hover
    */
   public onPointHover(point: ChartDataPoint | null): void {
-    this.setState({ ...this.visualState, hoveredPoint: point });
+    this.setState({ ...this.getState(), hoveredPoint: point });
   }
 
   /**
    * Handle point click
    */
   public onPointClick(point: ChartDataPoint): void {
-    this.setState({ ...this.visualState, selectedPoint: point });
+    this.setState({ ...this.getState(), selectedPoint: point });
 
     // Emit UI event
     this.emitUIEvent({
@@ -233,15 +233,16 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
    * Get data as accessible table
    */
   public getDataAsTable(): Array<{ x: number; y: number; label: string | undefined }> {
-    const { data } = this.receptiveField;
-    return data.map((d) => ({ x: d.x, y: d.y, label: d.label }));
+    const { data } = this.getProps();
+    return data.map((d: ChartDataPoint) => ({ x: d.x, y: d.y, label: d.label }));
   }
 
   /**
    * Render the bar chart
    */
   protected performRender(): RenderSignal {
-    const { width, height, color } = this.receptiveField;
+    const { width, height, color, data } = this.getProps();
+    const { hoveredPoint, selectedPoint } = this.getState();
     const bars = this.calculateBarPositions();
 
     const children: Array<SVGElement | string> = [];
@@ -249,8 +250,8 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
     // Add bars
     for (const bar of bars) {
       const barColor = bar.dataPoint.color || color || '#3b82f6';
-      const isHovered = this.visualState.hoveredPoint === bar.dataPoint;
-      const isSelected = this.visualState.selectedPoint === bar.dataPoint;
+      const isHovered = hoveredPoint === bar.dataPoint;
+      const isSelected = selectedPoint === bar.dataPoint;
 
       children.push({
         tag: 'rect',
@@ -274,7 +275,7 @@ export class BarVisualization extends SkinCell<BarChartProps, BaseChartState> {
         height,
         viewBox: `0 0 ${width} ${height}`,
         role: 'img',
-        'aria-label': `Bar chart with ${this.receptiveField.data.length} bars`,
+        'aria-label': `Bar chart with ${data.length} bars`,
       },
       children,
     };

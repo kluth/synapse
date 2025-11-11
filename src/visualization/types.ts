@@ -2,8 +2,6 @@
  * Types for visualization components
  */
 
-import type { SkinCellProps, SkinCellState } from '../ui/types';
-
 /**
  * Base visualization data point
  */
@@ -36,7 +34,7 @@ export interface CanvasPoint {
 /**
  * Base visualization props
  */
-export interface BaseVisualizationProps extends SkinCellProps {
+export interface BaseVisualizationProps {
   data: ChartDataPoint[];
   width: number;
   height: number;
@@ -88,7 +86,7 @@ export interface PieDataPoint {
 /**
  * Pie visualization specific props
  */
-export interface PieVisualizationProps extends SkinCellProps {
+export interface PieVisualizationProps {
   data: PieDataPoint[];
   width: number;
   height: number;
@@ -109,7 +107,7 @@ export interface ScatterVisualizationProps extends BaseVisualizationProps {
 /**
  * Base visualization state
  */
-export interface BaseVisualizationState extends SkinCellState {
+export interface BaseVisualizationState {
   hoveredPoint: ChartDataPoint | null;
   selectedPoint: ChartDataPoint | null;
   isAnimating?: boolean;
@@ -118,7 +116,7 @@ export interface BaseVisualizationState extends SkinCellState {
 /**
  * Pie visualization state
  */
-export interface PieVisualizationState extends SkinCellState {
+export interface PieVisualizationState {
   hoveredSlice: PieDataPoint | null;
   selectedSlice: PieDataPoint | null;
   isAnimating?: boolean;

@@ -6,17 +6,17 @@
  * and simulating interactions.
  */
 
-import type { VisualNeuron, ComponentProps } from '../../ui/VisualNeuron';
+import type { SkinCell, SkinCellProps } from '../../ui/SkinCell';
 import type { Stage } from '../core/Stage';
 
 /**
  * Test subject configuration
  */
-export interface TestSubjectConfig<TProps extends ComponentProps = ComponentProps> {
+export interface TestSubjectConfig<TProps extends SkinCellProps = SkinCellProps> {
   /**
    * Component to test
    */
-  component: VisualNeuron<TProps>;
+  component: SkinCell<TProps, any>;
 
   /**
    * Initial props
@@ -62,8 +62,8 @@ export interface Interaction {
 /**
  * TestSubject - Component testing wrapper
  */
-export class TestSubject<TProps extends ComponentProps = ComponentProps> {
-  private component: VisualNeuron<TProps>;
+export class TestSubject<TProps extends SkinCellProps = SkinCellProps> {
+  private component: SkinCell<TProps, any>;
   // stage is configured but not used in current test implementation
   private mounted: boolean = false;
   private renderCount: number = 0;
@@ -88,7 +88,7 @@ export class TestSubject<TProps extends ComponentProps = ComponentProps> {
   /**
    * Get the wrapped component
    */
-  public getComponent(): VisualNeuron<TProps> {
+  public getComponent(): SkinCell<TProps, any> {
     return this.component;
   }
 

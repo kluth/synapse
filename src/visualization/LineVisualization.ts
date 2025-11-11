@@ -4,29 +4,29 @@
  */
 
 import { SkinCell } from '../ui/SkinCell';
-import type { RenderSignal, SkinCellProps, SkinCellState } from '../ui/types';
+import type { RenderSignal } from '../ui/types';
 import type {
-  LineChartProps,
-  BaseChartState,
+  LineVisualizationProps,
+  BaseVisualizationState,
   ChartDataPoint,
   DataBounds,
   CanvasPoint,
   SVGElement,
 } from './types';
 
-export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> {
+export class LineVisualization extends SkinCell<LineVisualizationProps, BaseVisualizationState> {
   /**
    * Calculate data bounds for scaling
    */
   public getDataBounds(): DataBounds {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
     }
 
-    const xValues = data.map((d) => d.x);
-    const yValues = data.map((d) => d.y);
+    const xValues = data.map((d: ChartDataPoint) => d.x);
+    const yValues = data.map((d: ChartDataPoint) => d.y);
 
     return {
       minX: Math.min(...xValues),
@@ -40,7 +40,7 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
    * Convert data coordinates to canvas coordinates
    */
   public dataToCanvas(point: { x: number; y: number }): CanvasPoint {
-    const { width, height, padding } = this.receptiveField;
+    const { width, height, padding } = this.getProps();
     const bounds = this.getDataBounds();
 
     const effectivePadding = padding || {
@@ -66,7 +66,7 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
    * Convert canvas coordinates to data coordinates
    */
   public canvasToData(point: CanvasPoint): { x: number; y: number } {
-    const { width, height, padding } = this.receptiveField;
+    const { width, height, padding } = this.getProps();
     const bounds = this.getDataBounds();
 
     const effectivePadding = padding || {
@@ -93,7 +93,7 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
    * Generate SVG path data for the line
    */
   public generatePathData(): string {
-    const { data, smooth } = this.receptiveField;
+    const { data, smooth } = this.getProps();
 
     if (!data || data.length === 0) {
       return '';
@@ -104,7 +104,7 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
       return `M ${point.x},${point.y}`;
     }
 
-    const points = data.map((d) => this.dataToCanvas(d));
+    const points = data.map((d: ChartDataPoint) => this.dataToCanvas(d));
 
     if (smooth) {
       return this.generateSmoothPath(points);
@@ -166,7 +166,7 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
    * Find nearest point to given canvas coordinates
    */
   public findNearestPoint(canvasPoint: CanvasPoint): ChartDataPoint | null {
-    const { data } = this.receptiveField;
+    const { data } = this.getProps();
 
     if (!data || data.length === 0) {
       return null;
@@ -194,14 +194,14 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
    * Handle point hover
    */
   public onPointHover(point: ChartDataPoint | null): void {
-    this.setState({ ...this.visualState, hoveredPoint: point });
+    this.setState({ ...this.getState(), hoveredPoint: point });
   }
 
   /**
    * Handle point click
    */
   public onPointClick(point: ChartDataPoint): void {
-    this.setState({ ...this.visualState, selectedPoint: point });
+    this.setState({ ...this.getState(), selectedPoint: point });
 
     // Emit UI event
     this.emitUIEvent({
@@ -219,15 +219,15 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
    * Get data as accessible table
    */
   public getDataAsTable(): Array<{ x: number; y: number; label: string | undefined }> {
-    const { data } = this.receptiveField;
-    return data.map((d) => ({ x: d.x, y: d.y, label: d.label }));
+    const { data } = this.getProps();
+    return data.map((d: ChartDataPoint) => ({ x: d.x, y: d.y, label: d.label }));
   }
 
   /**
    * Render the line chart
    */
   protected performRender(): RenderSignal {
-    const { width, height, color, lineWidth, showPoints, pointRadius } = this.receptiveField;
+    const { width, height, color, lineWidth, showPoints, pointRadius, data } = this.getProps();
     const pathData = this.generatePathData();
 
     const children: Array<SVGElement | string> = [];
@@ -248,7 +248,6 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
 
     // Add points if enabled
     if (showPoints !== false) {
-      const { data } = this.receptiveField;
       const radius = pointRadius || 4;
 
       for (const point of data) {
@@ -274,7 +273,7 @@ export class LineVisualization extends SkinCell<LineChartProps, BaseChartState> 
         height,
         viewBox: `0 0 ${width} ${height}`,
         role: 'img',
-        'aria-label': `Line chart with ${this.receptiveField.data.length} data points`,
+        'aria-label': `Line chart with ${data.length} data points`,
       },
       children,
     };

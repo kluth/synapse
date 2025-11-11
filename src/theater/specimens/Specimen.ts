@@ -5,7 +5,7 @@
  * Anatomy Theater. It provides metadata, variations, and rendering context.
  */
 
-import type { VisualNeuron } from '../../ui/VisualNeuron';
+import type { SkinCell } from '../../ui/SkinCell';
 
 /**
  * Specimen metadata
@@ -113,7 +113,7 @@ export interface SpecimenContext {
  */
 export type SpecimenRenderFn<T extends object = object> = (
   context: SpecimenContext,
-) => VisualNeuron<T> | HTMLElement;
+) => SkinCell<T, any> | HTMLElement;
 
 /**
  * Specimen - Component showcase wrapper
@@ -142,7 +142,7 @@ export class Specimen<T extends object = object> {
   /**
    * Render the specimen
    */
-  public render(context: SpecimenContext = {}): VisualNeuron<T> | HTMLElement {
+  public render(context: SpecimenContext = {}): SkinCell<T, any> | HTMLElement {
     const mergedContext: SpecimenContext = {
       ...this.defaultContext,
       ...context,
@@ -198,7 +198,7 @@ export class Specimen<T extends object = object> {
   /**
    * Render a specific variation
    */
-  public renderVariation(name: string): VisualNeuron<T> | HTMLElement {
+  public renderVariation(name: string): SkinCell<T, any> | HTMLElement {
     const variation = this.variations.get(name);
     if (variation === undefined) {
       throw new Error(`Variation not found: ${name}`);
@@ -210,8 +210,8 @@ export class Specimen<T extends object = object> {
   /**
    * Render all variations
    */
-  public renderAllVariations(): Map<string, VisualNeuron<T> | HTMLElement> {
-    const rendered = new Map<string, VisualNeuron<T> | HTMLElement>();
+  public renderAllVariations(): Map<string, SkinCell<T, any> | HTMLElement> {
+    const rendered = new Map<string, SkinCell<T, any> | HTMLElement>();
 
     for (const [name, context] of this.variations) {
       rendered.set(name, this.render(context));

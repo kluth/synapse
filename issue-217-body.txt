@@ -1,0 +1,875 @@
+# Domain Terminology Refactoring: Align Codebase with Medical/Biological Terminology
+
+## Overview
+
+This issue tracks the comprehensive refactoring of the entire codebase to align with medical/biological domain terminology (Ubiquitous Language). The goal is to ensure **100% adherence** to medical/biological terminology throughout the codebase, reflecting the body and all that belongs to it.
+
+## Current Status
+
+**Health Score**: 17% (Critical - Significant terminology drift)
+
+- **Direct Match**: 85 terms (17%)
+- **Legacy/Deprecated**: 12 terms (2.4%)
+- **Ambiguous/Confusing**: 8 terms (1.6%)
+- **No Match**: 395+ terms (79%)
+- **Misspelled**: 0 terms (0%)
+
+## Critical Areas
+
+1. **UI System (Critical)**: 12 legacy terms need migration to Skin system
+2. **Type System (Critical)**: ComponentProps/ComponentState used in 100+ files
+3. **Visualization System (High)**: 11+ generic chart terms need medical equivalents
+4. **Infrastructure (High)**: Server/Client/Bridge terms need medical equivalents
+5. **Communication (Medium)**: EventBus/Event need Circulatory System terms
+6. **Respiratory System (Medium)**: Router/Resource/Route need medical equivalents
+
+## Reference Documents
+
+All analysis and planning documents have been created:
+
+1. **`DOMAIN_TERMINOLOGY_GLOSSARY.md`** - Official Domain Terminology Glossary
+2. **`AUDIT_FINDINGS.md`** - Complete audit findings with categorized terms
+3. **`PRIORITIZED_REFACTORING_PLAN.md`** - Prioritized refactoring plan with 100+ changes
+4. **`BLAST_RADIUS_ASSESSMENT.md`** - Blast radius assessment for each High Priority change
+5. **`PHASING_AND_TDD_PLAN.md`** - 7-phase implementation strategy with TDD plan
+6. **`COMPREHENSIVE_REFACTORING_PLAYBOOK.md`** - Complete refactoring playbook
+
+## Implementation Phases
+
+### Phase 1: Core UI System Terminology (Week 1-2) - **START HERE**
+
+**Critical Changes**:
+- [ ] `VisualNeuron` → `SkinCell` (42 files affected)
+- [ ] `SensoryNeuron` → `Receptor` (25 files affected)
+- [ ] `MotorNeuron` → `Effector` (3 files affected)
+- [ ] `InterneuronUI` → `DermalLayer` (8 files affected)
+- [ ] `VisualAstrocyte` → `Adipocyte` (3 files affected)
+- [ ] `VisualOligodendrocyte` → `Melanocyte` (3 files affected)
+- [ ] `ComponentProps` → System-specific props (`SkinCellProps`, `ReceptorProps`, `EffectorProps`, `DermalLayerProps`) (100+ files affected)
+- [ ] `ComponentState` → System-specific state (`SkinCellState`, `ReceptorState`, `EffectorState`, `DermalLayerState`) (100+ files affected)
+
+**Files to Update**:
+- `src/ui/VisualNeuron.ts` → `src/ui/SkinCell.ts`
+- `src/ui/SensoryNeuron.ts` → `src/ui/Receptor.ts`
+- `src/ui/MotorNeuron.ts` → `src/ui/Effector.ts`
+- `src/ui/InterneuronUI.ts` → `src/ui/DermalLayer.ts`
+- `src/ui/glial/VisualAstrocyte.ts` → `src/ui/glial/Adipocyte.ts`
+- `src/ui/glial/VisualOligodendrocyte.ts` → `src/ui/glial/Melanocyte.ts`
+- `src/ui/types.ts` (add system-specific types)
+- All files in `src/ui/components/` (18 files)
+- All files in `src/visualization/` (10 files)
+- All test files in `src/ui/__tests__/` (4 files)
+- All story files `*.stories.ts` (9 files)
+- `src/ui/index.ts` (update exports)
+
+**Migration Steps**:
+1. Create new classes with medical names (SkinCell, Receptor, etc.)
+2. Update all imports (use find/replace carefully)
+3. Update all type references
+4. Update all class extensions
+5. Update exports in index files
+6. Update tests
+7. Update stories
+8. Run full test suite
+9. Verify type checking passes
+10. Verify build succeeds
+
+### Phase 2: UI Component Names (Week 3-4)
+
+**Changes**:
+- [ ] `Button` → `TouchReceptor` (5 files)
+- [ ] `Input` → `TextReceptor` (5 files)
+- [ ] `Select` → `SelectReceptor` / `ChoiceReceptor` (5 files)
+- [ ] `Form` → `DermalLayer` (5 files)
+- [ ] `Modal` → `Membrane` / `Vesicle` (5 files)
+- [ ] `Card` → `DermalLayer` / `Epidermis` (5 files)
+- [ ] `Alert` → `AlertReceptor` / `Nociceptor` (5 files)
+- [ ] `Text` → `Keratinocyte` / `TextCell` (5 files)
+- [ ] `Radio` → `RadioReceptor` / `ChoiceReceptor` (5 files)
+- [ ] `Checkbox` → `CheckReceptor` / `ToggleReceptor` (5 files)
+
+**Files to Update**:
+- All component files in `src/ui/components/`
+- All component test files
+- All component story files
+- `src/ui/components/index.ts`
+
+### Phase 3: Visualization System (Week 5-6)
+
+**Changes**:
+- [ ] `Chart` → `Visualization`
+- [ ] `BarChart` → `BarVisualization`
+- [ ] `LineChart` → `LineVisualization`
+- [ ] `PieChart` → `PieVisualization`
+- [ ] `ScatterPlot` → `ScatterVisualization`
+- [ ] `ChartDataPoint` → `DataPoint` / `Measurement`
+- [ ] `DataBounds` → `Bounds` / `Range`
+- [ ] `CanvasPoint` → `Coordinate` / `Point`
+- [ ] `BaseChartProps` → `BaseVisualizationProps`
+- [ ] `BaseChartState` → `BaseVisualizationState`
+- [ ] `ChartTheme` → `VisualizationTheme`
+
+**Files to Update**:
+- All files in `src/visualization/`
+- `src/visualization/index.ts`
+
+### Phase 4: Communication System (Week 7)
+
+**Changes**:
+- [ ] `EventBus` → `Heart` / `Artery` (decide on single term)
+- [ ] `Event` → `BloodCell` / `Signal` (decide on single term)
+
+**Files to Update**:
+- `src/communication/EventBus.ts`
+- `src/communication/index.ts`
+- `src/index.ts`
+- All files using EventBus
+
+### Phase 5: Respiratory System (Week 8-9)
+
+**Changes**:
+- [ ] `Router` → `Bronchus` / `Trachea` (decide on single term)
+- [ ] `Resource` → `Oxygen` / `Nutrient` (decide on single term)
+- [ ] `ResourcePool` → `Alveolus` / `Capillary` (decide on single term)
+- [ ] `Route` → `Bronchiole`
+- [ ] `DatabaseResource` → `DatabaseOxygen` / `DatabaseNutrient`
+- [ ] `CacheResource` → `CacheOxygen` / `CacheNutrient`
+- [ ] `StorageResource` → `StorageOxygen` / `StorageNutrient`
+- [ ] `RestAdapter` → `RestBronchus`
+- [ ] `GraphQLAdapter` → `GraphQLBronchus`
+- [ ] `WebSocketAdapter` → `WebSocketBronchus`
+- [ ] `ProtocolAdapter` → `ProtocolBronchus`
+
+**Files to Update**:
+- All files in `src/respiratory/`
+- `src/respiratory/index.ts`
+
+### Phase 6: Infrastructure Terms (Week 10)
+
+**Changes**:
+- [ ] `Server` → `Organ` / `System` (decide on single term)
+- [ ] `Client` → `Receptor` / `Effector` (decide on single term)
+- [ ] `Bridge` → `Synapse` / `Connection` (decide on single term)
+- [ ] `WebSocketBridge` → `WebSocketSynapse` / `WebSocketConnection`
+- [ ] `TheaterServer` → `TheaterOrgan` / `TheaterSystem`
+- [ ] `ClientConnection` → `ReceptorConnection` / `EffectorConnection`
+- [ ] `HotReload` → `Regeneration` / `Renewal`
+- [ ] `ServerConfig` → `OrganConfig` / `SystemConfig`
+- [ ] `ServerState` → `OrganState` / `SystemState`
+- [ ] `WebSocketConfig` → `WebSocketConnectionConfig`
+- [ ] `HotReloadConfig` → `RegenerationConfig`
+
+**Files to Update**:
+- All files in `src/theater/server/`
+- `src/theater/index.ts`
+
+### Phase 7: Tools & Testing Terms (Week 11)
+
+**Changes**:
+- [ ] `DependencyAuditor` → `DependencyAnalyzer` / `DependencyInspector`
+- [ ] `AuditReport` → `AnalysisReport` / `InspectionReport`
+- [ ] `AuditOptions` → `AnalysisOptions` / `InspectionOptions`
+- [ ] `Test` → `Experiment` / `Hypothesis` (in test files - optional)
+- [ ] `Mock` → `Specimen` / `Model` (in test files - optional)
+
+**Files to Update**:
+- `src/tools/dependency-auditor.ts`
+- Test files (optional - can keep Test/Mock for compatibility)
+
+## Planned Features & Components (Future Implementation)
+
+This section lists all planned features and components from the roadmap and GitHub issues that need to use medical/biological terminology from the start.
+
+### Phase 3: Muscular System (Planned)
+
+**Core Components**:
+- [ ] `Muscle` (base class for operations) - **Already correct**
+- [ ] `MuscleGroup` (operation composition) - **Already correct**
+- [ ] `MuscleMemory` (operation caching) - **Already correct**
+- [ ] `MuscleCoordination` (orchestration) - **Already correct**
+- [ ] `Tendon` (integration points) - **Already correct**
+
+**Built-in Muscles**:
+- [ ] `ComputeMuscle` → `ComputeMuscle` (already correct)
+- [ ] `TransformMuscle` → `TransformMuscle` (already correct)
+- [ ] `AggregateMuscle` → `AggregateMuscle` (already correct)
+- [ ] `FilterMuscle` → `FilterMuscle` (already correct)
+- [ ] `SortMuscle` → `SortMuscle` (already correct)
+- [ ] `MapMuscle` → `MapMuscle` (already correct)
+- [ ] `ReduceMuscle` → `ReduceMuscle` (already correct)
+
+### Phase 4: Circulatory System (Planned)
+
+**Core Components**:
+- [ ] `Heart` (central message broker) - **Already correct**
+- [ ] `Artery` (outbound data streams) - **Already correct**
+- [ ] `Vein` (inbound data streams) - **Already correct**
+- [ ] `Capillary` (micro-channels) - **Already correct**
+- [ ] `BloodCell` (message envelope) - **Already correct**
+- [ ] `Hemoglobin` (data carrier) - **Already correct**
+
+### Phase 5: Respiratory System (Planned)
+
+**Core Components**:
+- [ ] `Lung` (HTTP client/server) - **Already correct**
+- [ ] `Alveoli` (API endpoints) - **Already correct**
+- [ ] `Diaphragm` (breathing control) - **Already correct**
+- [ ] `Bronchi` (protocol adapters) - **Already correct**
+- [ ] `Oxygen` (external resources) - **Already correct**
+- [ ] `CarbonDioxide` (error exhaust) - **Already correct**
+
+**Protocol Adapters**:
+- [ ] `RestAdapter` → `RestBronchus`
+- [ ] `GraphQLAdapter` → `GraphQLBronchus`
+- [ ] `WebSocketAdapter` → `WebSocketBronchus`
+- [ ] `SSEAdapter` → `SSEBronchus`
+- [ ] `gRPCAdapter` → `gRPCBronchus`
+
+### Phase 6: Immune System (Planned)
+
+**Core Components**:
+- [ ] `WhiteBloodCell` (threat detection) - **Already correct**
+- [ ] `Antibody` (authentication) - **Already correct**
+- [ ] `TCell` (authorization) - **Already correct**
+- [ ] `BCell` (error memory) - **Already correct**
+- [ ] `Macrophage` (cleanup & sanitization) - **Already correct**
+- [ ] `Lymph` (security context) - **Already correct**
+- [ ] `Vaccine` (security configuration) - **Already correct**
+
+### Phase 7: Endocrine System (Planned)
+
+**Core Components**:
+- [ ] `Gland` (configuration provider) - **Already correct**
+- [ ] `Hormone` (configuration value) - **Already correct**
+- [ ] `Receptor` (config consumer) - **Already correct** (but conflicts with Skin Receptor - decide on naming)
+- [ ] `Hypothalamus` (feature flags) - **Already correct**
+- [ ] `Pituitary` (central control) - **Already correct**
+- [ ] `Thyroid` (performance tuning) - **Already correct**
+
+### Phase 8: Digestive System (Planned)
+
+**Core Components**:
+- [ ] `Mouth` (data ingestion) - **Already correct**
+- [ ] `Esophagus` (data pipeline) - **Already correct**
+- [ ] `Stomach` (data processing) - **Already correct**
+- [ ] `Intestine` (data transformation) - **Already correct**
+- [ ] `Liver` (data cleansing) - **Already correct**
+- [ ] `Enzyme` (transformation functions) - **Already correct**
+
+### Phase 9: Skin Layer - Advanced Components (Planned)
+
+**Form Controls**:
+- [ ] `Select` / `Dropdown` → `SelectReceptor` / `ChoiceReceptor`
+- [ ] `Checkbox` → `CheckReceptor` / `ToggleReceptor`
+- [ ] `Radio` → `RadioReceptor` / `ChoiceReceptor`
+- [ ] `Toggle` / `Switch` → `ToggleReceptor` / `SwitchReceptor`
+- [ ] `Slider` / `Range` → `RangeReceptor` / `SliderReceptor`
+- [ ] `DatePicker` → `DateReceptor` / `TemporalReceptor`
+- [ ] `TimePicker` → `TimeReceptor` / `TemporalReceptor`
+- [ ] `ColorPicker` → `ColorReceptor` / `VisualReceptor`
+- [ ] `FileUpload` → `FileReceptor` / `UploadReceptor`
+
+**Data Display**:
+- [ ] `Table` → `DataTable` / `GridCell` / `TabularCell`
+- [ ] `TreeView` → `TreeCell` / `HierarchicalCell`
+- [ ] `List` → `ListCell` / `CollectionCell`
+- [ ] `Grid` → `GridCell` / `MatrixCell`
+- [ ] `Timeline` → `TimelineCell` / `ChronologicalCell`
+- [ ] `Accordion` → `AccordionCell` / `ExpandableCell`
+- [ ] `Tabs` → `TabCell` / `TabularCell`
+- [ ] `Breadcrumbs` → `BreadcrumbCell` / `NavigationCell`
+
+**Navigation**:
+- [ ] `Menu` / `DropdownMenu` → `MenuCell` / `NavigationCell`
+- [ ] `Sidebar` → `SidebarCell` / `LateralCell`
+- [ ] `Navbar` → `NavbarCell` / `NavigationCell`
+- [ ] `Pagination` → `PaginationCell` / `PageNavigationCell`
+- [ ] `Stepper` / `Wizard` → `StepperCell` / `ProgressiveCell`
+- [ ] `CommandPalette` → `CommandCell` / `PaletteCell`
+
+**Feedback**:
+- [ ] `Modal` / `Dialog` → `Membrane` / `Vesicle`
+- [ ] `Toast` / `Notification` → `NotificationCell` / `AlertCell`
+- [ ] `Alert` → `AlertReceptor` / `Nociceptor`
+- [ ] `ProgressBar` → `ProgressCell` / `ProgressIndicator`
+- [ ] `SkeletonLoader` → `SkeletonCell` / `LoadingCell`
+- [ ] `Spinner` → `SpinnerCell` / `LoadingCell`
+- [ ] `Badge` → `BadgeCell` / `IndicatorCell`
+- [ ] `Tooltip` → `TooltipCell` / `HintCell`
+- [ ] `Popover` → `PopoverCell` / `OverlayCell`
+
+**Layout**:
+- [ ] `Grid` → `GridCell` / `MatrixCell`
+- [ ] `Flex` / `FlexContainer` → `FlexCell` / `FlexibleCell`
+- [ ] `Stack` → `StackCell` / `LayeredCell`
+- [ ] `Divider` → `DividerCell` / `SeparatorCell`
+- [ ] `Spacer` → `SpacerCell` / `EmptyCell`
+- [ ] `Container` → `ContainerCell` / `WrapperCell`
+- [ ] `Card` → `CardCell` / `Epidermis` / `DermalLayer`
+
+**Advanced**:
+- [ ] `Chart` → `Visualization` (see Phase 3)
+- [ ] `CodeEditor` → `CodeCell` / `EditorCell`
+- [ ] `RichTextEditor` → `RichTextCell` / `EditorCell`
+- [ ] `MarkdownViewer` → `MarkdownCell` / `DocumentCell`
+- [ ] `PDFViewer` → `PDFCell` / `DocumentCell`
+- [ ] `ImageCropper` → `ImageCell` / `ImageProcessor`
+- [ ] `Autocomplete` → `AutocompleteReceptor` / `SuggestReceptor`
+- [ ] `Combobox` → `ComboboxReceptor` / `SelectReceptor`
+
+### Phase 10: Observability & Monitoring (Planned)
+
+**Core Components**:
+- [ ] `SensoryNerve` (telemetry collection) - **Already correct**
+- [ ] `HealthMonitor` - **Already correct**
+- [ ] `MetricsRegistry` - **Already correct**
+- [ ] `Dashboard` → `DashboardCell` / `MonitorCell`
+
+### Phase 11: Developer Experience & Tooling (Planned)
+
+**CLI Components**:
+- [ ] `CLI` → `CLI` (keep as-is, or use `CommandLineInterface`)
+- [ ] `REPL` → `REPL` (keep as-is, or use `InteractiveShell`)
+- [ ] `CodeGenerator` → `CodeGenerator` / `CodeSynthesizer`
+- [ ] `MigrationTool` → `MigrationTool` / `MigrationAssistant`
+
+**Build Tools**:
+- [ ] `BuildTool` → `BuildTool` / `CompilationTool`
+- [ ] `BundleAnalyzer` → `BundleAnalyzer` / `BundleInspector`
+- [ ] `CodeSplitter` → `CodeSplitter` / `CodeDivider`
+
+**Debug Tools**:
+- [ ] `Debugger` → `Debugger` / `DiagnosticTool`
+- [ ] `StateInspector` → `StateInspector` / `StateExplorer`
+- [ ] `PerformanceProfiler` → `PerformanceProfiler` / `PerformanceAnalyzer`
+- [ ] `MemoryLeakDetector` → `MemoryLeakDetector` / `MemoryAnalyzer`
+
+### Phase 12: Performance Optimization (Planned)
+
+**Optimization Components**:
+- [ ] `JITCompiler` → `JITCompiler` / `RuntimeCompiler`
+- [ ] `ObjectPool` → `ObjectPool` / `ObjectCache`
+- [ ] `MemoryArena` → `MemoryArena` / `MemoryPool`
+- [ ] `WorkerThreadPool` → `WorkerThreadPool` / `ThreadPool`
+- [ ] `CacheStrategy` → `CacheStrategy` / `CachingStrategy`
+- [ ] `LazyLoader` → `LazyLoader` / `DeferredLoader`
+- [ ] `Compressor` → `Compressor` / `CompressionTool`
+
+### Phase 13: Advanced Data Patterns (Planned)
+
+**Core Patterns**:
+- [ ] `CQRS` → `CQRS` (keep as-is, or use `CommandQuerySeparation`)
+- [ ] `EventStore` → `EventStore` / `EventRepository`
+- [ ] `EventStream` → `EventStream` / `EventFlow`
+- [ ] `Saga` → `Saga` / `TransactionOrchestrator`
+- [ ] `Outbox` → `Outbox` / `MessageOutbox`
+- [ ] `MaterializedView` → `MaterializedView` / `CachedView`
+
+### Phase 14: Real-time Collaboration (Planned)
+
+**Core Components**:
+- [ ] `CRDT` → `CRDT` (keep as-is, or use `ConflictFreeReplicatedDataType`)
+- [ ] `OperationalTransform` → `OperationalTransform` / `OperationTransformer`
+- [ ] `PresenceTracker` → `PresenceTracker` / `PresenceMonitor`
+- [ ] `SyncEngine` → `SyncEngine` / `SynchronizationEngine`
+- [ ] `CollaborativeEditor` → `CollaborativeEditor` / `SharedEditor`
+
+### Phase 15: AI & Machine Learning Integration (Planned)
+
+**Core Components**:
+- [ ] `MLPipeline` → `MLPipeline` / `MachineLearningPipeline`
+- [ ] `ModelServing` → `ModelServing` / `ModelServer`
+- [ ] `ModelVersioning` → `ModelVersioning` / `ModelRegistry`
+- [ ] `AutoML` → `AutoML` / `AutomatedML`
+- [ ] `Explainability` → `Explainability` / `ModelExplanation`
+
+**WebNN Integration**:
+- [ ] `WebNN` → `WebNN` (keep as-is)
+- [ ] `NeuralNetwork` → `NeuralNetwork` / `NeuralCircuit` (already exists)
+- [ ] `ModelOptimizer` → `ModelOptimizer` / `ModelCompressor`
+- [ ] `HardwareAccelerator` → `HardwareAccelerator` / `AccelerationEngine`
+
+**Pre-trained Models**:
+- [ ] `TextClassifier` → `TextClassifier` / `TextAnalysisModel`
+- [ ] `SentimentAnalyzer` → `SentimentAnalyzer` / `SentimentModel`
+- [ ] `NamedEntityRecognizer` → `NamedEntityRecognizer` / `EntityExtractor`
+- [ ] `ImageClassifier` → `ImageClassifier` / `ImageAnalysisModel`
+- [ ] `ObjectDetector` → `ObjectDetector` / `ObjectRecognitionModel`
+
+**Intelligent Features**:
+- [ ] `SmartAutocomplete` → `SmartAutocomplete` / `IntelligentAutocomplete`
+- [ ] `ContentRecommender` → `ContentRecommender` / `RecommendationEngine`
+- [ ] `AnomalyDetector` → `AnomalyDetector` / `AnomalyRecognition`
+- [ ] `PredictiveAnalytics` → `PredictiveAnalytics` / `PredictionEngine`
+- [ ] `PersonalizationEngine` → `PersonalizationEngine` / `PersonalizationSystem`
+
+### Phase 16: Edge Computing & Distributed Systems (Planned)
+
+**Core Components**:
+- [ ] `EdgeRuntime` → `EdgeRuntime` / `EdgeExecutionEnvironment`
+- [ ] `DistributedCache` → `DistributedCache` / `DistributedMemory`
+- [ ] `ServiceMesh` → `ServiceMesh` / `ServiceNetwork`
+- [ ] `GlobalStateSync` → `GlobalStateSync` / `GlobalSynchronization`
+- [ ] `EdgeOptimizer` → `EdgeOptimizer` / `EdgeOptimizationEngine`
+- [ ] `DistributedTracing` → `DistributedTracing` / `DistributedTraceSystem`
+
+**Deployment Targets**:
+- [ ] `CloudflareWorkers` → `CloudflareWorkers` / `CloudflareEdge`
+- [ ] `AWSLambda` → `AWSLambda` / `LambdaFunction`
+- [ ] `VercelEdgeFunctions` → `VercelEdgeFunctions` / `VercelEdge`
+- [ ] `DenoDeploy` → `DenoDeploy` / `DenoEdge`
+
+### Phase 17: Testing & Quality Assurance Framework (Planned)
+
+**Testing Tools**:
+- [ ] `TestUtilities` → `TestUtilities` / `TestingUtilities`
+- [ ] `MockFactory` → `MockFactory` / `SpecimenFactory`
+- [ ] `FixtureGenerator` → `FixtureGenerator` / `TestDataGenerator`
+- [ ] `SnapshotTester` → `SnapshotTester` / `SnapshotValidator`
+- [ ] `VisualRegressionTester` → `VisualRegressionTester` / `VisualTester`
+
+**E2E Testing**:
+- [ ] `E2ETester` → `E2ETester` / `EndToEndTester`
+- [ ] `PlaywrightIntegration` → `PlaywrightIntegration` / `PlaywrightAdapter`
+- [ ] `PuppeteerIntegration` → `PuppeteerIntegration` / `PuppeteerAdapter`
+- [ ] `VisualTester` → `VisualTester` / `VisualRegressionTester`
+- [ ] `AccessibilityTester` → `AccessibilityTester` / `A11yTester`
+
+**Load Testing**:
+- [ ] `LoadTester` → `LoadTester` / `LoadTestingTool`
+- [ ] `StressTester` → `StressTester` / `StressTestingTool`
+- [ ] `SoakTester` → `SoakTester` / `SoakTestingTool`
+- [ ] `SpikeTester` → `SpikeTester` / `SpikeTestingTool`
+- [ ] `ScalabilityTester` → `ScalabilityTester` / `ScalabilityTestingTool`
+
+**Contract Testing**:
+- [ ] `ContractTester` → `ContractTester` / `ContractValidator`
+- [ ] `APIContractTester` → `APIContractTester` / `APIContractValidator`
+- [ ] `ConsumerDrivenContract` → `ConsumerDrivenContract` / `ConsumerContract`
+
+**Chaos Engineering**:
+- [ ] `ChaosEngineer` → `ChaosEngineer` / `ChaosTestingTool`
+- [ ] `FailureInjector` → `FailureInjector` / `FailureSimulator`
+- [ ] `LatencyInjector` → `LatencyInjector` / `LatencySimulator`
+- [ ] `NetworkPartitionSimulator` → `NetworkPartitionSimulator` / `PartitionSimulator`
+- [ ] `ResourceExhaustionSimulator` → `ResourceExhaustionSimulator` / `ResourceSimulator`
+
+**Test Coverage**:
+- [ ] `CoverageAnalyzer` → `CoverageAnalyzer` / `CoverageTool`
+- [ ] `MutationTester` → `MutationTester` / `MutationTestingTool`
+- [ ] `PropertyBasedTester` → `PropertyBasedTester` / `PropertyTester`
+
+### Phase 18: Enterprise Features (Planned)
+
+**Enterprise Components**:
+- [ ] `MultiTenancy` → `MultiTenancy` / `TenantIsolation`
+- [ ] `TenantIsolation` → `TenantIsolation` / `TenantSeparation`
+- [ ] `AuditTrail` → `AuditTrail` / `AuditLog`
+- [ ] `ComplianceTool` → `ComplianceTool` / `ComplianceManager`
+- [ ] `GDPRCompliance` → `GDPRCompliance` / `GDPRManager`
+- [ ] `HIPAACompliance` → `HIPAACompliance` / `HIPAAManager`
+- [ ] `SOC2Compliance` → `SOC2Compliance` / `SOC2Manager`
+
+**Advanced Authorization**:
+- [ ] `HierarchicalRoles` → `HierarchicalRoles` / `RoleHierarchy`
+- [ ] `DelegatedAdministration` → `DelegatedAdministration` / `DelegationSystem`
+- [ ] `TimeBasedAccess` → `TimeBasedAccess` / `TemporalAccess`
+- [ ] `LocationBasedAccess` → `LocationBasedAccess` / `SpatialAccess`
+- [ ] `RiskBasedAuthentication` → `RiskBasedAuthentication` / `RiskAssessment`
+
+**Reporting**:
+- [ ] `UsageReporter` → `UsageReporter` / `UsageAnalytics`
+- [ ] `PerformanceReporter` → `PerformanceReporter` / `PerformanceAnalytics`
+- [ ] `SecurityReporter` → `SecurityReporter` / `SecurityAnalytics`
+- [ ] `ComplianceReporter` → `ComplianceReporter` / `ComplianceAnalytics`
+- [ ] `CustomReportBuilder` → `CustomReportBuilder` / `ReportGenerator`
+- [ ] `ScheduledReporter` → `ScheduledReporter` / `ScheduledReportGenerator`
+
+**Billing & Metering**:
+- [ ] `UsageTracker` → `UsageTracker` / `UsageMonitor`
+- [ ] `QuotaManager` → `QuotaManager` / `QuotaSystem`
+- [ ] `RateLimiter` → `RateLimiter` / `RateController`
+- [ ] `BillingIntegrator` → `BillingIntegrator` / `BillingAdapter`
+- [ ] `InvoiceGenerator` → `InvoiceGenerator` / `InvoiceCreator`
+- [ ] `PaymentProcessor` → `PaymentProcessor` / `PaymentHandler`
+
+**SLA Management**:
+- [ ] `SLOManager` → `SLOManager` / `ServiceLevelManager`
+- [ ] `SLITracker` → `SLITracker` / `ServiceLevelTracker`
+- [ ] `ErrorBudget` → `ErrorBudget` / `ErrorAllowance`
+- [ ] `UptimeMonitor` → `UptimeMonitor` / `AvailabilityMonitor`
+- [ ] `IncidentManager` → `IncidentManager` / `IncidentSystem`
+- [ ] `PostMortemTemplate` → `PostMortemTemplate` / `PostMortemGenerator`
+
+### Phase 19: Plugin Ecosystem (Planned)
+
+**Plugin System**:
+- [ ] `Plugin` → `Plugin` / `Extension`
+- [ ] `PluginInterface` → `PluginInterface` / `ExtensionInterface`
+- [ ] `PluginLifecycle` → `PluginLifecycle` / `ExtensionLifecycle`
+- [ ] `PluginIsolation` → `PluginIsolation` / `ExtensionIsolation`
+- [ ] `PluginSandbox` → `PluginSandbox` / `ExtensionSandbox`
+- [ ] `PluginDependencies` → `PluginDependencies` / `ExtensionDependencies`
+- [ ] `PluginVersioning` → `PluginVersioning` / `ExtensionVersioning`
+- [ ] `PluginHotReload` → `PluginHotReload` / `ExtensionHotReload`
+
+**Plugin APIs**:
+- [ ] `CoreExtensionPoint` → `CoreExtensionPoint` / `CoreHook`
+- [ ] `UIExtensionPoint` → `UIExtensionPoint` / `UIHook`
+- [ ] `DataExtensionPoint` → `DataExtensionPoint` / `DataHook`
+- [ ] `CLIExtensionPoint` → `CLIExtensionPoint` / `CLIHook`
+- [ ] `BuildExtensionPoint` → `BuildExtensionPoint` / `BuildHook`
+
+**Plugin Development**:
+- [ ] `PluginCLIGenerator` → `PluginCLIGenerator` / `ExtensionGenerator`
+- [ ] `PluginTestingFramework` → `PluginTestingFramework` / `ExtensionTestingFramework`
+- [ ] `PluginDebugger` → `PluginDebugger` / `ExtensionDebugger`
+- [ ] `PluginDocumentationGenerator` → `PluginDocumentationGenerator` / `ExtensionDocumentationGenerator`
+
+**Plugin Distribution**:
+- [ ] `PluginMarketplace` → `PluginMarketplace` / `ExtensionMarketplace`
+- [ ] `PluginDiscovery` → `PluginDiscovery` / `ExtensionDiscovery`
+- [ ] `PluginRatings` → `PluginRatings` / `ExtensionRatings`
+- [ ] `PluginReviews` → `PluginReviews` / `ExtensionReviews`
+- [ ] `PluginAnalytics` → `PluginAnalytics` / `ExtensionAnalytics`
+
+**Official Plugins**:
+- [ ] `DatabasePlugin` → `DatabasePlugin` / `DatabaseAdapter`
+- [ ] `StoragePlugin` → `StoragePlugin` / `StorageAdapter`
+- [ ] `AuthPlugin` → `AuthPlugin` / `AuthAdapter`
+- [ ] `PaymentPlugin` → `PaymentPlugin` / `PaymentAdapter`
+- [ ] `EmailPlugin` → `EmailPlugin` / `EmailAdapter`
+- [ ] `AnalyticsPlugin` → `AnalyticsPlugin` / `AnalyticsAdapter`
+
+**Plugin Security**:
+- [ ] `PermissionSystem` → `PermissionSystem` / `CapabilitySystem`
+- [ ] `CapabilityBasedSecurity` → `CapabilityBasedSecurity` / `CapabilitySecurity`
+- [ ] `CodeSigning` → `CodeSigning` / `CodeVerification`
+- [ ] `SecurityAudit` → `SecurityAudit` / `SecurityReview`
+- [ ] `VulnerabilityScanner` → `VulnerabilityScanner` / `VulnerabilityDetector`
+
+### Phase 20: Advanced UI & Visualization (Planned)
+
+**Visualization Components**:
+- [ ] `LineChart` → `LineVisualization` (see Phase 3)
+- [ ] `BarChart` → `BarVisualization` (see Phase 3)
+- [ ] `PieChart` → `PieVisualization` (see Phase 3)
+- [ ] `ScatterPlot` → `ScatterVisualization` (see Phase 3)
+- [ ] `Heatmap` → `HeatmapVisualization` / `HeatVisualization`
+- [ ] `NetworkGraph` → `NetworkVisualization` / `GraphVisualization`
+- [ ] `TreeMap` → `TreeMapVisualization` / `HierarchicalVisualization`
+- [ ] `GanttChart` → `GanttVisualization` / `TimelineVisualization`
+- [ ] `RealTimeChart` → `RealTimeVisualization` / `LiveVisualization`
+- [ ] `3DChart` → `3DVisualization` / `ThreeDimensionalVisualization`
+
+**Canvas-based Rendering**:
+- [ ] `CanvasRenderer` → `CanvasRenderer` / `CanvasEngine`
+- [ ] `WebGLRenderer` → `WebGLRenderer` / `WebGLEngine`
+- [ ] `GPUAccelerator` → `GPUAccelerator` / `GPUEngine`
+- [ ] `CustomShader` → `CustomShader` / `ShaderProgram`
+- [ ] `ParticleSystem` → `ParticleSystem` / `ParticleEngine`
+
+**Data Visualization**:
+- [ ] `GeographicMap` → `GeographicMap` / `MapVisualization`
+- [ ] `NetworkTopology` → `NetworkTopology` / `TopologyVisualization`
+- [ ] `FlowDiagram` → `FlowDiagram` / `FlowVisualization`
+- [ ] `SankeyDiagram` → `SankeyDiagram` / `SankeyVisualization`
+- [ ] `ChordDiagram` → `ChordDiagram` / `ChordVisualization`
+- [ ] `ForceDirectedGraph` → `ForceDirectedGraph` / `ForceGraph`
+
+**Interactive Features**:
+- [ ] `ZoomAndPan` → `ZoomAndPan` / `ZoomController`
+- [ ] `BrushSelection` → `BrushSelection` / `SelectionBrush`
+- [ ] `Tooltip` → `Tooltip` / `HintCell` (see Phase 9)
+- [ ] `Crosshairs` → `Crosshairs` / `CrosshairIndicator`
+- [ ] `Annotations` → `Annotations` / `AnnotationLayer`
+- [ ] `ExportToImage` → `ExportToImage` / `ImageExporter`
+- [ ] `ExportToPDF` → `ExportToPDF` / `PDFExporter`
+
+**Animation System**:
+- [ ] `AnimationSystem` → `AnimationSystem` / `AnimationEngine`
+- [ ] `SpringPhysics` → `SpringPhysics` / `SpringAnimation`
+- [ ] `EasingFunctions` → `EasingFunctions` / `EasingCurves`
+- [ ] `StaggeredAnimations` → `StaggeredAnimations` / `SequentialAnimations`
+- [ ] `GestureAnimations` → `GestureAnimations` / `GestureBasedAnimations`
+- [ ] `ScrollTriggeredAnimations` → `ScrollTriggeredAnimations` / `ScrollAnimations`
+- [ ] `PageTransitions` → `PageTransitions` / `TransitionAnimations`
+
+**3D Rendering**:
+- [ ] `WebGLRenderer` → `WebGLRenderer` / `WebGLEngine` (duplicate)
+- [ ] `ThreeJSIntegration` → `ThreeJSIntegration` / `ThreeJSAdapter`
+- [ ] `3DModelLoader` → `3DModelLoader` / `ModelLoader`
+- [ ] `SceneManager` → `SceneManager` / `SceneController`
+- [ ] `CameraControls` → `CameraControls` / `CameraController`
+- [ ] `Lighting` → `Lighting` / `LightSystem`
+- [ ] `Materials` → `Materials` / `MaterialSystem`
+- [ ] `Textures` → `Textures` / `TextureSystem`
+
+**Advanced UI Patterns**:
+- [ ] `VirtualScrolling` → `VirtualScrolling` / `VirtualList`
+- [ ] `InfiniteScrolling` → `InfiniteScrolling` / `InfiniteList`
+- [ ] `Windowing` → `Windowing` / `WindowManager`
+- [ ] `MasonryLayout` → `MasonryLayout` / `MasonryGrid`
+- [ ] `DragAndDrop` → `DragAndDrop` / `DragDropSystem`
+- [ ] `GestureRecognition` → `GestureRecognition` / `GestureSystem`
+- [ ] `TouchInteractions` → `TouchInteractions` / `TouchSystem`
+- [ ] `VoiceInteractions` → `VoiceInteractions` / `VoiceSystem`
+
+### Theater System (Planned - Phase 6)
+
+**Core Components**:
+- [ ] `Theater` - **Already correct**
+- [ ] `Stage` - **Already correct**
+- [ ] `Amphitheater` - **Already correct**
+- [ ] `Specimen` - **Already correct**
+- [ ] `Observation` - **Already correct**
+- [ ] `Dissection` - **Already correct**
+- [ ] `Laboratory` - **Already correct**
+- [ ] `Experiment` - **Already correct**
+- [ ] `Hypothesis` - **Already correct**
+- [ ] `Atlas` - **Already correct**
+- [ ] `Protocol` - **Already correct**
+- [ ] `Instrument` - **Already correct**
+- [ ] `Microscope` - **Already correct**
+
+**Microscope Tools**:
+- [ ] `SignalTracer` → `SignalTracer` / `SignalTracker`
+- [ ] `StateExplorer` → `StateExplorer` / `StateInspector`
+- [ ] `PerformanceProfiler` → `PerformanceProfiler` / `PerformanceAnalyzer`
+- [ ] `HealthMonitor` → `HealthMonitor` / `HealthChecker`
+
+**Laboratory Components**:
+- [ ] `PetriDish` → `PetriDish` / `TestContainer`
+- [ ] `Culture` → `Culture` / `TestEnvironment`
+- [ ] `Experiment` - **Already correct**
+
+**Atlas Components**:
+- [ ] `ComponentCatalogue` → `ComponentCatalogue` / `ComponentRegistry`
+- [ ] `Diagram` → `Diagram` / `Visualization`
+- [ ] `Protocol` - **Already correct**
+
+**Server & Hot Reload**:
+- [ ] `TheaterServer` → `TheaterOrgan` / `TheaterSystem` (see Phase 6)
+- [ ] `HotReload` → `Regeneration` / `Renewal` (see Phase 6)
+- [ ] `WebSocketCommunication` → `WebSocketSynapse` / `WebSocketConnection` (see Phase 6)
+
+**CLI & Configuration**:
+- [ ] `TheaterCLI` → `TheaterCLI` / `TheaterCommandLine`
+- [ ] `TheaterConfiguration` → `TheaterConfiguration` / `TheaterConfig`
+- [ ] `SpecimenFileLoader` → `SpecimenFileLoader` / `SpecimenLoader`
+
+### Planned UI Components (From GitHub Issues)
+
+**Manufacturing Components**:
+- [ ] `QuantumAssembly` → `QuantumAssembly` / `MultiPathAssembly` (keep as-is or rename)
+- [ ] `NeuralProductionLine` → `NeuralProductionLine` / `IntelligentProductionLine` (keep as-is or rename)
+- [ ] `SynapticQuality` → `SynapticQuality` / `NeuralQualityControl` (keep as-is or rename)
+
+**Energy Components**:
+- [ ] `NeuralEnergyMonitor` → `NeuralEnergyMonitor` / `IntelligentEnergyMonitor` (keep as-is or rename)
+- [ ] `SynapticGridControl` → `SynapticGridControl` / `NeuralGridControl` (keep as-is or rename)
+- [ ] `QuantumEnergyOptimizer` → `QuantumEnergyOptimizer` / `MultiSourceEnergyOptimizer` (keep as-is or rename)
+
+**Agriculture Components**:
+- [ ] `QuantumHarvest` → `QuantumHarvest` / `MultiScenarioHarvest` (keep as-is or rename)
+
+**Note on "Quantum" and "Neural" Prefixes**:
+- These components use "Quantum" and "Neural" prefixes which may not align with medical terminology
+- Consider renaming to more medical terms or keeping as domain-specific terminology
+- Decision needed: Should "Quantum" → "Multi" / "Parallel" / "Concurrent"?
+- Decision needed: Should "Neural" → "Intelligent" / "Adaptive" / keep as-is (since it's part of Nervous System)?
+
+## Implementation Guidelines
+
+### Naming Conventions
+
+1. **Classes**: PascalCase (e.g., `SkinCell`, `TouchReceptor`)
+2. **Interfaces**: PascalCase (e.g., `SkinCellConfig`, `TouchReceptorProps`)
+3. **Types**: PascalCase (e.g., `ReceptorType`, `SkinCellState`)
+4. **Methods**: camelCase (e.g., `activate()`, `receive()`)
+5. **Variables**: camelCase (e.g., `signalQueue`, `activationTime`)
+6. **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_RETRIES`, `DEFAULT_TTL`)
+
+### Migration Strategy
+
+1. **Create New Classes**: Create new classes with medical names
+2. **Update Imports**: Update all imports to use new names
+3. **Update Types**: Update all type references
+4. **Update Tests**: Update all test files
+5. **Update Documentation**: Update all documentation
+6. **Backward Compatibility** (if needed): Add deprecated aliases with warnings
+7. **Remove Old Names**: After migration period, remove deprecated aliases
+
+### Backward Compatibility
+
+For critical breaking changes, consider adding deprecated aliases:
+
+```typescript
+/** @deprecated Use SkinCell instead. Will be removed in v2.0.0 */
+export const VisualNeuron = SkinCell;
+
+/** @deprecated Use SkinCell instead. Will be removed in v2.0.0 */
+export class VisualNeuron extends SkinCell {
+  constructor(...args: ConstructorParameters<typeof SkinCell>) {
+    console.warn('VisualNeuron is deprecated. Use SkinCell instead.');
+    super(...args);
+  }
+}
+```
+
+## Testing Requirements
+
+### Before Each Phase
+
+- [ ] Write tests asserting new terminology (if applicable)
+- [ ] Document expected behavior
+- [ ] Review test coverage
+
+### During Each Phase
+
+- [ ] Update test imports to use new names
+- [ ] Update test class names (TestVisualNeuron → TestSkinCell)
+- [ ] Update test type references
+- [ ] Update test assertions
+- [ ] Run tests frequently to catch issues early
+
+### After Each Phase
+
+- [ ] Run full test suite: `npm test`
+- [ ] Verify all tests pass: `npm test -- --passWithNoTests`
+- [ ] Check test coverage: `npm run test:coverage`
+- [ ] Verify type checking: `npm run type-check`
+- [ ] Verify build succeeds: `npm run build`
+- [ ] Verify linting passes: `npm run lint`
+- [ ] Verify no old terminology remains (grep for old names)
+- [ ] Verify exports work correctly
+- [ ] Update documentation
+
+## Acceptance Criteria
+
+### Phase 1 (Critical)
+
+- [ ] All `VisualNeuron` references migrated to `SkinCell`
+- [ ] All `SensoryNeuron` references migrated to `Receptor`
+- [ ] All `MotorNeuron` references migrated to `Effector`
+- [ ] All `InterneuronUI` references migrated to `DermalLayer`
+- [ ] All `VisualAstrocyte` references migrated to `Adipocyte`
+- [ ] All `VisualOligodendrocyte` references migrated to `Melanocyte`
+- [ ] All `ComponentProps` references migrated to system-specific props
+- [ ] All `ComponentState` references migrated to system-specific state
+- [ ] All tests pass
+- [ ] All type checking passes
+- [ ] All builds succeed
+- [ ] All linting passes
+- [ ] All exports work correctly
+- [ ] Documentation updated
+- [ ] No old terminology remains in production code
+
+### Overall Success Criteria
+
+- [ ] 100% of High Priority changes completed
+- [ ] 80% of Medium Priority changes completed
+- [ ] All tests pass: `npm test`
+- [ ] All type checking passes: `npm run type-check`
+- [ ] All builds succeed: `npm run build`
+- [ ] All linting passes: `npm run lint`
+- [ ] All exports work correctly
+- [ ] Documentation updated
+- [ ] No old terminology remains in production code
+- [ ] Domain language adherence > 80%
+
+## Verification Checklist (Per Phase)
+
+After completing each phase, verify:
+
+- [ ] All tests pass: `npm test`
+- [ ] Type checking passes: `npm run type-check`
+- [ ] Build succeeds: `npm run build`
+- [ ] Linting passes: `npm run lint`
+- [ ] Exports work correctly
+- [ ] Documentation updated
+- [ ] No old terminology remains (grep for old names)
+- [ ] Integration tests pass
+- [ ] Performance not degraded
+- [ ] No breaking changes (or documented with deprecation warnings)
+
+## Risk Mitigation
+
+### High Risk Changes
+
+1. **VisualNeuron → SkinCell** (42 files, Critical)
+   - Create comprehensive migration guide
+   - Consider backward compatibility aliases
+   - Test thoroughly before merging
+
+2. **ComponentProps/State → System-specific** (100+ files, Critical)
+   - Create type aliases for gradual migration
+   - Use TypeScript's type system to catch errors
+   - Test type checking thoroughly
+
+3. **SensoryNeuron → Receptor** (25 files, Critical)
+   - Create migration guide
+   - Consider backward compatibility
+
+### Testing Strategy
+
+1. **Before Refactoring**: Write tests asserting new terminology
+2. **During Refactoring**: Update tests as you go
+3. **After Refactoring**: Run full test suite, verify coverage
+
+## Decision Points
+
+Before starting, decide on these ambiguous terms:
+
+1. **EventBus → Heart or Artery?**
+   - Recommendation: Use `Heart` (already exists, is message broker)
+
+2. **Event → BloodCell or Signal?**
+   - Recommendation: Use `BloodCell` for messages, `Signal` for neural communication
+
+3. **Router → Bronchus or Trachea?**
+   - Recommendation: Use `Bronchus` (branches airways, more flexible)
+
+4. **Resource → Oxygen or Nutrient?**
+   - Recommendation: Use `Oxygen` (more specific, fits respiratory metaphor)
+
+5. **ResourcePool → Alveolus or Capillary?**
+   - Recommendation: Use `Alveolus` (exchanges oxygen, fits pooling metaphor)
+
+6. **Server → Organ or System?**
+   - Recommendation: Use `Organ` (more specific, fits medical metaphor)
+
+7. **Client → Receptor or Effector?**
+   - Recommendation: Use `Receptor` (receives, fits client role)
+
+8. **Bridge → Synapse or Connection?**
+   - Recommendation: Use `Synapse` (connects neurons, fits bridge role)
+
+9. **HotReload → Regeneration or Renewal?**
+   - Recommendation: Use `Regeneration` (cells regenerate, fits hot reload)
+
+## Notes
+
+- **Do NOT break existing functionality** - All tests must pass
+- **Do NOT introduce linting errors** - All linting must pass
+- **Do NOT break type checking** - All type checking must pass
+- **Do NOT break builds** - All builds must succeed
+- **Consider backward compatibility** - Add deprecated aliases if needed
+- **Update documentation** - Keep documentation in sync
+- **Test thoroughly** - Run full test suite after each phase
+- **Commit frequently** - Small, focused commits per change
+- **Review carefully** - Code review before merging
+
+## Reference
+
+See `COMPREHENSIVE_REFACTORING_PLAYBOOK.md` for complete details.
+
+---
+
+**Status**: Ready for Implementation  
+**Priority**: High  
+**Estimated Effort**: 11 weeks (7 phases)  
+**Assignee**: TBD  
+**Labels**: `refactoring`, `domain-terminology`, `breaking-change`, `high-priority`
+
+

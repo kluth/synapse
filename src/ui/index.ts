@@ -7,11 +7,11 @@
 export * from './types';
 
 // Base visual neurons
-export { VisualNeuron } from './VisualNeuron';
-export type { VisualNeuronConfig } from './VisualNeuron';
-export { SensoryNeuron } from './SensoryNeuron';
-export { MotorNeuron } from './MotorNeuron';
-export { InterneuronUI } from './InterneuronUI';
+export { SkinCell } from './SkinCell';
+export type { SkinCellConfig } from './SkinCell';
+export { Receptor } from './Receptor';
+export { Effector } from './Effector';
+export { DermalLayer } from './DermalLayer';
 
 // Visual glial cells (UI support systems)
 export * from './glial';
