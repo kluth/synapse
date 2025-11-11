@@ -4,9 +4,9 @@
 
 import { Hypothesis } from '../laboratory/Hypothesis';
 import { TestSubject } from '../laboratory/TestSubject';
-import { VisualNeuron } from '../../ui/VisualNeuron';
+import { SkinCell } from '../../ui/SkinCell';
 // Test component
-class TestComponent extends VisualNeuron<{ label: string; value: number }> {
+class TestComponent extends SkinCell<{ label: string; value: number }> {
   constructor() {
     super({
       id: 'test-component',

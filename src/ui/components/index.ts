@@ -1,38 +1,38 @@
 /**
  * Synapse UI Component Library
- * Neural-inspired components
+ * Biologically-inspired components
  */
 
 // Form components
-export { Button } from './Button';
-export type { ButtonProps, ButtonState } from './Button';
+export { TouchReceptor } from './TouchReceptor';
+export type { TouchReceptorProps, TouchReceptorState } from './TouchReceptor';
 
-export { Input } from './Input';
-export type { InputProps, InputState } from './Input';
+export { TextReceptor } from './TextReceptor';
+export type { TextReceptorProps, TextReceptorState } from './TextReceptor';
 
-export { Select } from './Select';
-export type { SelectProps, SelectState, SelectOption } from './Select';
+export { SelectReceptor } from './SelectReceptor';
+export type { SelectProps, SelectState, SelectOption } from './SelectReceptor';
 
-export { Checkbox } from './Checkbox';
-export type { CheckboxProps, CheckboxState } from './Checkbox';
+export { CheckReceptor } from './CheckReceptor';
+export type { CheckReceptorProps, CheckReceptorState } from './CheckReceptor';
 
 export { Radio } from './Radio';
 export type { RadioProps, RadioState, RadioOption } from './Radio';
 
-export { Form } from './Form';
-export type { FormProps, FormState } from './Form';
+export { DermalForm } from './DermalForm';
+export type { FormProps, FormState } from './DermalForm';
 
 // Display components
-export { Text } from './Text';
-export type { TextProps, TextState } from './Text';
+export { Keratinocyte } from './Keratinocyte';
+export type { TextProps, TextState } from './Keratinocyte';
 
 // Layout components
-export { Card } from './Card';
-export type { CardProps, CardState } from './Card';
+export { Epidermis } from './Epidermis';
+export type { CardProps, CardState } from './Epidermis';
 
 // Feedback components
-export { Alert } from './Alert';
-export type { AlertProps, AlertState } from './Alert';
+export { AlertReceptor } from './AlertReceptor';
+export type { AlertProps, AlertState } from './AlertReceptor';
 
 // Overlay components
 export { Modal } from './Modal';

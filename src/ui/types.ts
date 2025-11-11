@@ -91,14 +91,16 @@ export interface StateSignal<T = unknown> {
 }
 
 /**
- * Component props type - using object to allow any props structure
+ * Component-specific props and state types
  */
-export type ComponentProps = object;
-
-/**
- * Component state type - using object to allow any state structure
- */
-export type ComponentState = object;
+export type SkinCellProps = object;
+export type SkinCellState = object;
+export type ReceptorProps = SkinCellProps;
+export type ReceptorState = SkinCellState;
+export type EffectorProps = SkinCellProps;
+export type EffectorState = SkinCellState;
+export type DermalLayerProps = SkinCellProps;
+export type DermalLayerState = SkinCellState;
 
 /**
  * Render patch operations for Virtual DOM reconciliation

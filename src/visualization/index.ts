@@ -3,10 +3,10 @@
  * Advanced visualization components for charts, graphs, and data display
  */
 
-export { LineChart } from './LineChart';
-export { BarChart } from './BarChart';
-export { PieChart } from './PieChart';
-export { ScatterPlot } from './ScatterPlot';
+export { LineVisualization } from './LineVisualization';
+export { BarVisualization } from './BarVisualization';
+export { PieVisualization } from './PieVisualization';
+export { ScatterVisualization } from './ScatterVisualization';
 
 export type {
   ChartDataPoint,

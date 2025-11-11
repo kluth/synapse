@@ -3,11 +3,11 @@
  */
 
 import { TestSubject } from '../laboratory/TestSubject';
-import { VisualNeuron } from '../../ui/VisualNeuron';
+import { SkinCell } from '../../ui/SkinCell';
 import type { Input } from '../../types';
 
 // Test component
-class TestComponent extends VisualNeuron<{ label: string; count: number }> {
+class TestComponent extends SkinCell<{ label: string; count: number }> {
   constructor() {
     super({
       id: 'test-component',

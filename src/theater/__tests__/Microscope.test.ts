@@ -1,10 +1,10 @@
 import { Microscope, type MicroscopeLens, type InspectionResult } from '../instruments/Microscope';
-import { VisualNeuron } from '../../ui/VisualNeuron';
+import { SkinCell } from '../../ui/SkinCell';
 import type { RenderSignal } from '../../ui/types';
 import type { Input } from '../../types';
 
 // Test component implementation
-class TestVisualComponent extends VisualNeuron<{ name: string }> {
+class TestVisualComponent extends SkinCell<{ name: string }> {
   protected override async executeProcessing<_TInput = unknown, TOutput = unknown>(
     _input: Input<_TInput>,
   ): Promise<TOutput> {

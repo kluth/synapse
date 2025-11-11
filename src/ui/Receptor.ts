@@ -1,0 +1,124 @@
+/**
+ * Receptor - Input components that capture user interactions
+ * Converts DOM events to neural signals
+ */
+
+import { SkinCell } from './SkinCell';
+import type { UIEventSignal, UIEventType, ReceptorProps, ReceptorState } from './types';
+
+/**
+ * Receptor - Captures and processes user interactions
+ * Examples: Input, Button, Select, Checkbox, etc.
+ */
+export abstract class Receptor<
+  TProps extends ReceptorProps = ReceptorProps,
+  TState extends ReceptorState = ReceptorState,
+> extends SkinCell<TProps, TState> {
+  /**
+   * Capture a DOM interaction and convert it to a neural signal
+   */
+  public async captureInteraction(
+    domEvent: unknown,
+    eventType: UIEventType,
+    payload: unknown,
+    bubbles: boolean = true,
+  ): Promise<void> {
+    const uiSignal = this.toNeuralSignal(domEvent, eventType, payload, bubbles);
+
+    // Emit to local event listeners
+    this.emitter.emit('signal', uiSignal);
+
+    // Convert to base Signal type for neural network transmission
+    const baseSignal: {
+      id: string;
+      sourceId: string;
+      type: 'excitatory';
+      strength: number;
+      payload: unknown;
+      timestamp: Date;
+    } = {
+      id: crypto.randomUUID(),
+      sourceId: this.id,
+      type: 'excitatory',
+      strength: uiSignal.strength,
+      payload: uiSignal,
+      timestamp: new Date(uiSignal.timestamp),
+    };
+
+    await this.receive(baseSignal);
+  }
+
+  /**
+   * Convert DOM event to neural signal
+   */
+  protected toNeuralSignal(
+    domEvent: unknown,
+    eventType: UIEventType,
+    payload: unknown,
+    bubbles: boolean = true,
+  ): UIEventSignal {
+    // Determine signal strength based on event type
+    const strength = this.getSignalStrength(eventType);
+
+    return {
+      type: eventType,
+      data: {
+        domEvent,
+        payload,
+        target: this.id,
+        bubbles,
+      },
+      strength,
+      timestamp: Date.now(),
+    };
+  }
+
+  /**
+   * Determine signal strength based on event type
+   * Direct interactions (click, input) have higher strength
+   * Indirect interactions (hover) have lower strength
+   */
+  protected getSignalStrength(eventType: UIEventType): number {
+    const strengthMap: Record<UIEventType, number> = {
+      'ui:click': 1.0,
+      'ui:input': 0.9,
+      'ui:change': 0.9,
+      'ui:submit': 1.0,
+      'ui:keydown': 0.8,
+      'ui:keyup': 0.7,
+      'ui:focus': 0.8,
+      'ui:blur': 0.8,
+      'ui:hover': 0.3,
+      'ui:scroll': 0.4,
+      'ui:resize': 0.5,
+    };
+
+    return strengthMap[eventType];
+  }
+
+  /**
+   * Handle keyboard events with special key detection
+   */
+  protected isSpecialKey(key: string): boolean {
+    const specialKeys = [
+      'Enter',
+      'Escape',
+      'Tab',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'Backspace',
+      'Delete',
+    ];
+    return specialKeys.includes(key);
+  }
+
+  /**
+   * Get refractory period for receptors (debouncing)
+   * Can be overridden for custom debounce timing
+   */
+  protected override getRefractoryPeriod(): number {
+    return 16; // Default: one frame at 60fps
+  }
+}

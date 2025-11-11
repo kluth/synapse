@@ -2,10 +2,10 @@
  * Types for visualization components
  */
 
-import type { ComponentProps, ComponentState } from '../ui/types';
+import type { SkinCellProps, SkinCellState } from '../ui/types';
 
 /**
- * Base chart data point
+ * Base visualization data point
  */
 export interface ChartDataPoint {
   x: number;
@@ -34,9 +34,9 @@ export interface CanvasPoint {
 }
 
 /**
- * Base chart props
+ * Base visualization props
  */
-export interface BaseChartProps extends ComponentProps {
+export interface BaseVisualizationProps extends SkinCellProps {
   data: ChartDataPoint[];
   width: number;
   height: number;
@@ -54,9 +54,9 @@ export interface BaseChartProps extends ComponentProps {
 }
 
 /**
- * Line chart specific props
+ * Line visualization specific props
  */
-export interface LineChartProps extends BaseChartProps {
+export interface LineVisualizationProps extends BaseVisualizationProps {
   lineWidth?: number;
   smooth?: boolean;
   showPoints?: boolean;
@@ -66,9 +66,9 @@ export interface LineChartProps extends BaseChartProps {
 }
 
 /**
- * Bar chart specific props
+ * Bar visualization specific props
  */
-export interface BarChartProps extends BaseChartProps {
+export interface BarVisualizationProps extends BaseVisualizationProps {
   barWidth?: number | 'auto';
   barSpacing?: number;
   orientation?: 'vertical' | 'horizontal';
@@ -76,7 +76,7 @@ export interface BarChartProps extends BaseChartProps {
 }
 
 /**
- * Pie chart data point
+ * Pie visualization data point
  */
 export interface PieDataPoint {
   value: number;
@@ -86,9 +86,9 @@ export interface PieDataPoint {
 }
 
 /**
- * Pie chart specific props
+ * Pie visualization specific props
  */
-export interface PieChartProps extends ComponentProps {
+export interface PieVisualizationProps extends SkinCellProps {
   data: PieDataPoint[];
   width: number;
   height: number;
@@ -98,36 +98,36 @@ export interface PieChartProps extends ComponentProps {
 }
 
 /**
- * Scatter plot specific props
+ * Scatter visualization specific props
  */
-export interface ScatterPlotProps extends BaseChartProps {
+export interface ScatterVisualizationProps extends BaseVisualizationProps {
   pointRadius?: number;
   pointShape?: 'circle' | 'square' | 'triangle';
   sizeField?: string; // Field name for bubble charts
 }
 
 /**
- * Base chart state
+ * Base visualization state
  */
-export interface BaseChartState extends ComponentState {
+export interface BaseVisualizationState extends SkinCellState {
   hoveredPoint: ChartDataPoint | null;
   selectedPoint: ChartDataPoint | null;
   isAnimating?: boolean;
 }
 
 /**
- * Pie chart state
+ * Pie visualization state
  */
-export interface PieChartState extends ComponentState {
+export interface PieVisualizationState extends SkinCellState {
   hoveredSlice: PieDataPoint | null;
   selectedSlice: PieDataPoint | null;
   isAnimating?: boolean;
 }
 
 /**
- * Chart theme
+ * Visualization theme
  */
-export interface ChartTheme {
+export interface VisualizationTheme {
   primaryColor: string;
   secondaryColor: string;
   backgroundColor: string;

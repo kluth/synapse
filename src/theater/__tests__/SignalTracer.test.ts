@@ -1,8 +1,8 @@
 import { SignalTracer } from '../instruments/SignalTracer';
-import { VisualNeuron } from '../../ui/VisualNeuron';
+import { SkinCell } from '../../ui/SkinCell';
 
 // Test component
-class TestComponent extends VisualNeuron<{ name: string }> {
+class TestComponent extends SkinCell<{ name: string }> {
   constructor(props: { name: string }) {
     super({
       id: 'test-component',

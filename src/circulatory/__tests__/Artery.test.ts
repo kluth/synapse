@@ -12,7 +12,7 @@ describe('Artery', () => {
     it('should start and stop stream', async () => {
       const artery = new Artery('test-stream');
 
-      await artery.start();
+      artery.start();
       expect(artery.isActive()).toBe(true);
 
       await artery.stop();
@@ -27,8 +27,8 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 'test' }));
+      artery.start();
+      artery.send(new BloodCell({ data: 'test' }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -46,10 +46,10 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
-      await artery.send(new BloodCell({ data: 3 }));
+      artery.start();
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 3 }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -83,14 +83,14 @@ describe('Artery', () => {
         backpressureEvents.push(size);
       });
 
-      await artery.start();
+      artery.start();
 
       // Fill the buffer
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
 
       try {
-        await artery.send(new BloodCell({ data: 3 })); // Should trigger backpressure
+        artery.send(new BloodCell({ data: 3 })); // Should trigger backpressure
       } catch {
         // Expected - buffer full
       }
@@ -108,11 +108,11 @@ describe('Artery', () => {
         highWaterMark: 8,
       });
 
-      await artery.start();
+      artery.start();
 
       // Fill buffer to high water mark
       for (let i = 0; i < 9; i++) {
-        await artery.send(new BloodCell({ data: i }));
+        artery.send(new BloodCell({ data: i }));
       }
 
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -134,15 +134,25 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
+      artery.start(); // start() is synchronous, don't await
 
-      // Fill buffer
+      // Give processing loop a moment to start
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Fill buffer - send() is synchronous, don't await
       for (let i = 0; i < 9; i++) {
-        await artery.send(new BloodCell({ data: i }));
+        artery.send(new BloodCell({ data: i }));
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for buffer to drain
-      expect(artery.isPaused()).toBe(false); // Should resume after draining
+      // Verify stream is paused after hitting high water mark
+      expect(artery.isPaused()).toBe(true);
+
+      // Wait longer for buffer to drain below low water mark
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Should resume after draining below low water mark
+      expect(artery.isPaused()).toBe(false);
+      expect(received.length).toBeGreaterThanOrEqual(6); // Should have processed at least 6 messages (9-3=6)
 
       await artery.stop();
     });
@@ -159,13 +169,13 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
+      artery.start();
 
       const startTime = Date.now();
 
       // Send 20 messages
       for (let i = 0; i < 20; i++) {
-        await artery.send(new BloodCell({ data: i }));
+        artery.send(new BloodCell({ data: i }));
       }
 
       await new Promise((resolve) => setTimeout(resolve, 2100));
@@ -190,11 +200,11 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
+      artery.start();
 
       // Send burst
       for (let i = 0; i < 5; i++) {
-        await artery.send(new BloodCell({ data: i }));
+        artery.send(new BloodCell({ data: i }));
       }
 
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -207,12 +217,12 @@ describe('Artery', () => {
 
     it('should support manual flow control', async () => {
       const artery = new Artery('test-stream');
-      await artery.start();
+      artery.start();
 
-      await artery.pause();
+      artery.pause();
       expect(artery.isPaused()).toBe(true);
 
-      await artery.resume();
+      artery.resume();
       expect(artery.isPaused()).toBe(false);
 
       await artery.stop();
@@ -230,12 +240,12 @@ describe('Artery', () => {
         batches.push(cells);
       });
 
-      await artery.start();
+      artery.start();
 
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
-      await artery.send(new BloodCell({ data: 3 }));
-      await artery.send(new BloodCell({ data: 4 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 3 }));
+      artery.send(new BloodCell({ data: 4 }));
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -255,10 +265,10 @@ describe('Artery', () => {
         batches.push(cells);
       });
 
-      await artery.start();
+      artery.start();
 
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
 
       await new Promise((resolve) => setTimeout(resolve, 150));
 
@@ -278,10 +288,10 @@ describe('Artery', () => {
         batches.push(cells);
       });
 
-      await artery.start();
+      artery.start();
 
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
 
       // Wait for messages to be processed into batch
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -311,8 +321,8 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 'hello' }));
+      artery.start();
+      artery.send(new BloodCell({ data: 'hello' }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -330,11 +340,11 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 3 }));
-      await artery.send(new BloodCell({ data: 7 }));
-      await artery.send(new BloodCell({ data: 2 }));
-      await artery.send(new BloodCell({ data: 9 }));
+      artery.start();
+      artery.send(new BloodCell({ data: 3 }));
+      artery.send(new BloodCell({ data: 7 }));
+      artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 9 }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -357,8 +367,8 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 5 }));
+      artery.start();
+      artery.send(new BloodCell({ data: 5 }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -385,7 +395,7 @@ describe('Artery', () => {
         throw new Error('Transform failed');
       });
 
-      await artery.send(new BloodCell({ data: 'test' }));
+      artery.send(new BloodCell({ data: 'test' }));
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(errors.length).toBeGreaterThan(0);
@@ -413,10 +423,10 @@ describe('Artery', () => {
         return cell;
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 })); // Should error
-      await artery.send(new BloodCell({ data: 3 }));
+      artery.start();
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 })); // Should error
+      artery.send(new BloodCell({ data: 3 }));
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -440,11 +450,11 @@ describe('Artery', () => {
       const artery = new Artery('test-stream');
       artery.onData(() => {});
 
-      await artery.start();
+      artery.start();
 
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
-      await artery.send(new BloodCell({ data: 3 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 3 }));
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -463,10 +473,10 @@ describe('Artery', () => {
         throw new Error('Test error');
       });
 
-      await artery.start();
+      artery.start();
 
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -480,10 +490,10 @@ describe('Artery', () => {
       const artery = new Artery('test-stream');
       artery.onData(() => {});
 
-      await artery.start();
+      artery.start();
 
       for (let i = 0; i < 10; i++) {
-        await artery.send(new BloodCell({ data: i }));
+        artery.send(new BloodCell({ data: i }));
       }
 
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -508,8 +518,8 @@ describe('Artery', () => {
         received2.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 'test' }));
+      artery.start();
+      artery.send(new BloodCell({ data: 'test' }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -527,15 +537,15 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
-      await artery.send(new BloodCell({ data: 1 }));
+      artery.start();
+      artery.send(new BloodCell({ data: 1 }));
 
       // Wait for first message to be processed
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       unsubscribe();
 
-      await artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 2 }));
 
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -552,11 +562,11 @@ describe('Artery', () => {
         received.push(cell);
       });
 
-      await artery.start();
+      artery.start();
 
-      await artery.send(new BloodCell({ data: 1 }));
-      await artery.send(new BloodCell({ data: 2 }));
-      await artery.send(new BloodCell({ data: 3 }));
+      artery.send(new BloodCell({ data: 1 }));
+      artery.send(new BloodCell({ data: 2 }));
+      artery.send(new BloodCell({ data: 3 }));
 
       await artery.stop(); // Should drain buffer
 
