@@ -51,7 +51,7 @@
     "@types/bun": "latest",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
-    "@typescript-eslint/parser": "^8.46.3",
+    "@typescript-eslint/parser": "^8.48.0",
     "esbuild": "^0.25.12",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
